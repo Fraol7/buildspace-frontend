@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(ROLES)/investor/(routes)/market-insights", "app/(ROLES)/entrepreneur/(routes)/market-insights"],
   "exclude": ["node_modules"]
 }
