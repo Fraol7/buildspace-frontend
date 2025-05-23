@@ -2,27 +2,28 @@
 
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import Image from 'next/image';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    console.log({ email, password, rememberMe });
+    console.log({ email, password });
   };
 
   return (
-    <div className="flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-lg">
+    <div className="flex justify-center px-4 min-h-screen">
+      <div className="w-full mt-4 max-w-sm p-2">
         <div className="text-left mb-8">
           <h1 className="text-center text-2xl font-semibold">WELCOME BACK</h1>
         </div>
-        <form onSubmit={handleLogin} className="space-y-8">
+        <form onSubmit={handleLogin} className="space-y-6">
           {/* Email */}
           <div>
             <label className="text-sm text-gray-600">Email Address</label>
@@ -39,7 +40,7 @@ export default function LoginForm() {
           {/* Password */}
           <div>
             <label className="text-sm text-gray-600">Password</label>
-            <div className="relative flex flex-row items-center">
+            <div className="relative flex flex-row items-center justify-between">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
@@ -51,7 +52,7 @@ export default function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-3 text-gray-500"
+                className="absolute right-4 top-4 text-gray-500"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -60,43 +61,42 @@ export default function LoginForm() {
 
           {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="accent-blue-600"
-              />
-              <span className="text-gray-700">Remember Me</span>
-            </label>
+            <div className="flex items-center space-x-2">
+            <Label htmlFor="remember-me">Remember Me</Label>
+              <Switch id="remember-me" />
+            </div>
             <a href="#" className="text-blue-600 hover:underline">
               Forgot Password?
             </a>
           </div>
 
           {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md transition duration-300"
-          >
-            Login
-          </button>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center space-x-2">
-            <div className="h-px bg-gray-300 flex-grow" />
-            <span className="text-gray-500 text-sm">or</span>
-            <div className="h-px bg-gray-300 flex-grow" />
+          <div className="flex flex-col items-center">
+            <button
+              type="submit"
+              className="w-[60%] bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md transition duration-300"
+            >
+              Login
+            </button>
           </div>
 
-          {/* Google Sign In */}
-          <button
-            type="button"
-            className="w-full border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
-          >
-            <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
-            <span className="text-sm text-gray-700">Sign in with Google</span>
-          </button>
+            {/* Divider */}
+            <div className="flex items-center justify-center space-x-2">
+              <div className="h-px bg-gray-300 flex-grow" />
+              <span className="text-gray-500 text-sm">or</span>
+              <div className="h-px bg-gray-300 flex-grow" />
+            </div>
+
+            {/* Google Sign In */}
+            <div className="flex flex-col items-center">
+              <button
+                type="button"
+                className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
+              >
+                <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
+                <span className="text-sm text-gray-700">Sign in with Google</span>
+              </button>
+            </div>
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
