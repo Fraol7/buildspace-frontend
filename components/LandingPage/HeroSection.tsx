@@ -6,9 +6,9 @@ import Link from 'next/link';
 
 const HeroSection = () => {
   return (
-    <section className="bg-gradient-to-b from-indigo-200 via-purple-100 to-white min-h-[100vh] flex flex-col items-center">
+    <section className="bg-gradient-to-b from-indigo-300 via-purple-200 to-white min-h-[100vh] flex flex-col items-center">
       {/* <Header /> */}
-      <div className="container flex flex-row mx-auto px-4 py-16 md:py-24">
+      <div className="container flex flex-row mx-auto px-4 py-16 md:my-auto">
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Connecting Entrepreneurs & Investors for a Brighter Future

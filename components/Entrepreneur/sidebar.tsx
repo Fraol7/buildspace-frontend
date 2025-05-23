@@ -41,7 +41,7 @@ export function EntrepreneurSidebar() {
                     <SidebarMenuButton asChild>
                         <div>
                           <BriefcaseBusiness />
-                          <span>My Startups</span>
+                          <span>Startups</span>
                           <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                         </div>
                     </SidebarMenuButton>
@@ -50,13 +50,13 @@ export function EntrepreneurSidebar() {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuButton asChild>
-                          <a href="/entrepreneur/my-startups-1">
-                            <span>Startup-1</span>
+                          <a href="/entrepreneur/my-startups">
+                            <span>My Startups</span>
                           </a>
                         </SidebarMenuButton>
                         <SidebarMenuButton asChild>
-                          <a href="/entrepreneur/my-startups-2">
-                            <span>Startup-2</span>
+                          <a href="/entrepreneur/saved">
+                            <span>Saved Startups</span>
                           </a>
                         </SidebarMenuButton>
                       </SidebarMenuSubItem>
@@ -66,14 +66,35 @@ export function EntrepreneurSidebar() {
               </Collapsible>
 
               {/* 3 */}
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/entrepreneur/crowdfunding">
-                    <HandCoins />
-                    <span>Crowdfunding</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton asChild>
+                        <div>
+                          <HandCoins />
+                          <span>Crowdfunding</span>
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </div>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/my-campaigns">
+                            <span>My Campaigns</span>
+                          </a>
+                        </SidebarMenuButton>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/explore-campaigns">
+                            <span>Explore Campaigns</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
               
               {/* 4 */}
               <SidebarMenuItem>
@@ -113,18 +134,3 @@ export function EntrepreneurSidebar() {
   )
 }
 
-
-// <SidebarMenu>
-//   <Collapsible defaultOpen className="group/collapsible">
-//     <SidebarMenuItem>
-//       <CollapsibleTrigger asChild>
-//         <SidebarMenuButton />
-//       </CollapsibleTrigger>
-//       <CollapsibleContent>
-//         <SidebarMenuSub>
-//           <SidebarMenuSubItem />
-//         </SidebarMenuSub>
-//       </CollapsibleContent>
-//     </SidebarMenuItem>
-//   </Collapsible>
-// </SidebarMenu>

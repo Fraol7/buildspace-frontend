@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full shadow-xs transition-all ${
-        isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-indigo-200'
+        isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-indigo-300'
       }`}
     >
       {/* Main Header Content */}
