@@ -39,7 +39,7 @@ export default function LoginForm() {
           {/* Password */}
           <div>
             <label className="text-sm text-gray-600">Password</label>
-            <div className="relative">
+            <div className="relative flex flex-row items-center">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}

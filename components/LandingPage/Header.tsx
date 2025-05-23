@@ -19,7 +19,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      setIsScrolled(window.scrollY > 80);
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full shadow-xs transition-all ${
-        isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-indigo-300'
+        isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-indigo-200'
       }`}
     >
       {/* Main Header Content */}

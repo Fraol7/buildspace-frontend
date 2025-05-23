@@ -3,7 +3,9 @@ import React from 'react'
 import HeroSection from '@/components/LandingPage/HeroSection';
 import Mission from '@/components/LandingPage/Mission';
 import WhyBuildSpace from '@/components/LandingPage/WhyBuildSpace';
-// import StreamlineFunding from '@/components/LandingPage/StreamlineFunding';
+import FundingSection from '@/components/LandingPage/FundingSection';
+import InnovationJourney from '@/components/LandingPage/InnovationJourney';
+import AppShowcase from '@/components/LandingPage/AppShowcase';
 import Footer from '@/components/LandingPage/Footer';
 
 const LandingPage = () => {
@@ -13,7 +15,9 @@ const LandingPage = () => {
       <HeroSection />
       <Mission />
       <WhyBuildSpace />
-      {/* <StreamlineFunding /> */}
+      <FundingSection />
+      <InnovationJourney />
+      <AppShowcase />
       <Footer />
     </>
   )
