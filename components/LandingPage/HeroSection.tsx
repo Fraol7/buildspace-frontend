@@ -2,12 +2,12 @@ import React from 'react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 // import Image from 'next/image';
-import Header from './Header';
+// import Header from './Header';
 
 const HeroSection = () => {
   return (
     <section className="bg-gradient-to-b from-indigo-200 via-purple-100 to-white min-h-[100vh] flex flex-col items-center">
-      <Header />
+      {/* <Header /> */}
       <div className="container flex flex-row mx-auto px-4 py-16 md:py-24">
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
