@@ -10,14 +10,13 @@ export default function InnovationJourney() {
           {/* Header Section - Left */}
           <div className="space-y-4 mb-4">
             <h1 className="text-3xl font-medium text-slate-800">
-              Power Up Your
+              Empower Your
               <br />
               Innovation Journey
             </h1>
             <p className="text-sm text-slate-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Adipiscing tempus sed nunc consequat lacus
-              porttitor neque at nulla. Maecenas gravida risque leo diam. Nunc, felis fringilla lectus felis aliquet
-              tempor vitae.
+              BuildSpace connects entrepreneurs and investors, offering tools to streamline crowdfunding and unlock
+              market insights to grow your startup.
             </p>
           </div>
 
@@ -26,13 +25,17 @@ export default function InnovationJourney() {
             <div className="relative w-full flex items-center justify-center">
               <Image
                 src="/images/Portfolio22.png"
-                alt="Person looking at analytics dashboard"
+                alt="AI-driven crowdfunding campaigns"
                 width={300}
                 height={240}
                 className="object-contain"
               />
             </div>
-            <p className="text-center text-slate-800 mt-4">Crowdfunding for Campaigns</p>
+            <p className="text-center text-slate-800 mt-4">
+              Launch and Manage 
+              <br/>
+              Crowdfunding Campaigns
+            </p>
           </div>
 
           {/* Bottom Section - Left */}
@@ -40,16 +43,16 @@ export default function InnovationJourney() {
             <div className="relative w-full flex items-center justify-center">
               <Image
                 src="/images/Portfolio32.png"
-                alt="People exchanging ideas"
+                alt="Collaborative idea exchange"
                 width={300}
                 height={240}
                 className="object-contain"
               />
             </div>
             <p className="text-center text-slate-800 mt-4">
-              Exchange ideas with startup
+              Collaborate and Share Ideas
               <br />
-              minds like yours
+              with Like-Minded Innovators
             </p>
           </div>
         </div>
@@ -61,16 +64,16 @@ export default function InnovationJourney() {
             <div className="relative w-full flex items-center justify-center z-10 pt-4">
               <Image
                 src="/images/Portfolio2.png"
-                alt="Person climbing stairs to target"
+                alt="Targeted opportunities illustration"
                 width={300}
                 height={240}
                 className="object-contain"
               />
             </div>
             <p className="text-center text-slate-800 mt-4">
-              Discover tailored opportunities
+              Discover Opportunities
               <br />
-              based on your goals
+              Tailored to Your Startup
             </p>
             <div className="absolute top-0 right-0">
               <DotPattern />
@@ -82,16 +85,16 @@ export default function InnovationJourney() {
             <div className="relative w-full flex items-center justify-center">
               <Image
                 src="/images/Portfolio3.png"
-                alt="Network of people connections"
+                alt="Networking connections"
                 width={300}
                 height={240}
                 className="object-contain"
               />
             </div>
             <p className="text-center text-slate-800 mt-4">
-              Build meaningful connections
+              Build Strategic Connections
               <br />
-              with peers and potential backers
+              with Investors and Peers
             </p>
           </div>
 
@@ -100,13 +103,17 @@ export default function InnovationJourney() {
             <div className="relative w-full flex items-center justify-center">
               <Image
                 src="/images/Portfolio1.png"
-                alt="Secure platform illustration"
+                alt="Secure and seamless platform"
                 width={300}
                 height={240}
                 className="object-contain"
               />
             </div>
-            <p className="text-center text-slate-800 mt-4">All on one secure, intuitive platform</p>
+            <p className="text-center text-slate-800 mt-4">
+              All Features on a
+              <br />
+              Secure, Seamless Platform
+            </p>
           </div>
         </div>
       </div>
