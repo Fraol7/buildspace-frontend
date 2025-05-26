@@ -74,7 +74,7 @@ export default function LoginForm() {
           {/* Login Button */}
           <div className="flex flex-col items-center">
             <Link
-              href="/investor"
+              href="/entrepreneur"
               className="w-[60%] bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md text-center transition duration-300"
             >
               Login
