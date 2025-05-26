@@ -229,22 +229,22 @@ export const FUNDING_ROUNDS = [
 export const FEATURES = [
   {
     title: "🔍 AI-Powered Investment Insights",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at faucibus vitae libero tellus enim eros, tristique. Lorem aliquet nunc bibendum.",
+    description: "Utilize advanced sentiment analysis to make data-driven decisions for your startup.",
     linkText: "Learn More"
   },
   {
     title: "🤝 Matchmaking That Matters",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at faucibus vitae libero tellus enim eros, tristique. Lorem aliquet nunc bibendum.",
+    description: "Launch and manage campaigns seamlessly, connecting with investors worldwide.",
     linkText: "Learn More"
   },
   {
     title: "🚀 Accelerate Startup Growth",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at faucibus vitae libero tellus enim eros, tristique. Lorem aliquet nunc bibendum.",
+    description: "Find the perfect investors or startups effortlessly with our AI-driven matchmaking tools.",
     linkText: "Learn More"
   },
   {
     title: "🌐 A Hub for Collaboration",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada at faucibus vitae libero tellus enim eros, tristique. Lorem aliquet nunc bibendum.",
+    description: "Collaborate in real-time with like-minded entrepreneurs and investors.",
     linkText: "Learn More"
   }
 ];

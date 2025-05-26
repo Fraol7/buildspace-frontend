@@ -33,9 +33,8 @@ export default function Footer() {
         {/* Newsletter Section */}
         <div className="text-center mb-16 pt-8">
           <h2 className="text-lg text-slate-700 mb-6">
-            Subscribe for innovation news, exclusive launches,
-            <br />
-            and platform updates.
+            Stay informed with BuildSpace updates, latest launches, <br />
+            and entrepreneurial insights.
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <input
@@ -53,21 +52,21 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* About Us */}
           <div>
-            <h3 className="font-medium text-slate-800 mb-4">About Us</h3>
+            <h3 className="font-medium text-slate-800 mb-4">About BuildSpace</h3>
             <ul className="space-y-3">
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  How are we different?
+                  Our Vision
                 </a>
               </li>
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Career
+                  Careers
                 </a>
               </li>
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Collaborate
+                  Partnership Opportunities
                 </a>
               </li>
             </ul>
@@ -79,34 +78,34 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Startup Matchmaking
+                  Entrepreneur Tools
                 </a>
               </li>
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Pathways
+                  Investor Insights
                 </a>
               </li>
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Knowledge Hub
+                  Knowledge Base
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Platform */}
           <div>
-            <h3 className="font-medium text-slate-800 mb-4">Company</h3>
+            <h3 className="font-medium text-slate-800 mb-4">Platform</h3>
             <ul className="space-y-3">
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Help Center
+                  User Guidelines
                 </a>
               </li>
               <li>
                 <a href="#" className="text-slate-600 hover:text-slate-800 transition-colors">
-                  Contact
+                  Contact Support
                 </a>
               </li>
               <li>
@@ -119,18 +118,18 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-medium text-slate-800 mb-4">Contact</h3>
+            <h3 className="font-medium text-slate-800 mb-4">Get in Touch</h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-slate-600">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:getintouch@bizgrow.com" className="hover:text-slate-800 transition-colors">
-                  getintouch@bizgrow.com
+                <a href="mailto:contact@buildspace.com" className="hover:text-slate-800 transition-colors">
+                  contact@buildspace.com
                 </a>
               </li>
               <li className="flex items-center gap-2 text-slate-600">
                 <Phone className="h-4 w-4" />
-                <a href="tel:+251-900-000-000" className="hover:text-slate-800 transition-colors">
-                  +251-900-000-000
+                <a href="tel:+251-800-000-000" className="hover:text-slate-800 transition-colors">
+                  +251-800-000-000
                 </a>
               </li>
             </ul>
@@ -139,7 +138,7 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-200">
-          <div className="text-slate-600 text-sm mb-4 sm:mb-0">© Biz-Grow 2024 | All rights reserved</div>
+          <div className="text-slate-600 text-sm mb-4 sm:mb-0">© BuildSpace 2024 | All rights reserved</div>
           <div className="flex items-center gap-4">
             <a href="#" className="text-slate-400 hover:text-slate-600 transition-colors">
               <Linkedin className="h-5 w-5" />

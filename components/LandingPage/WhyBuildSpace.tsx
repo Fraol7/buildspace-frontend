@@ -5,7 +5,7 @@ import { FEATURES } from '@/constants';
 
 const FeatureCard = ({ title, description, linkText }: { title: string; description: string; linkText: string }) => {
   return (
-    <div className="group relative bg-white p-6 md:p-8 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <div className="group relative bg-white p-6 md:p-8 rounded-xl shadow-md overflow-hidden border-2 border-indigo-50 transition-all duration-300 hover:shadow-lg">
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-b from-green-400 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 

@@ -10,7 +10,7 @@ const MissionSection = () => {
         
         <p className="text-md md:text-lg text-gray-600 mb-12 leading-relaxed">
           BuildSpace is on a mission to transform how innovation is discovered and supported. 
-          Whether you&aposre an entrepreneur seeking funding or an investor looking for the next big idea, 
+          Whether you&apos;re an entrepreneur seeking funding or an investor looking for the next big idea, 
           our platform empowers you to move with confidence.
         </p>
       </div>

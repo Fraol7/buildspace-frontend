@@ -6,16 +6,17 @@ export default function FundingSection() {
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <h2 className="text-3xl font-medium text-navy-800 leading-tight">
-            Streamline Funding,
+            Empower Your Startup,
             <br />
-            Save Time &<br />
-            Resources
+            Achieve More &
+            <br />
+            Innovate Smarter
           </h2>
         </div>
         <div>
           <p className="text-gray-600">
-            Focus more on building and less on chasing leads. With BuildSpace&aposs AI-driven matching and document
-            automation, you reduce repetitive tasks and connect faster with the right people.
+            BuildSpace offers AI-powered matchmaking and seamless campaign tools, helping you focus on scaling your
+            startup while we connect you with the right investors and resources.
           </p>
         </div>
       </div>
@@ -24,7 +25,7 @@ export default function FundingSection() {
         <div className="overflow-hidden rounded-lg">
           <Image
             src="/images/image1.png"
-            alt="Identity verification on mobile device"
+            alt="AI-driven matchmaking process"
             width={280}
             height={160}
             className="w-full h-full object-cover"
@@ -33,7 +34,7 @@ export default function FundingSection() {
         <div className="overflow-hidden rounded-lg">
           <Image
             src="/images/image2.png"
-            alt="Business handshake"
+            alt="Networking opportunities for entrepreneurs"
             width={280}
             height={160}
             className="w-full h-full object-cover"
@@ -42,7 +43,7 @@ export default function FundingSection() {
         <div className="overflow-hidden rounded-lg">
           <Image
             src="/images/image3.png"
-            alt="Person holding money"
+            alt="Crowdfunding success visualization"
             width={280}
             height={160}
             className="w-full h-full object-cover"
