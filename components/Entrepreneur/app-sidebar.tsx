@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import type * as React from "react"
-import Image from "next/image"
-import { useState } from "react"
-import Link from "next/link"
+import type * as React from "react";
+import Image from "next/image";
+import { useState } from "react";
+import Link from "next/link";
 import {
   ChevronRight,
   LifeBuoy,
@@ -11,10 +11,14 @@ import {
   Settings2,
   Briefcase,
   UserCircle,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -38,22 +42,51 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { useProfile } from "@/lib/profile-context"
-// import { useRef } from "react"
-import ProfileDialog from "@/components/Profile/ProfileEdit"
-import { EntrepreneurNavMain } from "@/constants"
+} from "@/components/ui/sidebar";
+import { useProfile } from "@/lib/profile-context";
+import ProfileDialog from "@/components/Profile/ProfileEdit";
+import { EntrepreneurNavMain } from "@/constants";
 
-// Navigation data
+// Define the ProfileData type
+type ProfileData = {
+  fullName?: string;
+  bio?: string;
+  skills?: string[];
+  address?: string;
+  avatar?: string;
+  email?: string;
+};
+
+// Provide a default profile as a fallback
+const defaultProfile: ProfileData = {
+  fullName: "John Doe",
+  bio: "Default bio",
+  skills: ["React", "Node.js"],
+  address: "Default address",
+  avatar: "/placeholder.svg",
+  email: "john.doe@example.com",
+};
+
 export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { state } = useSidebar()
-  const { profile } = useProfile() || {
-    name: "John Doe", }
-  const [activeItem, setActiveItem] = useState("dashboard")
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
+  const { state } = useSidebar();
+
+  // Retrieve the profile data, falling back to defaults
+  const { profile: userProfile } = useProfile() || { profile: defaultProfile };
+  const profile: ProfileData = {
+    fullName: userProfile?.fullName || defaultProfile.fullName,
+    bio: userProfile?.bio || defaultProfile.bio,
+    skills: userProfile?.skills || defaultProfile.skills,
+    address: userProfile?.address || defaultProfile.address,
+    avatar: userProfile?.avatar || defaultProfile.avatar,
+    email: userProfile?.email || defaultProfile.email,
+  };
+
+  const [activeItem, setActiveItem] = useState("dashboard");
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+
   const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId)
-  }
+    setActiveItem(itemId);
+  };
 
   return (
     <Sidebar collapsible="icon" variant="sidebar" {...props}>
@@ -63,9 +96,9 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
             <Image
               src={state === "collapsed" ? "/images/buildspace-sm.png" : "/images/buildspace-lg.png"}
               alt="Buildspace"
-              width={state === "collapsed" ? 24 : 300} // Increase width for visibility
-              height={24} // Proportional height for clarity
-              className={state === "collapsed" ? "h-4 w-4" : "h-12 w-auto"} // Adjust size based on state
+              width={state === "collapsed" ? 24 : 300}
+              height={24}
+              className={state === "collapsed" ? "h-4 w-4" : "h-12 w-auto"}
             />
           </Link>
         </SidebarMenu>
@@ -144,17 +177,17 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.name} />
+                    <AvatarImage src={profile.avatar} alt={profile.fullName} />
                     <AvatarFallback className="rounded-lg">
-                      {profile.name
-                        .split(" ")
+                      {profile.fullName
+                        ?.split(" ")
                         .map((n) => n[0])
                         .join("")
                         .toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{profile.name}</span>
+                    <span className="truncate font-semibold">{profile.fullName}</span>
                     <span className="truncate text-xs">{profile.email}</span>
                   </div>
                 </SidebarMenuButton>
@@ -168,17 +201,17 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.name} />
+                      <AvatarImage src={profile.avatar} alt={profile.fullName} />
                       <AvatarFallback className="rounded-lg">
-                        {profile.name
-                          .split(" ")
+                        {profile.fullName
+                          ?.split(" ")
                           .map((n) => n[0])
                           .join("")
                           .toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">{profile.name}</span>
+                      <span className="truncate font-semibold">{profile.fullName}</span>
                       <span className="truncate text-xs">{profile.email}</span>
                     </div>
                   </div>
@@ -207,7 +240,7 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
+
             <ProfileDialog
               isOpen={isProfileDialogOpen}
               onClose={() => setIsProfileDialogOpen(false)}
@@ -215,14 +248,20 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                 console.log("Updated Profile:", updatedProfile);
                 setIsProfileDialogOpen(false);
               }}
-              profileData={profile}
+              profileData={{
+                fullName: profile.fullName || "",
+                bio: profile.bio || "",
+                skills: profile.skills || [],
+                address: profile.address || "",
+              }}
               availableSkills={["React", "Node.js", "Python", "JavaScript"]}
               availableLocations={["San Francisco", "Los Angeles", "New York"]}
             />
+
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

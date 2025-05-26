@@ -3,6 +3,10 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 interface ProfileData {
+  address: string | undefined
+  skills: string[] | undefined
+  bio: string | undefined
+  fullName: string | undefined
   name: string
   email: string
   avatar: string | null
@@ -19,9 +23,13 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined)
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<ProfileData>({
-    name: "John Doe",
-    email: "john@buildspace.com",
-    avatar: null,
+    fullName: "John Doe",
+    bio: "Default bio",
+    skills: ["React", "Node.js"],
+    address: "Default address",
+    avatar: "/placeholder.svg",
+    email: "john.doe@example.com",
+    name: ""
   })
 
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
