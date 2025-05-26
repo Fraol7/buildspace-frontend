@@ -5,6 +5,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -72,12 +73,12 @@ export default function LoginForm() {
 
           {/* Login Button */}
           <div className="flex flex-col items-center">
-            <button
-              type="submit"
-              className="w-[60%] bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md transition duration-300"
+            <Link
+              href="/investor"
+              className="w-[60%] bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md text-center transition duration-300"
             >
               Login
-            </button>
+            </Link>
           </div>
 
             {/* Divider */}

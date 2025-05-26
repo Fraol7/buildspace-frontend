@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const NotFound = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
       <Image 
         src="/images/404.jpg" 
         alt="404 Illustration" 

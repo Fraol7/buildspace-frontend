@@ -1,4 +1,4 @@
-import { Mail, Phone, Linkedin, Twitter } from "lucide-react"
+import { Mail, Phone, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         {/* Footer Links */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* About Us */}
           <div>
             <h3 className="font-medium text-slate-800 mb-4">About Us</h3>
@@ -151,5 +151,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
