@@ -1,7 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -93,11 +93,9 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
       <SidebarHeader className="bg-indigo-300">
         <SidebarMenu className="flex justify-center items-center">
           <Link href="/">
-            <Image
+            <img
               src={state === "collapsed" ? "/images/buildspace-sm.png" : "/images/buildspace-lg.png"}
               alt="Buildspace"
-              width={state === "collapsed" ? 24 : 300}
-              height={24}
               className={state === "collapsed" ? "h-4 w-4" : "h-12 w-auto"}
             />
           </Link>
