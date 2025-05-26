@@ -24,7 +24,7 @@ export default function FundingSection() {
       <div className="flex gap-4 mt-10 justify-end">
         <div className="overflow-hidden rounded-lg">
           <Image
-            src="/images/image1.png"
+            src="/images/col1.png"
             alt="AI-driven matchmaking process"
             width={280}
             height={160}
@@ -33,7 +33,7 @@ export default function FundingSection() {
         </div>
         <div className="overflow-hidden rounded-lg">
           <Image
-            src="/images/image2.png"
+            src="/images/col2.png"
             alt="Networking opportunities for entrepreneurs"
             width={280}
             height={160}
@@ -42,7 +42,7 @@ export default function FundingSection() {
         </div>
         <div className="overflow-hidden rounded-lg">
           <Image
-            src="/images/image3.png"
+            src="/images/col3.png"
             alt="Crowdfunding success visualization"
             width={280}
             height={160}
