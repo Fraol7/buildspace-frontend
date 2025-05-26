@@ -46,6 +46,7 @@ import {
 import { useProfile } from "@/lib/profile-context";
 import ProfileDialog from "@/components/Profile/ProfileEdit";
 import { EntrepreneurNavMain } from "@/constants";
+import Logo from '@/components/Common/Logo';
 
 // Define the ProfileData type
 type ProfileData = {
@@ -93,11 +94,7 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
       <SidebarHeader className="bg-indigo-300">
         <SidebarMenu className="flex justify-center items-center">
           <Link href="/">
-            <img
-              src={state === "collapsed" ? "/images/buildspace-sm.png" : "/images/buildspace-lg.png"}
-              alt="Buildspace"
-              className={state === "collapsed" ? "h-4 w-4" : "h-12 w-auto"}
-            />
+            <Logo size={state === "collapsed" ? "sm" : "lg"} />
           </Link>
         </SidebarMenu>
       </SidebarHeader>
