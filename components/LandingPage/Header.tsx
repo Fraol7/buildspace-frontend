@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../Common/Logo';
 import { Button } from '../ui/button';
 import { 
@@ -15,9 +15,23 @@ import Link from 'next/link';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className='sticky top-0 z-50 w-full bg-transparent backdrop-blur-sm shadow-xs'>
+    <header
+      className={`sticky top-0 z-50 w-full shadow-xs transition-all ${
+        isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-indigo-200'
+      }`}
+    >
       {/* Main Header Content */}
       <div className='flex flex-row justify-between items-center h-16 px-4 md:px-8 py-4'>
         <div className='flex items-center gap-4'>

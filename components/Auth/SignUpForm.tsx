@@ -32,10 +32,10 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="rounded-lg p-4 w-full max-w-md md:max-w-lg">
+    <div className="flex items-center justify-center md:justify-end p-4 w-full md:w-[50%]">
+      <div className="rounded-lg p-4 w-[70%]">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Full Name */}
           <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">

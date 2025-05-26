@@ -1,4 +1,4 @@
-import { LayoutDashboard, BriefcaseBusiness, ChartCandlestick, HandCoins, Users, MessagesSquare } from "lucide-react"
+import { LayoutDashboard, BriefcaseBusiness, ChartCandlestick, HandCoins, Users, MessagesSquare, ChevronDown } from "lucide-react"
 
 import {
   Sidebar,
@@ -9,60 +9,123 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 
 // Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/entrepreneur/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "My Startups",
-    url: "/entrepreneur/my-startups",
-    icon: BriefcaseBusiness,
-  },
-  {
-    title: "Crowdfunding",
-    url: "/entrepreneur/crowdfunding",
-    icon: HandCoins,
-  },
-  {
-    title: "Market Insights",
-    url: "/entrepreneur/market-insights",
-    icon: ChartCandlestick,
-  },
-  {
-    title: "Network",
-    url: "/entrepreneur/network",
-    icon: Users,
-  },
-  {
-    title: "Collab Space",
-    url: "/entrepreneur/collab-space",
-    icon: MessagesSquare,
-  },
-]
 
 export function EntrepreneurSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent className="bg-blue-100">
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+              {/* 1 */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/entrepreneur/dashboard">
+                    <LayoutDashboard />
+                    <span>Dashboard</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* 2 */}
+              <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton asChild>
+                        <div>
+                          <BriefcaseBusiness />
+                          <span>Startups</span>
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </div>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/my-startups">
+                            <span>My Startups</span>
+                          </a>
+                        </SidebarMenuButton>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/saved">
+                            <span>Saved Startups</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
                 </SidebarMenuItem>
-              ))}
+              </Collapsible>
+
+              {/* 3 */}
+              <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton asChild>
+                        <div>
+                          <HandCoins />
+                          <span>Crowdfunding</span>
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </div>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/my-campaigns">
+                            <span>My Campaigns</span>
+                          </a>
+                        </SidebarMenuButton>
+                        <SidebarMenuButton asChild>
+                          <a href="/entrepreneur/explore-campaigns">
+                            <span>Explore Campaigns</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+              
+              {/* 4 */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/entrepreneur/market-insights">
+                    <ChartCandlestick />
+                    <span>Market Insights</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* 5 */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/entrepreneur/network">
+                    <Users />
+                    <span>Network</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              {/* 6 */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/entrepreneur/collab-space">
+                    <MessagesSquare />
+                    <span>Collab Space</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -70,3 +133,4 @@ export function EntrepreneurSidebar() {
     </Sidebar>
   )
 }
+

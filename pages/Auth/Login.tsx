@@ -4,7 +4,7 @@ import LoginForm from '@/components/Auth/LoginForm';
 
 const Login = () => {
   return (
-    <div>
+    <div className='bg-gradient-to-b from-indigo-100 via-purple-50 to-white min-h-[100vh]'>
         <Header />
         <LoginForm />
     </div>
