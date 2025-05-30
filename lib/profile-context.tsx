@@ -27,7 +27,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     bio: "Default bio",
     skills: ["React", "Node.js"],
     address: "Default address",
-    avatar: "/placeholder.svg",
+    avatar: "/placeholder.jpg",
     email: "john.doe@example.com",
     name: ""
   })
