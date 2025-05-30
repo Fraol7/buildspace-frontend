@@ -20,19 +20,19 @@ const AutoScrollingTrendingProjects = () => {
 
   return (
     <Link href={currentProject.link || "/"} className="block">
-      <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 rounded-xl p-6 text-white relative overflow-hidden hover:shadow-xl transition-shadow h-[300px]">
+      <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 rounded-xl p-6 text-white relative overflow-hidden hover:shadow-xl transition-shadow h-[400px] md:h-[300px]">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-xl"></div>
         <div className="relative z-10 flex flex-col justify-between h-full">
-          <div>
+          <div className="space-y-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">Auto-changing Trending Projects</h2>
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+              <Badge variant="secondary" className="bg-red-500/20 text-white border-white/30 ">
                 Trending
               </Badge>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="w-[150px] h-[150px] relative">
+            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-x-4">
+              <div className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] relative">
                 <Image
                   src={currentProject.image || "/placeholder.jpg"}
                   alt={currentProject.name}

@@ -458,7 +458,7 @@ export const PROJECTS_GRID = [
     funding: "$125,000",
     progress: 85,
     status: "Active",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
   {
     id: 2,
@@ -467,7 +467,7 @@ export const PROJECTS_GRID = [
     funding: "$89,500",
     progress: 72,
     status: "Active",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
   {
     id: 3,
@@ -476,7 +476,7 @@ export const PROJECTS_GRID = [
     funding: "$156,000",
     progress: 91,
     status: "Completed",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
   {
     id: 4,
@@ -485,7 +485,7 @@ export const PROJECTS_GRID = [
     funding: "$234,000",
     progress: 68,
     status: "Active",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
   {
     id: 5,
@@ -494,7 +494,7 @@ export const PROJECTS_GRID = [
     funding: "$98,750",
     progress: 79,
     status: "Active",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
   {
     id: 6,
@@ -503,7 +503,7 @@ export const PROJECTS_GRID = [
     funding: "$187,500",
     progress: 84,
     status: "Active",
-    image: "/placeholder.jpg?height=40&width=40",
+    image: "/images/eco.jpg",
   },
 ]
 
@@ -516,7 +516,7 @@ export const INVESTMENTS = [
     amount: "$15,000",
     returns: "+$3,250",
     percentage: "+21.67%",
-    image: "/placeholder.jpg?height=50&width=50",
+    image: "/images/eco.jpg",
     status: "Profitable",
   },
   {
@@ -526,7 +526,7 @@ export const INVESTMENTS = [
     amount: "$12,500",
     returns: "+$2,890",
     percentage: "+23.12%",
-    image: "/placeholder.jpg?height=50&width=50",
+    image: "/images/eco.jpg",
     status: "Profitable",
   },
   {
@@ -536,7 +536,7 @@ export const INVESTMENTS = [
     amount: "$8,750",
     returns: "+$1,456",
     percentage: "+16.64%",
-    image: "/placeholder.jpg?height=50&width=50",
+    image: "/images/eco.jpg",
     status: "Profitable",
   },
   {
@@ -546,7 +546,7 @@ export const INVESTMENTS = [
     amount: "$20,000",
     returns: "+$4,200",
     percentage: "+21.00%",
-    image: "/placeholder.jpg?height=50&width=50",
+    image: "/images/eco.jpg",
     status: "Profitable",
   },
 ]

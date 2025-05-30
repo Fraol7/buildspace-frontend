@@ -13,17 +13,17 @@ import {
 } from "recharts";
 
 const ChartsSection = () => {
-
   return (
-    <div className="grid grid-cols-1 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
       {/* Startup Progress Section */}
       <Card className="shadow-lg hover:shadow-xl transition-shadow">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">Startup Progress</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-5 gap-4 items-start">
-            <div className="col-span-4 h-64">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+            {/* Chart */}
+            <div className="col-span-1 md:col-span-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={RISING_PROJECTS_DATA}
@@ -79,34 +79,31 @@ const ChartsSection = () => {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+
+            {/* Legend */}
             <div className="space-y-2">
-              {/* MVP Card */}
               <Card className="shadow border border-green-300 flex items-center justify-center">
                 <CardContent className="flex items-center justify-center p-4">
                   <div className="flex items-center space-x-4">
-                    <span className="w-4 h-4 rounded-full bg-green-300"/ >
+                    <span className="w-4 h-4 rounded-full bg-green-300" />
                     <span className="text-sm text-gray-500">MVP</span>
                     <span className="text-lg font-semibold text-green-600">{MVP_TOTAL}</span>
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Seed Card */}
               <Card className="shadow border border-blue-300 flex items-center justify-center">
                 <CardContent className="flex items-center justify-center p-4">
                   <div className="flex items-center space-x-4">
-                    <span className="w-4 h-4 rounded-full bg-blue-300"/ >
+                    <span className="w-4 h-4 rounded-full bg-blue-300" />
                     <span className="text-sm text-gray-500">Seed</span>
                     <span className="text-lg font-semibold text-blue-600">{SEED_TOTAL}</span>
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Final Card */}
               <Card className="shadow border border-purple-300 flex items-center justify-center">
                 <CardContent className="flex items-center justify-center p-4">
                   <div className="flex items-center space-x-4">
-                    <span className="w-4 h-4 rounded-full bg-purple-300"/ >
+                    <span className="w-4 h-4 rounded-full bg-purple-300" />
                     <span className="text-sm text-gray-500">Final</span>
                     <span className="text-lg font-semibold text-purple-600">{FINAL_TOTAL}</span>
                   </div>
@@ -123,7 +120,8 @@ const ChartsSection = () => {
           <CardTitle className="text-lg font-semibold text-gray-900">Total Spending</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-5 gap-4 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+            {/* Legend */}
             <div className="space-y-2 col-span-1">
               <Card className="shadow border border-green-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
@@ -131,14 +129,16 @@ const ChartsSection = () => {
                   <span className="text-lg font-semibold text-green-600">{CROWDFUNDING_TOTAL}</span>
                 </CardContent>
               </Card>
-              <Card className="shadow border border-green-300 flex items-center justify-center">
+              <Card className="shadow border border-blue-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
                   <span className="text-sm text-gray-500">Invest</span>
                   <span className="text-lg font-semibold text-blue-600">{INVEST_TOTAL}</span>
                 </CardContent>
               </Card>
             </div>
-            <div className="col-span-4 h-64">
+
+            {/* Chart */}
+            <div className="col-span-1 md:col-span-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={SPENDING_DATA}
