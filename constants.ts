@@ -379,3 +379,251 @@ export const InvestorNavMain = [
     id: "collab-space",
   },
 ];
+
+// Mock data for trending projects
+export const TRENDING_PROJECTS = [
+  {
+    id: 1,
+    name: "EcoTech Solutions",
+    category: "Green Technology",
+    funding: "$2.4M",
+    target: "$3M",
+    progress: 80,
+    investors: 1247,
+    timeLeft: "12 days",
+    image: "/placeholder.svg?height=60&width=60",
+    growth: "+24%",
+  },
+  {
+    id: 2,
+    name: "AI Healthcare Platform",
+    category: "Healthcare",
+    funding: "$1.8M",
+    target: "$2.5M",
+    progress: 72,
+    investors: 892,
+    timeLeft: "8 days",
+    image: "/placeholder.svg?height=60&width=60",
+    growth: "+18%",
+  },
+  {
+    id: 3,
+    name: "Blockchain Finance",
+    category: "Fintech",
+    funding: "$3.2M",
+    target: "$4M",
+    progress: 85,
+    investors: 1567,
+    timeLeft: "15 days",
+    image: "/placeholder.svg?height=60&width=60",
+    growth: "+32%",
+  },
+  {
+    id: 4,
+    name: "Smart City IoT",
+    category: "Technology",
+    funding: "$1.5M",
+    target: "$2M",
+    progress: 75,
+    investors: 743,
+    timeLeft: "20 days",
+    image: "/placeholder.svg?height=60&width=60",
+    growth: "+15%",
+  },
+  {
+    id: 5,
+    name: "Renewable Energy",
+    category: "Energy",
+    funding: "$4.1M",
+    target: "$5M",
+    progress: 82,
+    investors: 2134,
+    timeLeft: "5 days",
+    image: "/placeholder.svg?height=60&width=60",
+    growth: "+28%",
+  },
+]
+
+// Mock data for projects grid
+export const PROJECTS_GRID = [
+  {
+    id: 1,
+    name: "Airbnb",
+    category: "Travel & Hospitality",
+    funding: "$125,000",
+    progress: 85,
+    status: "Active",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 2,
+    name: "Software Inc",
+    category: "Technology",
+    funding: "$89,500",
+    progress: 72,
+    status: "Active",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 3,
+    name: "TechStart",
+    category: "Software",
+    funding: "$156,000",
+    progress: 91,
+    status: "Completed",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 4,
+    name: "Spotify",
+    category: "Music & Audio",
+    funding: "$234,000",
+    progress: 68,
+    status: "Active",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 5,
+    name: "Behance",
+    category: "Creative",
+    funding: "$98,750",
+    progress: 79,
+    status: "Active",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+  {
+    id: 6,
+    name: "InnovateLab",
+    category: "Research",
+    funding: "$187,500",
+    progress: 84,
+    status: "Active",
+    image: "/placeholder.svg?height=40&width=40",
+  },
+]
+
+// Mock data for investments
+export const INVESTMENTS = [
+  {
+    id: 1,
+    name: "Coinbase",
+    type: "Cryptocurrency Exchange",
+    amount: "$15,000",
+    returns: "+$3,250",
+    percentage: "+21.67%",
+    image: "/placeholder.svg?height=50&width=50",
+    status: "Profitable",
+  },
+  {
+    id: 2,
+    name: "Tesla Motors",
+    type: "Electric Vehicles",
+    amount: "$12,500",
+    returns: "+$2,890",
+    percentage: "+23.12%",
+    image: "/placeholder.svg?height=50&width=50",
+    status: "Profitable",
+  },
+  {
+    id: 3,
+    name: "Meta Platforms",
+    type: "Social Media",
+    amount: "$8,750",
+    returns: "+$1,456",
+    percentage: "+16.64%",
+    image: "/placeholder.svg?height=50&width=50",
+    status: "Profitable",
+  },
+  {
+    id: 4,
+    name: "Amazon",
+    type: "E-commerce",
+    amount: "$20,000",
+    returns: "+$4,200",
+    percentage: "+21.00%",
+    image: "/placeholder.svg?height=50&width=50",
+    status: "Profitable",
+  },
+]
+
+// Mock data for Rising Projects chart
+export const RISING_PROJECTS_DATA = [
+  {
+    month: "Jan",
+    Project1: 4000,
+    Project2: 2400,
+    Project3: 1800,
+  },
+  {
+    month: "Feb",
+    Project1: 3000,
+    Project2: 2210,
+    Project3: 2200,
+  },
+  {
+    month: "Mar",
+    Project1: 2000,
+    Project2: 2290,
+    Project3: 2500,
+  },
+  {
+    month: "Apr",
+    Project1: 2780,
+    Project2: 3908,
+    Project3: 2300,
+  },
+  {
+    month: "May",
+    Project1: 1890,
+    Project2: 4800,
+    Project3: 2400,
+  },
+  {
+    month: "Jun",
+    Project1: 2390,
+    Project2: 3800,
+    Project3: 2800,
+  },
+  {
+    month: "Jul",
+    Project1: 3490,
+    Project2: 4300,
+    Project3: 2900,
+  },
+]
+
+// Mock data for Your Spending chart
+export const SPENDING_DATA = [
+  {
+    month: "Jan",
+    amount: 1200,
+  },
+  {
+    month: "Feb",
+    amount: 2100,
+  },
+  {
+    month: "Mar",
+    amount: 800,
+  },
+  {
+    month: "Apr",
+    amount: 1600,
+  },
+  {
+    month: "May",
+    amount: 900,
+  },
+  {
+    month: "Jun",
+    amount: 1700,
+  },
+  {
+    month: "Jul",
+    amount: 1300,
+  },
+  {
+    month: "Aug",
+    amount: 1800,
+  },
+]
