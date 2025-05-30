@@ -391,8 +391,9 @@ export const TRENDING_PROJECTS = [
     progress: 80,
     investors: 1247,
     timeLeft: "12 days",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/images/eco.jpg",
     growth: "+24%",
+    link: "#",
   },
   {
     id: 2,
@@ -403,8 +404,9 @@ export const TRENDING_PROJECTS = [
     progress: 72,
     investors: 892,
     timeLeft: "8 days",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/images/ai-health.jpg",
     growth: "+18%",
+    link: "#",
   },
   {
     id: 3,
@@ -415,8 +417,9 @@ export const TRENDING_PROJECTS = [
     progress: 85,
     investors: 1567,
     timeLeft: "15 days",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/images/blockchain.jpg",
     growth: "+32%",
+    link: "#",
   },
   {
     id: 4,
@@ -427,8 +430,9 @@ export const TRENDING_PROJECTS = [
     progress: 75,
     investors: 743,
     timeLeft: "20 days",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/images/smart-iot.png",
     growth: "+15%",
+    link: "#",
   },
   {
     id: 5,
@@ -439,8 +443,9 @@ export const TRENDING_PROJECTS = [
     progress: 82,
     investors: 2134,
     timeLeft: "5 days",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/images/renew.jpg",
     growth: "+28%",
+    link: "#",
   },
 ]
 
@@ -453,7 +458,7 @@ export const PROJECTS_GRID = [
     funding: "$125,000",
     progress: 85,
     status: "Active",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
   {
     id: 2,
@@ -462,7 +467,7 @@ export const PROJECTS_GRID = [
     funding: "$89,500",
     progress: 72,
     status: "Active",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
   {
     id: 3,
@@ -471,7 +476,7 @@ export const PROJECTS_GRID = [
     funding: "$156,000",
     progress: 91,
     status: "Completed",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
   {
     id: 4,
@@ -480,7 +485,7 @@ export const PROJECTS_GRID = [
     funding: "$234,000",
     progress: 68,
     status: "Active",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
   {
     id: 5,
@@ -489,7 +494,7 @@ export const PROJECTS_GRID = [
     funding: "$98,750",
     progress: 79,
     status: "Active",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
   {
     id: 6,
@@ -498,7 +503,7 @@ export const PROJECTS_GRID = [
     funding: "$187,500",
     progress: 84,
     status: "Active",
-    image: "/placeholder.svg?height=40&width=40",
+    image: "/placeholder.jpg?height=40&width=40",
   },
 ]
 
@@ -511,7 +516,7 @@ export const INVESTMENTS = [
     amount: "$15,000",
     returns: "+$3,250",
     percentage: "+21.67%",
-    image: "/placeholder.svg?height=50&width=50",
+    image: "/placeholder.jpg?height=50&width=50",
     status: "Profitable",
   },
   {
@@ -521,7 +526,7 @@ export const INVESTMENTS = [
     amount: "$12,500",
     returns: "+$2,890",
     percentage: "+23.12%",
-    image: "/placeholder.svg?height=50&width=50",
+    image: "/placeholder.jpg?height=50&width=50",
     status: "Profitable",
   },
   {
@@ -531,7 +536,7 @@ export const INVESTMENTS = [
     amount: "$8,750",
     returns: "+$1,456",
     percentage: "+16.64%",
-    image: "/placeholder.svg?height=50&width=50",
+    image: "/placeholder.jpg?height=50&width=50",
     status: "Profitable",
   },
   {
@@ -541,7 +546,7 @@ export const INVESTMENTS = [
     amount: "$20,000",
     returns: "+$4,200",
     percentage: "+21.00%",
-    image: "/placeholder.svg?height=50&width=50",
+    image: "/placeholder.jpg?height=50&width=50",
     status: "Profitable",
   },
 ]
@@ -550,45 +555,45 @@ export const INVESTMENTS = [
 export const RISING_PROJECTS_DATA = [
   {
     month: "Jan",
-    Project1: 4000,
-    Project2: 2400,
-    Project3: 1800,
+    MVP: 4000,
+    Seed: 2400,
+    Final: 1800,
   },
   {
     month: "Feb",
-    Project1: 3000,
-    Project2: 2210,
-    Project3: 2200,
+    MVP: 3000,
+    Seed: 2210,
+    Final: 2200,
   },
   {
     month: "Mar",
-    Project1: 2000,
-    Project2: 2290,
-    Project3: 2500,
+    MVP: 2000,
+    Seed: 2290,
+    Final: 2500,
   },
   {
     month: "Apr",
-    Project1: 2780,
-    Project2: 3908,
-    Project3: 2300,
+    MVP: 2780,
+    Seed: 3908,
+    Final: 2300,
   },
   {
     month: "May",
-    Project1: 1890,
-    Project2: 4800,
-    Project3: 2400,
+    MVP: 1890,
+    Seed: 4800,
+    Final: 2400,
   },
   {
     month: "Jun",
-    Project1: 2390,
-    Project2: 3800,
-    Project3: 2800,
+    MVP: 2390,
+    Seed: 3800,
+    Final: 2800,
   },
   {
     month: "Jul",
-    Project1: 3490,
-    Project2: 4300,
-    Project3: 2900,
+    MVP: 3490,
+    Seed: 4300,
+    Final: 2900,
   },
 ]
 
@@ -627,3 +632,9 @@ export const SPENDING_DATA = [
     amount: 1800,
   },
 ]
+
+export const CROWDFUNDING_TOTAL = "$12,345.78"; // Dummy data for Crowdfunding
+export const INVEST_TOTAL = "$2,050.50"; // Dummy data for Invest
+export const MVP_TOTAL = "2";
+export const SEED_TOTAL = "1";
+export const FINAL_TOTAL = "3";

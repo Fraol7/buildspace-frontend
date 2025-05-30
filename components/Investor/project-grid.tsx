@@ -18,7 +18,7 @@ const ProjectsGrid = () => {
                 <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center space-x-3 mb-3">
                     <Image
-                        src={project.image || "/placeholder.svg"}
+                        src={project.image || "/placeholder.jpg"}
                         alt={project.name}
                         width={40} // 10 * 4 = 40px (w-10 equivalent)
                         height={40} // 10 * 4 = 40px (h-10 equivalent)

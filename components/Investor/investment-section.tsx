@@ -57,7 +57,7 @@ const InvestmentsSection = () => {
                 <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center space-x-3 mb-3">
                     <Image
-                        src={investment.image || "/placeholder.svg"}
+                        src={investment.image || "/placeholder.jpg"}
                         alt={investment.name}
                         width={48} // 12 * 4 = 48px (w-12 equivalent)
                         height={48} // 12 * 4 = 48px (h-12 equivalent)

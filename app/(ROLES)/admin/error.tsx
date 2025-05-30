@@ -1,9 +1,10 @@
 "use client";
 import React from 'react'
+import SystemErrorPage from '@/components/Common/Error';
 
 const page = () => {
   return (
-    <div className="text-red-800 font-bold text-4xl p-6">Error Page</div>
+    <SystemErrorPage />
   )
 }
 
