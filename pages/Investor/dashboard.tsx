@@ -1,10 +1,10 @@
 "use client"
 
-import AutoScrollingTrendingProjects from "@/components/Investor/autochanging-trends"
-import ChartsSection from "@/components/Investor/chart-section"
-import InvestmentsSection from "@/components/Investor/investment-section"
-import ProjectsGrid from "@/components/Investor/project-grid"
-import StatsCards from "@/components/Investor/stats-card"
+import AutoScrollingTrendingProjects from "@/components/Entrepreneur/autochanging-trends"
+import ChartsSection from "@/components/Entrepreneur/chart-section"
+import InvestmentsSection from "@/components/Entrepreneur/investment-section"
+import ProjectsGrid from "@/components/Entrepreneur/project-grid"
+import StatsCards from "@/components/Entrepreneur/stats-card"
 
 export default function Dashboard() {
   // This function could be replaced with a data fetching hook in the future

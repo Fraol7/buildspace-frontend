@@ -91,14 +91,14 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
 
   return (
     <Sidebar collapsible="icon" variant="sidebar" {...props}>
-      <SidebarHeader className="bg-indigo-300">
+      <SidebarHeader className="bg-gray-100">
         <SidebarMenu className="flex justify-center items-center">
           <Link href="/">
             <Logo size={state === "collapsed" ? "sm" : "lg"} />
           </Link>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="bg-indigo-200">
+      <SidebarContent className="bg-gray-100">
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarMenu>
@@ -162,7 +162,7 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="bg-indigo-300">
+      <SidebarFooter className="bg-gray-100">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
