@@ -23,9 +23,9 @@ import { useToast } from "@/hooks/use-toast"
 import { useChatContext } from "./chat-context"
 import { FileUpload } from "./file-upload"
 import Link from "next/link"
-import Image from "next/image"
 import type { Contact } from "./chat-interface"
 import { EmojiPickerComponent } from "./emoji-picker"
+import Image from "next/image"
 
 interface ChatAreaProps {
   selectedContact: Contact | null
@@ -259,103 +259,140 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
       )}
 
       {/* Messages Area */}
-      <div className={`flex-1 overflow-y-auto p-4 space-y-1 ${isMobile ? "pb-2" : ""}`}>
-        {currentMessages.map((msg, index) => {
-          const messageDate = new Date(msg.timestamp)
-          const prevMessageDate = index > 0 ? new Date(currentMessages[index - 1].timestamp) : null
-          const showDateSeparator = !prevMessageDate || isDifferentDay(messageDate, prevMessageDate)
-
-          return (
-            <div key={msg.id}>
-              {/* Date Separator */}
-              {showDateSeparator && (
-                <div className="flex justify-center my-4">
-                  <div className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">
-                    {formatDate(messageDate)}
+      <div className={`flex-1 overflow-y-auto p-4 ${isMobile ? "pb-2" : ""}`}>
+        {currentMessages.length === 0 ? (
+          // No messages - Show welcome card
+          <div className="flex items-center justify-center h-full">
+            <div className="max-w-sm mx-auto text-center">
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-lg font-semibold">
+                      {selectedContact?.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </span>
                   </div>
                 </div>
-              )}
-
-              {/* Message */}
-              <div className={`flex ${msg.senderId === "current-user" ? "justify-end" : "justify-start"} mb-2`}>
-                <div
-                  className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    msg.senderId === "current-user" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-900"
-                  } ${isMobile ? "max-w-[280px]" : ""}`}
-                >
-                  {msg.type === "file" && msg.fileData ? (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        {msg.fileData.type.startsWith("image/") ? (
-                          <ImageIcon className="h-4 w-4" />
-                        ) : (
-                          <FileText className="h-4 w-4" />
-                        )}
-                        <span className="text-sm font-medium">{msg.fileData.name}</span>
-                      </div>
-                      {msg.fileData.type.startsWith("image/") ? (
-                        <Image
-                          src={msg.fileData.url || "/placeholder.svg"}
-                          alt={msg.fileData.name}
-                          className="max-w-full h-auto rounded"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs opacity-75">{(msg.fileData.size / 1024 / 1024).toFixed(2)} MB</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className={`h-auto p-1 ${
-                              msg.senderId === "current-user"
-                                ? "text-indigo-200 hover:text-white"
-                                : "text-gray-600 hover:text-gray-900"
-                            }`}
-                            onClick={() => window.open(msg.fileData!.url, "_blank")}
-                          >
-                            <Download className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  )}
-                  <div
-                    className={`flex items-center justify-between mt-1 ${
-                      msg.senderId === "current-user" ? "text-indigo-200" : "text-gray-500"
-                    }`}
-                  >
-                    <span className="text-xs">
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
-                    {msg.senderId === "current-user" && (
-                      <div className="flex items-center gap-1">
-                        {msg.status === "failed" && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRetry(msg.id)}
-                            className="h-auto p-0 text-indigo-200 hover:text-white"
-                          >
-                            <RotateCcw className="h-3 w-3" />
-                          </Button>
-                        )}
-                        <span className="text-xs">
-                          {msg.status === "sending" && "⏳"}
-                          {msg.status === "sent" && "✓"}
-                          {msg.status === "delivered" && "✓✓"}
-                          {msg.status === "read" && "✓✓"}
-                          {msg.status === "failed" && "❌"}
-                        </span>
-                      </div>
-                    )}
-                  </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Start a conversation with {selectedContact?.name.split(" ")[0]}
+                </h3>
+                <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+                  Say hello and start chatting! Your messages will appear here.
+                </p>
+                <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-2 rounded-full text-sm font-medium">
+                  <span>👋</span>
+                  <span>Say hello</span>
                 </div>
               </div>
             </div>
-          )
-        })}
-        <div ref={messagesEndRef} />
+          </div>
+        ) : (
+          // Existing messages
+          <div className="space-y-1">
+            {currentMessages.map((msg, index) => {
+              const messageDate = new Date(msg.timestamp)
+              const prevMessageDate = index > 0 ? new Date(currentMessages[index - 1].timestamp) : null
+              const showDateSeparator = !prevMessageDate || isDifferentDay(messageDate, prevMessageDate)
+
+              return (
+                <div key={msg.id}>
+                  {/* Date Separator */}
+                  {showDateSeparator && (
+                    <div className="flex justify-center my-4">
+                      <div className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">
+                        {formatDate(messageDate)}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Message */}
+                  <div className={`flex ${msg.senderId === "current-user" ? "justify-end" : "justify-start"} mb-2`}>
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        msg.senderId === "current-user" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-900"
+                      } ${isMobile ? "max-w-[280px]" : ""}`}
+                    >
+                      {msg.type === "file" && msg.fileData ? (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            {msg.fileData.type.startsWith("image/") ? (
+                              <ImageIcon className="h-4 w-4" />
+                            ) : (
+                              <FileText className="h-4 w-4" />
+                            )}
+                            <span className="text-sm font-medium">{msg.fileData.name}</span>
+                          </div>
+                          {msg.fileData.type.startsWith("image/") ? (
+                            <Image
+                              src={msg.fileData.url || "/placeholder.svg"}
+                              alt={msg.fileData.name}
+                              className="max-w-full h-auto rounded"
+                              width={300}
+                              height={200}
+                            />
+                          ) : (
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs opacity-75">
+                                {(msg.fileData.size / 1024 / 1024).toFixed(2)} MB
+                              </span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className={`h-auto p-1 ${
+                                  msg.senderId === "current-user"
+                                    ? "text-indigo-200 hover:text-white"
+                                    : "text-gray-600 hover:text-gray-900"
+                                }`}
+                                onClick={() => window.open(msg.fileData!.url, "_blank")}
+                              >
+                                <Download className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      )}
+                      <div
+                        className={`flex items-center justify-between mt-1 ${
+                          msg.senderId === "current-user" ? "text-indigo-200" : "text-gray-500"
+                        }`}
+                      >
+                        <span className="text-xs">
+                          {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                        {msg.senderId === "current-user" && (
+                          <div className="flex items-center gap-1">
+                            {msg.status === "failed" && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleRetry(msg.id)}
+                                className="h-auto p-0 text-indigo-200 hover:text-white"
+                              >
+                                <RotateCcw className="h-3 w-3" />
+                              </Button>
+                            )}
+                            <span className="text-xs">
+                              {msg.status === "sending" && "⏳"}
+                              {msg.status === "sent" && "✓"}
+                              {msg.status === "delivered" && "✓✓"}
+                              {msg.status === "read" && "✓✓"}
+                              {msg.status === "failed" && "❌"}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+            <div ref={messagesEndRef} />
+          </div>
+        )}
       </div>
 
       {/* Message Input */}
