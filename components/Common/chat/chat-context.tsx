@@ -27,7 +27,7 @@ const mockMessages: Message[] = [
   // 3 days ago (2025-05-29)
   {
     id: "1",
-    content: "Hey! How’s the project coming along?",
+    content: "Hey! How's the project coming along?",
     senderId: "1",
     receiverId: "current-user",
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
@@ -36,7 +36,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "2",
-    content: "It’s going well! Just finished the user interface mockups.",
+    content: "It's going well! Just finished the user interface mockups.",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 300000).toISOString(), // 3 days ago + 5 min
@@ -45,7 +45,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "3",
-    content: "That’s awesome! Can you share them?",
+    content: "That's awesome! Can you share them?",
     senderId: "1",
     receiverId: "current-user",
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 600000).toISOString(), // 3 days ago + 10 min
@@ -73,7 +73,7 @@ const mockMessages: Message[] = [
   // 2 days ago (2025-05-30)
   {
     id: "6",
-    content: "Good idea, I’ll tweak the colors. How’s the API going?",
+    content: "Good idea, I'll tweak the colors. How's the API going?",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
@@ -82,7 +82,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "7",
-    content: "API’s progressing, but hit a bug with auth. Suggestions?",
+    content: "API's progressing, but hit a bug with auth. Suggestions?",
     senderId: "1",
     receiverId: "current-user",
     timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 300000).toISOString(), // 2 days ago + 5 min
@@ -91,7 +91,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "8",
-    content: "Check the token expiration logic. I’ll review it too.",
+    content: "Check the token expiration logic. I'll review it too.",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 600000).toISOString(), // 2 days ago + 10 min
@@ -146,7 +146,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "14",
-    content: "Sure, I’ll prep notes. 2 PM work for you?",
+    content: "Sure, I'll prep notes. 2 PM work for you?",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 900000).toISOString(), // Yesterday + 15 min
@@ -155,7 +155,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "15",
-    content: "2 PM’s perfect. I’ll set up the call.",
+    content: "2 PM's perfect. I'll set up the call.",
     senderId: "1",
     receiverId: "current-user",
     timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 1200000).toISOString(), // Yesterday + 20 min
@@ -174,7 +174,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "17",
-    content: "On it! I’ll send them by end of day.",
+    content: "On it! I'll send them by end of day.",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 120000).toISOString(), // 2 minutes ago
@@ -192,7 +192,7 @@ const mockMessages: Message[] = [
   },
   {
     id: "19",
-    content: "I’ll add more logging. Looks solid otherwise.",
+    content: "I'll add more logging. Looks solid otherwise.",
     senderId: "current-user",
     receiverId: "1",
     timestamp: new Date(Date.now() - 60000).toISOString(), // 1 minute ago
@@ -201,14 +201,14 @@ const mockMessages: Message[] = [
   },
   {
     id: "20",
-    content: "Thanks! Let’s finalize the sprint plan tomorrow.",
+    content: "Thanks! Let's finalize the sprint plan tomorrow.",
     senderId: "1",
     receiverId: "current-user",
     timestamp: new Date(Date.now() - 30000).toISOString(), // 30 seconds ago
     status: "read",
     type: "text",
-  }
-];
+  },
+]
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [messages, setMessages] = useState<Message[]>(mockMessages)
