@@ -32,7 +32,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -100,7 +100,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
       </SidebarHeader>
       <SidebarContent className="bg-gray-100">
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarMenu>
             {InvestorNavMain.map((item) => (
               <Collapsible

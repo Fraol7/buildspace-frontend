@@ -32,7 +32,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -100,7 +100,7 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
       </SidebarHeader>
       <SidebarContent className="bg-gray-100">
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarMenu>
             {EntrepreneurNavMain.map((item) => (
               <Collapsible
