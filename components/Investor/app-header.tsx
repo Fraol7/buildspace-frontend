@@ -14,17 +14,18 @@ interface AppHeaderProps {
 export function AppHeader({ showBackButton = true }: AppHeaderProps) {
   const router = useRouter()
   const { profile, hasUnreadNotifications, setHasUnreadNotifications } = useProfile()
-
+  
   const getCurrentDate = () => {
-    const now = new Date()
+    const now = new Date();
     const options: Intl.DateTimeFormatOptions = {
       weekday: "short",
-      day: "2-digit",
       month: "long",
+      day: "2-digit",
       year: "numeric",
-    }
-    return now.toLocaleDateString("en-US", options)
-  }
+    };
+    return now.toLocaleDateString("en-UK", options).replace(",", " ");
+  };
+  
 
   const handleBackClick = () => {
     router.back()
@@ -49,7 +50,9 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
         )}
 
         <div className="hidden md:flex flex-col">
-          <h1 className="text-lg font-semibold text-foreground">Welcome, {profile.name.split(" ")[0]}</h1>
+          <h1 className="text-lg font-semibold text-foreground">
+            Welcome, {(profile.name?.split(" ")[0] ?? "John")}
+          </h1>
           <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
         </div>
       </div>
