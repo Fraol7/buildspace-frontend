@@ -57,7 +57,7 @@ const ProjectsGrid = () => {
                         ? "bg-green-100 text-green-600 group-hover:bg-green-200"
                         : project.status === "In Progress"
                           ? "bg-blue-100 text-blue-600 group-hover:bg-blue-200"
-                          : "bg-purple-100 text-purple-600 group-hover:bg-purple-200"
+                          : "bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200"
                         }`}
                     >
                       {project.status}
@@ -71,7 +71,7 @@ const ProjectsGrid = () => {
                       ? "bg-green-300"
                       : project.status === "In Progress"
                         ? "bg-blue-300"
-                        : "bg-purple-300"
+                        : "bg-indigo-300"
                       }`}
                   />
                   <p className="text-xs text-gray-500 group-hover:text-blue-600">{project.progress}% funded</p>

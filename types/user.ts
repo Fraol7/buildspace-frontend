@@ -5,7 +5,7 @@ export type UserStatus = "active" | "inactive" | "pending" | "verified"
 export type Badge = {
   id: string;
   label: string;
-  color: "blue" | "blue" | "purple" | "teal" | "cyan";
+  color: "blue" | "blue" | "indigo" | "teal" | "cyan";
   category: "industry" | "stage" | "specialization" | "type";
 };
 

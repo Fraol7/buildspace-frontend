@@ -164,7 +164,7 @@ const AutoScrollingTrendingProjects = () => {
         </div>
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 rounded-xl"></div>
 
         <div className="relative z-10 flex flex-col justify-between h-full">
           <div className="space-y-8">
@@ -221,7 +221,7 @@ const AutoScrollingTrendingProjects = () => {
                 </div>
 
                 {/* Additional Info */}
-                <div className="bg-gradient-to-r from-blue-800/20 to-purple-800/20 rounded-lg p-3 border border-blue-700/20 backdrop-blur-sm">
+                <div className="bg-gradient-to-r from-blue-800/20 to-indigo-800/20 rounded-lg p-3 border border-blue-700/20 backdrop-blur-sm">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-400 rounded-full"></div>

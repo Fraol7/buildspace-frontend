@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const HeroSection = () => {
   return (
-    <section className="relative top-0 bg-gradient-to-b from-blue-100 via-purple-50 to-blue-5 0 min-h-[100vh] flex flex-col items-center overflow-hidden">
+    <section className="relative top-0 bg-gradient-to-b from-blue-100 via-indigo-50 to-blue-5 0 min-h-[100vh] flex flex-col items-center overflow-hidden">
       {/* Background Illustrations */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large flowing organic shapes */}

@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const SignUp = () => {
   return (
-    <div className='bg-gradient-to-b from-blue-100 via-purple-50 to-white min-h-[100vh]'>
+    <div className='bg-gradient-to-b from-blue-100 via-indigo-50 to-white min-h-[100vh]'>
       <Header />
       <div className="flex flex-col md:flex-row items-center justify-evenly">
         <SignUpForm />
