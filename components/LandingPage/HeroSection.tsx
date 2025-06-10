@@ -1,14 +1,15 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <section className="relative top-0 bg-gradient-to-b from-blue-100 via-indigo-50 to-blue-5 0 min-h-[100vh] flex flex-col items-center overflow-hidden">
+    <section className="relative top-0 bg-gradient-to-b from-blue-100 via-indigo-50 to-blue-50 min-h-[100vh] flex flex-col items-center overflow-hidden">
       {/* Background Illustrations */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large flowing organic shapes */}
         <svg
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full animate-bubble"
           viewBox="0 0 1200 800"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
@@ -17,96 +18,48 @@ const HeroSection = () => {
           <path
             d="M800 -100C950 -50 1100 50 1150 200C1200 350 1100 500 950 550C800 600 650 550 600 400C550 250 650 150 800 -100Z"
             fill="url(#mainGradient1)"
-            opacity="0.6"
+            opacity="0.5"
           />
 
           {/* Secondary flowing shape - bottom left */}
           <path
             d="M-50 500C100 450 250 500 300 650C350 800 250 950 100 1000C-50 1050 -200 1000 -250 850C-300 700 -200 600 -50 500Z"
             fill="url(#mainGradient2)"
-            opacity="0.5"
+            opacity="0.4"
           />
 
           {/* Medium flowing shape - center */}
           <path
             d="M400 200C550 150 700 200 750 350C800 500 700 650 550 700C400 750 250 700 200 550C150 400 250 300 400 200Z"
             fill="url(#mainGradient3)"
-            opacity="0.4"
-          />
-
-          {/* Top flowing wave */}
-          <path
-            d="M0 0C200 50 400 0 600 50C800 100 1000 50 1200 100V200C1000 150 800 200 600 150C400 100 200 150 0 100V0Z"
-            fill="url(#waveGradient1)"
             opacity="0.3"
-          />
-
-          {/* Bottom flowing wave */}
-          <path
-            d="M0 700C200 650 400 700 600 650C800 600 1000 650 1200 600V800H0V700Z"
-            fill="url(#waveGradient2)"
-            opacity="0.4"
           />
 
           <defs>
             <radialGradient id="mainGradient1" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgb(99 102 241)" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="rgb(129 140 248)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="rgb(165 180 252)" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="rgb(224 242 254)" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="rgb(191 219 254)" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="rgb(147 197 253)" stopOpacity="0.3" />
             </radialGradient>
 
             <radialGradient id="mainGradient2" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgb(79 70 229)" stopOpacity="0.7" />
-              <stop offset="50%" stopColor="rgb(99 102 241)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="rgb(129 140 248)" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="rgb(191 219 254)" stopOpacity="0.7" />
+              <stop offset="50%" stopColor="rgb(224 242 254)" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="rgb(147 197 253)" stopOpacity="0.2" />
             </radialGradient>
 
             <radialGradient id="mainGradient3" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgb(67 56 202)" stopOpacity="0.6" />
-              <stop offset="50%" stopColor="rgb(99 102 241)" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="rgb(165 180 252)" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="rgb(191 233 255)" stopOpacity="0.6" />
+              <stop offset="50%" stopColor="rgb(224 242 254)" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="rgb(147 197 253)" stopOpacity="0.2" />
             </radialGradient>
-
-            <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="rgb(129 140 248)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="rgb(165 180 252)" stopOpacity="0.2" />
-            </linearGradient>
-
-            <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="rgb(99 102 241)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="rgb(129 140 248)" stopOpacity="0.3" />
-            </linearGradient>
           </defs>
         </svg>
 
-        {/* Additional circular elements for depth */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-radial from-blue-300/40 via-blue-400/20 to-transparent rounded-full blur-2xl"></div>
-        <div className="absolute bottom-32 left-32 w-48 h-48 bg-gradient-radial from-blue-400/50 via-blue-300/25 to-transparent rounded-full blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-blue-500/30 via-blue-400/15 to-transparent rounded-full blur-lg"></div>
-
-        {/* Subtle geometric accents */}
-        <svg className="absolute top-40 left-40 w-32 h-32 opacity-20" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="1" className="text-blue-600" />
-          <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="1" className="text-blue-500" />
-          <circle cx="50" cy="50" r="10" fill="currentColor" className="text-blue-600" />
-        </svg>
-
-        <svg className="absolute bottom-40 right-40 w-24 h-24 opacity-15" viewBox="0 0 100 100" fill="none">
-          <polygon points="50,10 90,90 10,90" stroke="currentColor" strokeWidth="1" className="text-blue-600" />
-          <polygon points="50,25 75,75 25,75" stroke="currentColor" strokeWidth="1" className="text-blue-500" />
-        </svg>
-
-        {/* Floating dots pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-500/60 rounded-full"></div>
-          <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-blue-600/50 rounded-full"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-blue-400/70 rounded-full"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-blue-500/60 rounded-full"></div>
-          <div className="absolute top-2/3 left-1/2 w-2 h-2 bg-blue-600/50 rounded-full"></div>
-        </div>
-
-        {/* Subtle overlay for better text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-blue-100/40"></div>
+        {/* Additional circular elements for depth with animation */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-radial from-white via-blue-100 to-transparent rounded-full blur-2xl animate-bubble-slow"></div>
+        <div className="absolute bottom-32 left-32 w-48 h-48 bg-gradient-radial from-blue-200 via-white to-transparent rounded-full blur-xl animate-bubble-slow"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-blue-300 via-blue-100 to-transparent rounded-full blur-lg animate-bubble-fast"></div>
       </div>
 
       {/* Content */}
@@ -121,21 +74,60 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
             <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
-              <Link href="/auth/login">
-                Get Started
-              </Link>
+              <Link href="/auth/login">Get Started</Link>
             </Button>
 
             <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
-              <Link href="/auth/login">
-                Explore Opportunities
-              </Link>
+              <Link href="/auth/login">Explore Opportunities</Link>
             </Button>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;
+
+/* CSS Animations */
+<style jsx>{`
+  @keyframes bubble {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bubble-slow {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-10px) scale(1.05);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-bubble {
+    animation: bubble 6s infinite;
+  }
+  .animate-bubble-slow {
+    animation: bubble-slow 8s infinite;
+  }
+  .animate-bubble-fast {
+    animation: bubble 4s infinite;
+  }
+`}</style>
