@@ -1,24 +1,13 @@
-"use client";
+"use client"
 
-import type * as React from "react";
+import type * as React from "react"
 // import Image from "next/image";
-import { useState } from "react";
-import Link from "next/link";
-import {
-  ChevronRight,
-  LifeBuoy,
-  Send,
-  Settings2,
-  Briefcase,
-  UserCircle,
-} from "lucide-react";
+import { useState } from "react"
+import Link from "next/link"
+import { ChevronRight, LifeBuoy, Send, Settings2, Briefcase, UserCircle } from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   Sidebar,
   SidebarContent,
@@ -42,21 +31,21 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { useProfile } from "@/lib/profile-context";
-import ProfileDialog from "@/components/Profile/ProfileEdit";
-import { InvestorNavMain } from "@/constants";
-import Logo from '@/components/Common/Logo';
+} from "@/components/ui/sidebar"
+import { useProfile } from "@/lib/profile-context"
+import ProfileDialog from "@/components/Profile/ProfileEdit"
+import { InvestorNavMain } from "@/constants"
+import Logo from "@/components/Common/Logo"
 
 // Define the ProfileData type
 type ProfileData = {
-  fullName?: string;
-  bio?: string;
-  skills?: string[];
-  address?: string;
-  avatar?: string;
-  email?: string;
-};
+  fullName?: string
+  bio?: string
+  skills?: string[]
+  address?: string
+  avatar?: string
+  email?: string
+}
 
 // Provide a default profile as a fallback
 const defaultProfile: ProfileData = {
@@ -66,13 +55,13 @@ const defaultProfile: ProfileData = {
   address: "Default address",
   avatar: "/placeholder.jpg",
   email: "john.doe@example.com",
-};
+}
 
 export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { state } = useSidebar();
+  const { state } = useSidebar()
 
   // Retrieve the profile data, falling back to defaults
-  const { profile: userProfile } = useProfile() || { profile: defaultProfile };
+  const { profile: userProfile } = useProfile() || { profile: defaultProfile }
   const profile: ProfileData = {
     fullName: userProfile?.fullName || defaultProfile.fullName,
     bio: userProfile?.bio || defaultProfile.bio,
@@ -80,14 +69,14 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
     address: userProfile?.address || defaultProfile.address,
     avatar: userProfile?.avatar || defaultProfile.avatar,
     email: userProfile?.email || defaultProfile.email,
-  };
+  }
 
-  const [activeItem, setActiveItem] = useState("dashboard");
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("dashboard")
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
 
   const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId);
-  };
+    setActiveItem(itemId)
+  }
 
   return (
     <Sidebar collapsible="icon" variant="sidebar" {...props}>
@@ -116,6 +105,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
                         tooltip={item.title}
                         onClick={() => handleItemClick(item.id)}
                         isActive={activeItem === item.id}
+                        className={activeItem === item.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
                       >
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
@@ -130,6 +120,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
                         tooltip={item.title}
                         isActive={activeItem === item.id}
                         onClick={() => handleItemClick(item.id)}
+                        className={activeItem === item.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
                       >
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
@@ -147,6 +138,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
                                 asChild
                                 isActive={activeItem === subItem.id}
                                 onClick={() => handleItemClick(subItem.id)}
+                                className={activeItem === subItem.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
                               >
                                 <span>{subItem.title}</span>
                               </SidebarMenuSubButton>
@@ -172,7 +164,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={profile.avatar} alt={profile.fullName} />
+                    <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.fullName} />
                     <AvatarFallback className="rounded-lg">
                       {profile.fullName
                         ?.split(" ")
@@ -196,7 +188,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={profile.avatar} alt={profile.fullName} />
+                      <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.fullName} />
                       <AvatarFallback className="rounded-lg">
                         {profile.fullName
                           ?.split(" ")
@@ -240,8 +232,8 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
               isOpen={isProfileDialogOpen}
               onClose={() => setIsProfileDialogOpen(false)}
               onSave={(updatedProfile) => {
-                console.log("Updated Profile:", updatedProfile);
-                setIsProfileDialogOpen(false);
+                console.log("Updated Profile:", updatedProfile)
+                setIsProfileDialogOpen(false)
               }}
               profileData={{
                 fullName: profile.fullName || "",
@@ -252,11 +244,10 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
               availableSkills={["React", "Node.js", "Python", "JavaScript"]}
               availableLocations={["San Francisco", "Los Angeles", "New York"]}
             />
-
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }
