@@ -25,7 +25,7 @@ export default function SystemErrorPage() {
             <div className="w-28 h-28 bg-red-100 rounded-full flex items-center justify-center">
               <AlertCircle className="w-14 h-14 text-red-500" />
             </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-bold">!</span>
             </div>
           </div>
@@ -34,7 +34,7 @@ export default function SystemErrorPage() {
         {/* Error Message */}
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-800">Something went wrong</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-indigo-500 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-blue-500 mx-auto rounded-full"></div>
           <p className="text-lg text-gray-600 max-w-md mx-auto">
             We&apos;re experiencing some technical difficulties. Please try again or check back later.
           </p>
@@ -44,7 +44,7 @@ export default function SystemErrorPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={handleRefresh}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 h-auto"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 h-auto"
             disabled={isRefreshing}
           >
             {isRefreshing ? (

@@ -72,10 +72,10 @@ export default function UserCardGroup({
     <div className={`w-full ${className}`}>
       {title && (
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
+          {/* <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2> */}
 
           {/* Search Bar */}
-          <div className="relative max-w-md mb-4">
+          <div className="relative max-w-md mb-2">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
             </div>

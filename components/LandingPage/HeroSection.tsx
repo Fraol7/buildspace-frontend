@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const HeroSection = () => {
   return (
-    <section className="relative top-0 bg-gradient-to-b from-indigo-100 via-purple-50 to-indigo-5 0 min-h-[100vh] flex flex-col items-center overflow-hidden">
+    <section className="relative top-0 bg-gradient-to-b from-blue-100 via-purple-50 to-blue-5 0 min-h-[100vh] flex flex-col items-center overflow-hidden">
       {/* Background Illustrations */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large flowing organic shapes */}
@@ -80,33 +80,33 @@ const HeroSection = () => {
         </svg>
 
         {/* Additional circular elements for depth */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-radial from-indigo-300/40 via-indigo-400/20 to-transparent rounded-full blur-2xl"></div>
-        <div className="absolute bottom-32 left-32 w-48 h-48 bg-gradient-radial from-indigo-400/50 via-indigo-300/25 to-transparent rounded-full blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-indigo-500/30 via-indigo-400/15 to-transparent rounded-full blur-lg"></div>
+        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-radial from-blue-300/40 via-blue-400/20 to-transparent rounded-full blur-2xl"></div>
+        <div className="absolute bottom-32 left-32 w-48 h-48 bg-gradient-radial from-blue-400/50 via-blue-300/25 to-transparent rounded-full blur-xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-blue-500/30 via-blue-400/15 to-transparent rounded-full blur-lg"></div>
 
         {/* Subtle geometric accents */}
         <svg className="absolute top-40 left-40 w-32 h-32 opacity-20" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="1" className="text-indigo-600" />
-          <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="1" className="text-indigo-500" />
-          <circle cx="50" cy="50" r="10" fill="currentColor" className="text-indigo-600" />
+          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="1" className="text-blue-600" />
+          <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="1" className="text-blue-500" />
+          <circle cx="50" cy="50" r="10" fill="currentColor" className="text-blue-600" />
         </svg>
 
         <svg className="absolute bottom-40 right-40 w-24 h-24 opacity-15" viewBox="0 0 100 100" fill="none">
-          <polygon points="50,10 90,90 10,90" stroke="currentColor" strokeWidth="1" className="text-indigo-600" />
-          <polygon points="50,25 75,75 25,75" stroke="currentColor" strokeWidth="1" className="text-indigo-500" />
+          <polygon points="50,10 90,90 10,90" stroke="currentColor" strokeWidth="1" className="text-blue-600" />
+          <polygon points="50,25 75,75 25,75" stroke="currentColor" strokeWidth="1" className="text-blue-500" />
         </svg>
 
         {/* Floating dots pattern */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-indigo-500/60 rounded-full"></div>
-          <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-indigo-600/50 rounded-full"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-indigo-400/70 rounded-full"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-indigo-500/60 rounded-full"></div>
-          <div className="absolute top-2/3 left-1/2 w-2 h-2 bg-indigo-600/50 rounded-full"></div>
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-500/60 rounded-full"></div>
+          <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-blue-600/50 rounded-full"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-blue-400/70 rounded-full"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-blue-500/60 rounded-full"></div>
+          <div className="absolute top-2/3 left-1/2 w-2 h-2 bg-blue-600/50 rounded-full"></div>
         </div>
 
         {/* Subtle overlay for better text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-indigo-100/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-blue-100/40"></div>
       </div>
 
       {/* Content */}
@@ -118,15 +118,15 @@ const HeroSection = () => {
           <p className="text-xl md:text-2xl text-gray-700 mb-10">
             Discover, fund, and grow innovative ideas with AI-powered insights.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <Button asChild variant="outline" className="bg-indigo-800 text-white hover:bg-white px-8 py-6 text-lg">
+            <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
               <Link href="/auth/login">
                 Get Started
               </Link>
             </Button>
 
-            <Button asChild variant="outline" className="bg-indigo-800 text-white hover:bg-white px-8 py-6 text-lg">
+            <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
               <Link href="/auth/login">
                 Explore Opportunities
               </Link>

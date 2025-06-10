@@ -6,7 +6,7 @@ const StatsCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <Link href="/" className="block">
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>

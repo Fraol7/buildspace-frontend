@@ -224,7 +224,7 @@ export function ChatInterface() {
                     <>
                       <div className="relative shrink-0">
                         <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-indigo-100 text-indigo-600">
+                          <AvatarFallback className="bg-blue-100 text-blue-600">
                             {selectedContact.name
                               .split(" ")
                               .map((n) => n[0])

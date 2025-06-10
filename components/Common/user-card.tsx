@@ -24,7 +24,7 @@ interface UserCardProps {
 
 const badgeColors = [
   "bg-blue-100 text-blue-800 hover:bg-blue-100",
-  "bg-indigo-100 text-indigo-800 hover:bg-indigo-100",
+  "bg-blue-100 text-blue-800 hover:bg-blue-100",
   "bg-purple-100 text-purple-800 hover:bg-purple-100",
   "bg-teal-100 text-teal-800 hover:bg-teal-100",
   "bg-cyan-100 text-cyan-800 hover:bg-cyan-100",
@@ -32,7 +32,7 @@ const badgeColors = [
 
 const userTypeConfig = {
   Entrepreneur: {
-    bgGradient: "from-blue-50 to-indigo-50",
+    bgGradient: "from-blue-50 to-blue-50",
     borderColor: "border-blue-200",
     icon: Briefcase,
     iconColor: "text-blue-600",
@@ -79,7 +79,7 @@ export default function UserCard({ user }: UserCardProps) {
         </div>
 
         {/* Profile Section */}
-        <div className="flex items-start gap-4 mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <div className="relative">
             <Image
               src={user.photo || "/placeholder.svg"}
@@ -100,7 +100,7 @@ export default function UserCard({ user }: UserCardProps) {
         <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-3">{user.bio}</p>
 
         {/* Address and Stats */}
-        <div className="space-y-2 mb-4">
+        <div className="flex justify-between gap-2 mb-4">
           <div className="flex items-center gap-2 text-gray-600">
             <MapPin className="h-4 w-4 flex-shrink-0" />
             <span className="text-sm truncate">{user.address}</span>

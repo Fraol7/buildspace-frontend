@@ -24,7 +24,7 @@ const AutoScrollingTrendingProjects = () => {
 
   return (
     <Link href={currentProject.link || "/"} className="block">
-      <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-black rounded-xl p-6 text-white relative overflow-hidden hover:shadow-xl transition-shadow h-full md:h-[400px]">
+      <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-black rounded-xl p-6 text-white relative overflow-hidden hover:shadow-xl transition-shadow h-full md:h-[400px]">
         {/* Background Illustrations */}
         {/* Abstract Circuit Pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -164,7 +164,7 @@ const AutoScrollingTrendingProjects = () => {
         </div>
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl"></div>
 
         <div className="relative z-10 flex flex-col justify-between h-full">
           <div className="space-y-8">
@@ -183,7 +183,7 @@ const AutoScrollingTrendingProjects = () => {
               <div className="flex-1 space-y-4">
                 {/* Title and Growth Badge */}
                 <div className="flex items-center gap-2">
-                  <h3 className="text-3xl font-bold text-indigo-300">{currentProject.title}</h3>
+                  <h3 className="text-3xl font-bold text-blue-300">{currentProject.title}</h3>
                   <Badge
                     variant="secondary"
                     className="bg-green-500/20 text-green-300 border-green-500/50 text-sm font-medium"
@@ -201,7 +201,7 @@ const AutoScrollingTrendingProjects = () => {
                     <Badge
                       key={index}
                       variant="outline"
-                      className="bg-green-900/50 text-indigo-200 border-indigo-700/30 shadow-xs"
+                      className="bg-green-900/50 text-blue-200 border-blue-700/30 shadow-xs"
                     >
                       {industry}
                     </Badge>
@@ -210,40 +210,40 @@ const AutoScrollingTrendingProjects = () => {
 
                 {/* Funding Information */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-indigo-800/30 rounded-lg p-2 border border-indigo-700/30 backdrop-blur-sm">
-                    <div className="text-xs text-indigo-300 uppercase tracking-wide mb-1">Raised</div>
+                  <div className="bg-blue-800/30 rounded-lg p-2 border border-blue-700/30 backdrop-blur-sm">
+                    <div className="text-xs text-blue-300 uppercase tracking-wide mb-1">Raised</div>
                     <div className="text-lg font-bold text-white">{currentProject.funding}</div>
                   </div>
-                  <div className="bg-indigo-800/30 rounded-lg p-2 border border-indigo-700/30 backdrop-blur-sm">
-                    <div className="text-xs text-indigo-300 uppercase tracking-wide mb-1">Target</div>
+                  <div className="bg-blue-800/30 rounded-lg p-2 border border-blue-700/30 backdrop-blur-sm">
+                    <div className="text-xs text-blue-300 uppercase tracking-wide mb-1">Target</div>
                     <div className="text-lg font-bold text-white">{currentProject.target}</div>
                   </div>
                 </div>
 
                 {/* Additional Info */}
-                <div className="bg-gradient-to-r from-indigo-800/20 to-purple-800/20 rounded-lg p-3 border border-indigo-700/20 backdrop-blur-sm">
+                <div className="bg-gradient-to-r from-blue-800/20 to-purple-800/20 rounded-lg p-3 border border-blue-700/20 backdrop-blur-sm">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      <span className="text-sm text-indigo-200">Current Stage</span>
+                      <span className="text-sm text-blue-200">Current Stage</span>
                       <Badge
                         variant="outline"
-                        className="bg-indigo-900/50 text-indigo-200 border-indigo-600/30 text-xs"
+                        className="bg-blue-900/50 text-blue-200 border-blue-600/30 text-xs"
                       >
                         {currentProject.currentStage}
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs text-indigo-300">Progress</div>
+                      <div className="text-xs text-blue-300">Progress</div>
                       <div className="text-lg font-bold text-white">{currentProject.progress}%</div>
                     </div>
                   </div>
 
                   {/* Enhanced Progress Bar */}
                   <div className="relative">
-                    <div className="w-full bg-indigo-900/50 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-blue-900/50 rounded-full h-2 overflow-hidden">
                       <div
-                        className={`h-full bg-gradient-to-r from-indigo-400 to-blue-500 rounded-full transition-all duration-1000 ease-out relative`}
+                        className={`h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full transition-all duration-1000 ease-out relative`}
                         style={{ width: `${currentProject.progress}%` }}
                       >
                         <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
