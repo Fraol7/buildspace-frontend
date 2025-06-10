@@ -27,7 +27,7 @@ export function ContactList({ contacts, selectedContact, onSelectContact }: Cont
             placeholder="Search contacts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+            className="pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
       </div>
@@ -42,14 +42,13 @@ export function ContactList({ contacts, selectedContact, onSelectContact }: Cont
             <div
               key={contact.id}
               onClick={() => onSelectContact(contact)}
-              className={`p-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 active:bg-gray-100 ${
-                selectedContact?.id === contact.id ? "bg-indigo-50 border-indigo-200" : ""
-              }`}
+              className={`p-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 active:bg-gray-100 ${selectedContact?.id === contact.id ? "bg-blue-50 border-blue-200" : ""
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar className="h-12 w-12 md:h-10 md:w-10">
-                    <AvatarFallback className="bg-indigo-100 text-indigo-600">
+                    <AvatarFallback className="bg-blue-100 text-blue-600">
                       {contact.name
                         .split(" ")
                         .map((n) => n[0])
@@ -65,7 +64,7 @@ export function ContactList({ contacts, selectedContact, onSelectContact }: Cont
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium text-gray-900 truncate text-base md:text-sm">{contact.name}</h3>
                     {contact.unreadCount > 0 && (
-                      <Badge className="bg-indigo-600 hover:bg-indigo-700 text-xs ml-2">{contact.unreadCount}</Badge>
+                      <Badge className="bg-blue-600 hover:bg-blue-700 text-xs ml-2">{contact.unreadCount}</Badge>
                     )}
                   </div>
                   <div className="flex items-center justify-between mt-1">
