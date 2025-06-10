@@ -1,8 +1,9 @@
 import React from 'react'
+import ProfileForm from '@/components/Profile/ProfileForm'
 
 const page = () => {
   return (
-    <div>page</div>
+    <ProfileForm />
   )
 }
 

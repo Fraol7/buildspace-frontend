@@ -126,13 +126,13 @@ const ChartsSection = () => {
               <Card className="shadow border border-green-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
                   <span className="text-sm text-gray-500">Crowdfunding</span>
-                  <span className="text-lg font-semibold text-green-600">{CROWDFUNDING_TOTAL}</span>
+                  <span className="text-lg font-semibold text-green-600">${CROWDFUNDING_TOTAL}</span>
                 </CardContent>
               </Card>
               <Card className="shadow border border-blue-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
                   <span className="text-sm text-gray-500">Invest</span>
-                  <span className="text-lg font-semibold text-blue-600">{INVEST_TOTAL}</span>
+                  <span className="text-lg font-semibold text-blue-600">${INVEST_TOTAL}</span>
                 </CardContent>
               </Card>
             </div>

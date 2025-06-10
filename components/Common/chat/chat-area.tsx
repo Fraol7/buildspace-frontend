@@ -310,9 +310,8 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                   {/* Message */}
                   <div className={`flex ${msg.senderId === "current-user" ? "justify-end" : "justify-start"} mb-2`}>
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        msg.senderId === "current-user" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-900"
-                      } ${isMobile ? "max-w-[280px]" : ""}`}
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.senderId === "current-user" ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-900"
+                        } ${isMobile ? "max-w-[280px]" : ""}`}
                     >
                       {msg.type === "file" && msg.fileData ? (
                         <div className="space-y-2">
@@ -326,7 +325,7 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                           </div>
                           {msg.fileData.type.startsWith("image/") ? (
                             <Image
-                              src={msg.fileData.url || "/placeholder.svg"}
+                              src={msg.fileData.url || "/placeholder.jpg"}
                               alt={msg.fileData.name}
                               className="max-w-full h-auto rounded"
                               width={300}
@@ -340,11 +339,10 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className={`h-auto p-1 ${
-                                  msg.senderId === "current-user"
+                                className={`h-auto p-1 ${msg.senderId === "current-user"
                                     ? "text-indigo-200 hover:text-white"
                                     : "text-gray-600 hover:text-gray-900"
-                                }`}
+                                  }`}
                                 onClick={() => window.open(msg.fileData!.url, "_blank")}
                               >
                                 <Download className="h-3 w-3" />
@@ -356,9 +354,8 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                       )}
                       <div
-                        className={`flex items-center justify-between mt-1 ${
-                          msg.senderId === "current-user" ? "text-indigo-200" : "text-gray-500"
-                        }`}
+                        className={`flex items-center justify-between mt-1 ${msg.senderId === "current-user" ? "text-indigo-200" : "text-gray-500"
+                          }`}
                       >
                         <span className="text-xs">
                           {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -406,9 +403,8 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message..."
             onKeyDown={handleKeyPress}
-            className={`flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 ${
-              isMobile ? "text-base" : ""
-            }`}
+            className={`flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 ${isMobile ? "text-base" : ""
+              }`}
           />
           <Button
             onClick={handleSendMessage}

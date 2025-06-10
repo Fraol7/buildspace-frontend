@@ -53,13 +53,12 @@ const ProjectsGrid = () => {
                     </span>
                     <Badge
                       variant="secondary"
-                      className={`text-xs transition-colors ${
-                        project.status === "Completed"
+                      className={`text-xs transition-colors ${project.status === "Completed"
                           ? "bg-green-100 text-green-600 group-hover:bg-green-200"
                           : project.status === "In Progress"
                             ? "bg-blue-100 text-blue-600 group-hover:bg-blue-200"
                             : "bg-purple-100 text-purple-600 group-hover:bg-purple-200"
-                      }`}
+                        }`}
                     >
                       {project.status}
                     </Badge>
@@ -68,13 +67,12 @@ const ProjectsGrid = () => {
                   {/* Progress Bar */}
                   <Progress
                     value={project.progress}
-                    className={`h-2 ${
-                      project.status === "Completed"
+                    className={`h-2 ${project.status === "Completed"
                         ? "bg-green-300"
                         : project.status === "In Progress"
                           ? "bg-blue-300"
                           : "bg-purple-300"
-                    }`}
+                      }`}
                   />
                   <p className="text-xs text-gray-500 group-hover:text-indigo-600">{project.progress}% funded</p>
                 </div>
@@ -83,7 +81,7 @@ const ProjectsGrid = () => {
                 <div className="flex items-center mt-4 pt-3 border-t border-gray-200 group-hover:border-indigo-200">
                   <div className="relative h-8 w-8 rounded-full overflow-hidden mr-2">
                     <Image
-                      src={project.avatar || "/placeholder.svg?height=32&width=32"}
+                      src={project.avatar || "/placeholder.jpg?height=32&width=32"}
                       alt={project.founderName || "Founder"}
                       fill
                       className="object-cover"
@@ -97,9 +95,8 @@ const ProjectsGrid = () => {
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-3 h-3 ${
-                            i < Math.floor(project.rating || 0) ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
-                          }`}
+                          className={`w-3 h-3 ${i < Math.floor(project.rating || 0) ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
+                            }`}
                         />
                       ))}
                       <span className="text-xs text-gray-500 ml-1 group-hover:text-indigo-600">

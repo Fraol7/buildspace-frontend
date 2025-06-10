@@ -172,7 +172,7 @@ const AutoScrollingTrendingProjects = () => {
               {/* Project Image */}
               <div className="w-full h-[200px] md:w-[300px] md:h-[300px] relative flex-shrink-0">
                 <Image
-                  src={currentProject.image || "/placeholder.svg?height=225&width=225"}
+                  src={currentProject.image || "/placeholder.jpg?height=225&width=225"}
                   alt={currentProject.title}
                   fill
                   className="object-cover rounded-lg"
@@ -264,9 +264,8 @@ const AutoScrollingTrendingProjects = () => {
                   e.preventDefault()
                   setCurrentIndex(index)
                 }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? "bg-white" : "bg-white/30 hover:bg-white/50"
-                }`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "bg-white" : "bg-white/30 hover:bg-white/50"
+                  }`}
                 aria-label={`View project ${index + 1}`}
               />
             ))}
