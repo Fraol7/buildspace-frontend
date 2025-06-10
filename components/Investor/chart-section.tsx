@@ -100,12 +100,12 @@ const ChartsSection = () => {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="shadow border border-purple-300 flex items-center justify-center">
+              <Card className="shadow border border-indigo-300 flex items-center justify-center">
                 <CardContent className="flex items-center justify-center p-4">
                   <div className="flex items-center space-x-4">
-                    <span className="w-4 h-4 rounded-full bg-purple-300" />
+                    <span className="w-4 h-4 rounded-full bg-indigo-300" />
                     <span className="text-sm text-gray-500">Final</span>
-                    <span className="text-lg font-semibold text-purple-600">{FINAL_TOTAL}</span>
+                    <span className="text-lg font-semibold text-indigo-600">{FINAL_TOTAL}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -169,14 +169,14 @@ const ChartsSection = () => {
                   />
                   <defs>
                     <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#4f46e5" stopOpacity={0.1} />
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
                     </linearGradient>
                   </defs>
                   <Area
                     type="monotone"
                     dataKey="amount"
-                    stroke="#4f46e5"
+                    stroke="#2563eb"
                     strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#colorAmount)"

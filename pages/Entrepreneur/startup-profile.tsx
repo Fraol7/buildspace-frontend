@@ -124,21 +124,19 @@ export default function StartupProfile() {
         {[1, 2, 3].map((step) => (
           <div key={step} className="flex items-center">
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
-                step < currentStep
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${step < currentStep
                   ? "bg-blue-600 text-white"
                   : step === currentStep
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-500"
-              }`}
+                }`}
             >
               {step < currentStep ? <Check className="w-5 h-5" /> : step}
             </div>
             {step < 3 && (
               <div
-                className={`w-16 h-1 mx-2 transition-all duration-300 ${
-                  step < currentStep ? "bg-blue-600" : "bg-gray-200"
-                }`}
+                className={`w-16 h-1 mx-2 transition-all duration-300 ${step < currentStep ? "bg-blue-600" : "bg-gray-200"
+                  }`}
               />
             )}
           </div>
@@ -365,7 +363,7 @@ export default function StartupProfile() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
