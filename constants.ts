@@ -1273,7 +1273,7 @@ export const DUMMY_SAVED: Startup[] = [
     entrepreneur: {
       id: "e1",
       name: "Sarah Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.8,
     },
     investedAmount: 2500000,
@@ -1292,7 +1292,7 @@ export const DUMMY_SAVED: Startup[] = [
     entrepreneur: {
       id: "e2",
       name: "Dr. Michael Rodriguez",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.9,
     },
     investedAmount: 800000,
@@ -1314,7 +1314,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e1",
       name: "Sarah Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.8,
     },
     investedAmount: 2500000,
@@ -1333,7 +1333,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e2",
       name: "Dr. Michael Rodriguez",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.9,
     },
     investedAmount: 800000,
@@ -1352,7 +1352,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e3",
       name: "Emma Thompson",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.6,
     },
     investedAmount: 150000,
@@ -1371,7 +1371,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e4",
       name: "James Park",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.7,
     },
     investedAmount: 3200000,
@@ -1390,7 +1390,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e5",
       name: "Lisa Wang",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.5,
     },
     investedAmount: 1200000,
@@ -1409,7 +1409,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e6",
       name: "Alex Kumar",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.8,
     },
     investedAmount: 5500000,
@@ -1428,7 +1428,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e7",
       name: "Rachel Foster",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.9,
     },
     investedAmount: 4100000,
@@ -1447,7 +1447,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e8",
       name: "David Martinez",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.4,
     },
     investedAmount: 900000,
@@ -1466,7 +1466,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e9",
       name: "Sophie Anderson",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.7,
     },
     investedAmount: 6800000,
@@ -1485,7 +1485,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e10",
       name: "Dr. Kevin Lee",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.6,
     },
     investedAmount: 250000,
@@ -1504,7 +1504,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e11",
       name: "Maria Santos",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.8,
     },
     investedAmount: 1800000,
@@ -1523,7 +1523,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     entrepreneur: {
       id: "e12",
       name: "Tom Wilson",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/images/person1.jpg",
       rating: 4.5,
     },
     investedAmount: 3800000,

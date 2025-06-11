@@ -1,9 +1,9 @@
 import React from 'react'
-import StartupListing from '@/pages/Entrepreneur/startup-listing';
+import StartupDashboard from '@/pages/Entrepreneur/startup-dashboard';
 
 const page = () => {
   return (
-    <StartupListing />
+    <StartupDashboard />
   )
 }
 
