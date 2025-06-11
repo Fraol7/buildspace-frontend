@@ -2,12 +2,12 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Star, MapPin, TrendingUp } from "lucide-react"
+import { Star, MapPin } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Progress } from "@/components/ui/progress"
+// import { Progress } from "@/components/ui/progress"
 import type { Startup } from "@/constants";
 
 interface StartupCardProps {
@@ -34,17 +34,17 @@ const SaveIcon = ({ filled = false, className = "" }: { filled?: boolean; classN
 )
 
 export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
-  const investmentProgress = (startup.investedAmount / startup.requiredInvestment) * 100
+  // const investmentProgress = (startup.investedAmount / startup.requiredInvestment) * 100
 
-  const formatCurrency = (amount: number) => {
-    if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(1)}M`
-    }
-    if (amount >= 1000) {
-      return `$${(amount / 1000).toFixed(0)}K`
-    }
-    return `$${amount}`
-  }
+  // const formatCurrency = (amount: number) => {
+  //   if (amount >= 1000000) {
+  //     return `$${(amount / 1000000).toFixed(1)}M`
+  //   }
+  //   if (amount >= 1000) {
+  //     return `$${(amount / 1000).toFixed(0)}K`
+  //   }
+  //   return `$${amount}`
+  // }
 
   return (
     <Card className="group relative overflow-hidden bg-white hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:scale-[1.02]">
