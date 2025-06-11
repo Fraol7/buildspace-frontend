@@ -130,7 +130,7 @@ export default function UserCardGroup({
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {currentUsers.map((user) => (
               <UserCard key={user.id} user={user} />
             ))}

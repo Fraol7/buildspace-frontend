@@ -78,7 +78,7 @@ const ProjectsGrid = () => {
                 </div>
 
                 {/* Founder/Investor Avatar with Rating */}
-                <div className="flex items-center mt-4 pt-3 border-t border-gray-200 group-hover:border-blue-200">
+                <div className="flex mt-4 pt-3 border-t border-gray-200 group-hover:border-blue-200">
                   <div className="relative h-8 w-8 rounded-full overflow-hidden mr-2">
                     <Image
                       src={project.avatar || "/placeholder.jpg?height=32&width=32"}

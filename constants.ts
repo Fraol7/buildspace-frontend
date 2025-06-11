@@ -286,6 +286,11 @@ export const EntrepreneurNavMain = [
         id: "my-campaigns",
       },
       {
+        title: "Funded Campaigns",
+        url: "/entrepreneur/funded-campaigns",
+        id: "funded-campaigns",
+      },
+      {
         title: "Explore Campaigns",
         url: "/entrepreneur/explore-campaigns",
         id: "explore-campaigns",
@@ -611,6 +616,50 @@ export const PROJECTS_GRID = [
   },
 ]
 
+
+// Mock data for startups
+export const STARTUPS = [
+  {
+    id: 1,
+    name: "Coinbase",
+    tagline: "Cryptocurrency Exchange",
+    amount: "$15,000",
+    image: "/images/eco.jpg",
+    stage: "Profitable",
+    saved: 3,
+    industry: ["ai-tech", "bee-farm", "call-away"]
+  },
+  {
+    id: 2,
+    name: "Tesla Motors",
+    tagline: "Electric Vehicles",
+    amount: "$12,500",
+    image: "/images/eco.jpg",
+    stage: "Profitable",
+    saved: 3,
+    industry: ["ai-tech", "bee-farm", "call-away"]
+  },
+  {
+    id: 3,
+    name: "Meta Platforms",
+    tagline: "Social Media",
+    amount: "$8,750",
+    image: "/images/eco.jpg",
+    stage: "Profitable",
+    saved: 3,
+    industry: ["ai-tech", "bee-farm", "call-away"]
+  },
+  {
+    id: 4,
+    name: "Amazon",
+    tagline: "E-commerce",
+    amount: "$20,000",
+    image: "/images/eco.jpg",
+    stage: "Profitable",
+    saved: 3,
+    industry: ["ai-tech", "bee-farm", "call-away"]
+  },
+]
 
 // Mock data for investments
 export const INVESTMENTS = [
@@ -1529,6 +1578,113 @@ export const DUMMY_STARTUPS: Startup[] = [
     investedAmount: 3800000,
     requiredInvestment: 9000000,
     slug: "retail-vision",
+  },
+]
+
+
+// Dummy data for entrepreneur campaigns (expanded for pagination)
+export const allCampaigns = [
+  {
+    id: "STARTUP001",
+    title: "EcoTech Smart Water Bottles",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Revolutionary smart water bottles that track hydration and reduce plastic waste through innovative IoT technology.",
+    targetAmount: 15000,
+    amountRaised: 8750,
+    minimumFunding: 100,
+    endDate: "2024-07-31",
+    status: "Active",
+    backers: 87,
+  },
+  {
+    id: "STARTUP002",
+    title: "AI-Powered Learning Platform",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Personalized education platform using machine learning to adapt to individual student learning patterns.",
+    targetAmount: 25000,
+    amountRaised: 22100,
+    minimumFunding: 50,
+    endDate: "2024-06-15",
+    status: "Active",
+    backers: 156,
+  },
+  {
+    id: "STARTUP003",
+    title: "Sustainable Fashion Marketplace",
+    logo: "/images/Portfolio22.png",
+    description: "Connecting eco-conscious consumers with sustainable fashion brands and second-hand luxury items.",
+    targetAmount: 10000,
+    amountRaised: 10000,
+    minimumFunding: 25,
+    endDate: "2024-05-20",
+    status: "Ended",
+    backers: 203,
+  },
+  {
+    id: "STARTUP004",
+    title: "Urban Farming Solutions",
+    logo: "/images/Portfolio22.png",
+    description: "Vertical farming kits for urban apartments, making fresh produce accessible in city environments.",
+    targetAmount: 8000,
+    amountRaised: 3200,
+    minimumFunding: 75,
+    endDate: "2024-08-10",
+    status: "Active",
+    backers: 42,
+  },
+  {
+    id: "STARTUP005",
+    title: "Smart Home Automation Hub",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Centralized control system for all smart home devices with AI-powered automation and energy optimization.",
+    targetAmount: 12000,
+    amountRaised: 7800,
+    minimumFunding: 60,
+    endDate: "2024-08-20",
+    status: "Active",
+    backers: 95,
+  },
+  {
+    id: "STARTUP006",
+    title: "Digital Health Tracker",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Comprehensive health monitoring platform with wearable integration and personalized wellness insights.",
+    targetAmount: 18000,
+    amountRaised: 15600,
+    minimumFunding: 80,
+    endDate: "2024-07-15",
+    status: "Active",
+    backers: 134,
+  },
+  {
+    id: "STARTUP007",
+    title: "Renewable Energy Generator",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Portable renewable energy generator for outdoor activities and emergency situations with high efficiency.",
+    targetAmount: 30000,
+    amountRaised: 12400,
+    minimumFunding: 150,
+    endDate: "2024-09-05",
+    status: "Active",
+    backers: 82,
+  },
+  {
+    id: "STARTUP008",
+    title: "Biodegradable Packaging",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Innovative biodegradable packaging solutions for e-commerce and food delivery with zero environmental impact.",
+    targetAmount: 20000,
+    amountRaised: 16800,
+    minimumFunding: 100,
+    endDate: "2024-08-25",
+    status: "Active",
+    backers: 168,
   },
 ]
 
