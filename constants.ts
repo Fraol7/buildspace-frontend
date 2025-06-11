@@ -1239,6 +1239,300 @@ export const sampleUsers: User[] = [
   }
 ]
 
+interface Entrepreneur {
+  id: string
+  name: string
+  avatar: string
+  rating: number
+}
+
+export interface Startup {
+  id: string
+  title: string
+  logo: string
+  description: string
+  location: string
+  stage: string
+  badges: string[]
+  entrepreneur: Entrepreneur
+  investedAmount: number
+  requiredInvestment: number
+  slug: string
+}
+
+export const DUMMY_SAVED: Startup[] = [
+  {
+    id: "1",
+    title: "EcoTech Solutions",
+    logo: "/images/Portfolio1.png",
+    description:
+      "EcoTech Solutions is pioneering the next generation of sustainable energy infrastructure through advanced AI-powered solar panel technology. Our innovative approach combines machine learning algorithms with cutting-edge photovoltaic systems to maximize energy efficiency and reduce environmental impact across residential and commercial applications.",
+    location: "San Francisco, CA",
+    stage: "Series A",
+    badges: ["CleanTech", "AI", "Energy"],
+    entrepreneur: {
+      id: "e1",
+      name: "Sarah Chen",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.8,
+    },
+    investedAmount: 2500000,
+    requiredInvestment: 5000000,
+    slug: "ecotech-solutions",
+  },
+  {
+    id: "2",
+    title: "HealthAI",
+    logo: "/images/Portfolio2.png",
+    description:
+      "HealthAI is transforming healthcare delivery through artificial intelligence and machine learning technologies. Our platform provides personalized diagnostic solutions, predictive health analytics, and treatment recommendations that empower healthcare providers to deliver more accurate and efficient patient care.",
+    location: "Boston, MA",
+    stage: "Seed",
+    badges: ["HealthTech", "AI", "Diagnostics"],
+    entrepreneur: {
+      id: "e2",
+      name: "Dr. Michael Rodriguez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.9,
+    },
+    investedAmount: 800000,
+    requiredInvestment: 2000000,
+    slug: "healthai",
+  }
+];
+
+export const DUMMY_STARTUPS: Startup[] = [
+  {
+    id: "1",
+    title: "EcoTech Solutions",
+    logo: "/images/Portfolio1.png",
+    description:
+      "EcoTech Solutions is pioneering the next generation of sustainable energy infrastructure through advanced AI-powered solar panel technology. Our innovative approach combines machine learning algorithms with cutting-edge photovoltaic systems to maximize energy efficiency and reduce environmental impact across residential and commercial applications.",
+    location: "San Francisco, CA",
+    stage: "Series A",
+    badges: ["CleanTech", "AI", "Energy"],
+    entrepreneur: {
+      id: "e1",
+      name: "Sarah Chen",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.8,
+    },
+    investedAmount: 2500000,
+    requiredInvestment: 5000000,
+    slug: "ecotech-solutions",
+  },
+  {
+    id: "2",
+    title: "HealthAI",
+    logo: "/images/Portfolio2.png",
+    description:
+      "HealthAI is transforming healthcare delivery through artificial intelligence and machine learning technologies. Our platform provides personalized diagnostic solutions, predictive health analytics, and treatment recommendations that empower healthcare providers to deliver more accurate and efficient patient care.",
+    location: "Boston, MA",
+    stage: "Seed",
+    badges: ["HealthTech", "AI", "Diagnostics"],
+    entrepreneur: {
+      id: "e2",
+      name: "Dr. Michael Rodriguez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.9,
+    },
+    investedAmount: 800000,
+    requiredInvestment: 2000000,
+    slug: "healthai",
+  },
+  {
+    id: "3",
+    title: "FoodieConnect",
+    logo: "/images/Portfolio1.png",
+    description:
+      "FoodieConnect is revolutionizing the food supply chain by creating direct connections between local farmers and restaurants through blockchain technology. Our platform ensures transparency, fair pricing, and sustainable sourcing while reducing food waste and supporting local agricultural communities.",
+    location: "Austin, TX",
+    stage: "Pre-Seed",
+    badges: ["FoodTech", "Blockchain", "Supply Chain"],
+    entrepreneur: {
+      id: "e3",
+      name: "Emma Thompson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.6,
+    },
+    investedAmount: 150000,
+    requiredInvestment: 500000,
+    slug: "foodie-connect",
+  },
+  {
+    id: "4",
+    title: "FinanceFlow",
+    logo: "/images/Portfolio1.png",
+    description:
+      "FinanceFlow provides comprehensive automated financial planning and management solutions specifically designed for small and medium-sized businesses. Our SaaS platform integrates with existing accounting systems to provide real-time financial insights, cash flow forecasting, and strategic planning tools.",
+    location: "New York, NY",
+    stage: "Series A",
+    badges: ["FinTech", "SaaS", "Analytics"],
+    entrepreneur: {
+      id: "e4",
+      name: "James Park",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.7,
+    },
+    investedAmount: 3200000,
+    requiredInvestment: 8000000,
+    slug: "finance-flow",
+  },
+  {
+    id: "5",
+    title: "EduVerse",
+    logo: "/images/Portfolio2.png",
+    description:
+      "EduVerse is creating immersive educational experiences through virtual and augmented reality technologies. Our platform enables students and professionals to learn complex subjects through interactive 3D environments, simulations, and collaborative virtual spaces that enhance engagement and retention.",
+    location: "Seattle, WA",
+    stage: "Seed",
+    badges: ["EdTech", "VR", "Learning"],
+    entrepreneur: {
+      id: "e5",
+      name: "Lisa Wang",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.5,
+    },
+    investedAmount: 1200000,
+    requiredInvestment: 3000000,
+    slug: "eduverse",
+  },
+  {
+    id: "6",
+    title: "GreenLogistics",
+    logo: "/images/Portfolio1.png",
+    description:
+      "GreenLogistics is pioneering carbon-neutral delivery solutions for the e-commerce industry. Our innovative logistics network combines electric vehicles, optimized routing algorithms, and sustainable packaging to provide environmentally responsible shipping options for businesses and consumers.",
+    location: "Los Angeles, CA",
+    stage: "Series B",
+    badges: ["Logistics", "GreenTech", "E-commerce"],
+    entrepreneur: {
+      id: "e6",
+      name: "Alex Kumar",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.8,
+    },
+    investedAmount: 5500000,
+    requiredInvestment: 12000000,
+    slug: "green-logistics",
+  },
+  {
+    id: "7",
+    title: "CyberShield",
+    logo: "/images/Portfolio1.png",
+    description:
+      "CyberShield develops next-generation cybersecurity solutions specifically designed for Internet of Things (IoT) devices and networks. Our comprehensive security platform provides real-time threat detection, automated response systems, and advanced encryption protocols to protect connected devices from cyber attacks.",
+    location: "Washington, DC",
+    stage: "Series A",
+    badges: ["CyberSecurity", "IoT", "Enterprise"],
+    entrepreneur: {
+      id: "e7",
+      name: "Rachel Foster",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.9,
+    },
+    investedAmount: 4100000,
+    requiredInvestment: 10000000,
+    slug: "cyber-shield",
+  },
+  {
+    id: "8",
+    title: "AgroBot",
+    logo: "/images/Portfolio1.png",
+    description:
+      "AgroBot is revolutionizing agriculture through autonomous farming robots and precision agriculture technologies. Our intelligent robotic systems can plant, monitor, and harvest crops with unprecedented accuracy, helping farmers increase yields while reducing labor costs and environmental impact.",
+    location: "Denver, CO",
+    stage: "Seed",
+    badges: ["AgriTech", "Robotics", "Automation"],
+    entrepreneur: {
+      id: "e8",
+      name: "David Martinez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.4,
+    },
+    investedAmount: 900000,
+    requiredInvestment: 2500000,
+    slug: "agrobot",
+  },
+  {
+    id: "9",
+    title: "SpaceComm",
+    logo: "/images/Portfolio1.png",
+    description:
+      "SpaceComm is developing satellite-based internet infrastructure to provide high-speed connectivity to remote and underserved areas worldwide. Our constellation of low-earth orbit satellites delivers reliable internet access to regions where traditional infrastructure is not feasible or cost-effective.",
+    location: "Houston, TX",
+    stage: "Series A",
+    badges: ["SpaceTech", "Telecom", "Infrastructure"],
+    entrepreneur: {
+      id: "e9",
+      name: "Sophie Anderson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.7,
+    },
+    investedAmount: 6800000,
+    requiredInvestment: 15000000,
+    slug: "space-comm",
+  },
+  {
+    id: "10",
+    title: "MindfulAI",
+    logo: "/images/Portfolio1.png",
+    description:
+      "MindfulAI is creating AI-powered mental health support platforms that provide personalized therapy, mood tracking, and wellness coaching. Our technology combines natural language processing with evidence-based therapeutic approaches to make mental health care more accessible and effective.",
+    location: "Portland, OR",
+    stage: "Pre-Seed",
+    badges: ["MentalHealth", "AI", "Wellness"],
+    entrepreneur: {
+      id: "e10",
+      name: "Dr. Kevin Lee",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.6,
+    },
+    investedAmount: 250000,
+    requiredInvestment: 750000,
+    slug: "mindful-ai",
+  },
+  {
+    id: "11",
+    title: "CleanWater Tech",
+    logo: "/images/Portfolio1.png",
+    description:
+      "CleanWater Tech develops advanced water purification and treatment systems for communities in developing countries. Our innovative filtration technology removes contaminants and pathogens while being cost-effective and easy to maintain, providing access to clean drinking water for underserved populations.",
+    location: "Miami, FL",
+    stage: "Seed",
+    badges: ["WaterTech", "Social Impact", "Hardware"],
+    entrepreneur: {
+      id: "e11",
+      name: "Maria Santos",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.8,
+    },
+    investedAmount: 1800000,
+    requiredInvestment: 4000000,
+    slug: "clean-water-tech",
+  },
+  {
+    id: "12",
+    title: "RetailVision",
+    logo: "/images/Portfolio1.png",
+    description:
+      "RetailVision provides computer vision and analytics solutions for retail optimization. Our AI-powered platform analyzes customer behavior, inventory management, and store operations to help retailers improve sales performance, reduce theft, and enhance the overall shopping experience.",
+    location: "Chicago, IL",
+    stage: "Series A",
+    badges: ["RetailTech", "Computer Vision", "Analytics"],
+    entrepreneur: {
+      id: "e12",
+      name: "Tom Wilson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      rating: 4.5,
+    },
+    investedAmount: 3800000,
+    requiredInvestment: 9000000,
+    slug: "retail-vision",
+  },
+]
+
+
 export const CROWDFUNDING_TOTAL = "12,345.78"; // Dummy data for Crowdfunding
 export const INVEST_TOTAL = "2,050.50"; // Dummy data for Invest
 export const MVP_TOTAL = "19";

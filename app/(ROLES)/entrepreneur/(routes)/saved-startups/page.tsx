@@ -1,8 +1,9 @@
 import React from 'react'
+import SavedListing from "@/pages/Entrepreneur/saved-listing"
 
 const page = () => {
   return (
-    <div className="text-red-800 font-bold text-4xl p-6">Saved Startup Page</div>
+    <SavedListing />
   )
 }
 
