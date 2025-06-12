@@ -1,8 +1,9 @@
 import React from 'react'
+import InvestorCampaigns from "@/pages/Investor/investor-campaigns"
 
 const page = () => {
   return (
-    <div className="text-red-800 font-bold text-4xl p-6">Funded Campaigns Page</div>
+    <InvestorCampaigns />
   )
 }
 

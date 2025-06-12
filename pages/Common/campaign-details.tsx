@@ -189,7 +189,7 @@ export default function CampaignDetails() {
         )}
 
         {/* Back Button */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <Button
             variant="ghost"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
@@ -198,7 +198,7 @@ export default function CampaignDetails() {
             <ArrowLeft className="w-4 h-4" />
             Back to Campaigns
           </Button>
-        </div>
+        </div> */}
 
         {/* Campaign Header - Minimized */}
         <div className="relative rounded-xl overflow-hidden mb-8 h-48">
@@ -363,7 +363,7 @@ export default function CampaignDetails() {
                   <Dialog open={showInvestModal} onOpenChange={setShowInvestModal}>
                     <DialogTrigger asChild>
                       <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3">
-                        Invest Now
+                        Contribute Now
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
@@ -441,7 +441,7 @@ export default function CampaignDetails() {
                     ) : (
                       <>
                         <Bookmark className="w-4 h-4 mr-2" />
-                        Save Campaign
+                        Save Startup
                       </>
                     )}
                   </Button>

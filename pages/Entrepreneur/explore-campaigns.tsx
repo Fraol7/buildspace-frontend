@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-// import Image from "next/image"
+import Link from "next/link"
 
 // Dummy data for explore campaigns
 const allCampaigns = [
@@ -364,89 +364,91 @@ export default function ExploreCampaigns() {
               .sort((a, b) => b.backers - a.backers)
               .slice(0, 3)
               .map((campaign) => (
-                <Card
-                  key={campaign.id}
-                  className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer hover:scale-[1.02]"
-                  onClick={() => handleCampaignClick(campaign.id)}
-                >
-                  <div className="absolute top-4 right-4">
-                    <Badge className={`${getStatusColor(campaign.status)} border px-2 py-1`}>{campaign.status}</Badge>
-                  </div>
-                  <CardHeader className="pb-2 pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                        <img
-                          src={campaign.logo || "/placeholder.svg"}
-                          alt={`${campaign.title} logo`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 pr-16">
-                        <CardTitle className="text-xl font-bold text-gray-900 mb-1 leading-tight">
-                          {campaign.title}
-                        </CardTitle>
-                        <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{campaign.description}</p>
-                      </div>
+                <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+                  <Card
+                    key={campaign.id}
+                    className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                    onClick={() => handleCampaignClick(campaign.id)}
+                  >
+                    <div className="absolute top-4 right-4">
+                      <Badge className={`${getStatusColor(campaign.status)} border px-2 py-1`}>{campaign.status}</Badge>
                     </div>
-                  </CardHeader>
+                    <CardHeader className="pb-2 pt-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
+                          <img
+                            src={campaign.logo || "/placeholder.svg"}
+                            alt={`${campaign.title} logo`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 pr-16">
+                          <CardTitle className="text-xl font-bold text-gray-900 mb-1 leading-tight">
+                            {campaign.title}
+                          </CardTitle>
+                          <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{campaign.description}</p>
+                        </div>
+                      </div>
+                    </CardHeader>
 
-                  <CardContent className="pt-2">
-                    {/* Categories */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {campaign.categories.map((category, index) => (
-                        <Badge key={index} className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs">
-                          {category}
-                        </Badge>
-                      ))}
-                    </div>
+                    <CardContent className="pt-2">
+                      {/* Categories */}
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {campaign.categories.map((category, index) => (
+                          <Badge key={index} className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs">
+                            {category}
+                          </Badge>
+                        ))}
+                      </div>
 
-                    <div className="mb-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-700">
-                          {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}% funded
-                        </span>
-                        <span className="text-sm text-gray-600">
-                          {formatCurrency(campaign.amountRaised)} of {formatCurrency(campaign.targetAmount)}
-                        </span>
+                      <div className="mb-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-700">
+                            {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}% funded
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {formatCurrency(campaign.amountRaised)} of {formatCurrency(campaign.targetAmount)}
+                          </span>
+                        </div>
+                        <div className="relative h-2 bg-white rounded-full overflow-hidden shadow-inner">
+                          <div
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                            style={{
+                              width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%`,
+                            }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="relative h-2 bg-white rounded-full overflow-hidden shadow-inner">
-                        <div
-                          className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
-                          style={{
-                            width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%`,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-2 shadow-sm">
-                        <Users className="w-4 h-4 mr-2 text-blue-500" />
-                        <span>{campaign.backers} backers</span>
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-2 shadow-sm">
+                          <Users className="w-4 h-4 mr-2 text-blue-500" />
+                          <span>{campaign.backers} backers</span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-2 shadow-sm">
+                          <Calendar className="w-4 h-4 mr-2 text-blue-500" />
+                          <span>Ends {formatDate(campaign.endDate)}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-2 shadow-sm">
-                        <Calendar className="w-4 h-4 mr-2 text-blue-500" />
-                        <span>Ends {formatDate(campaign.endDate)}</span>
-                      </div>
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="w-6 h-6">
-                          <AvatarImage src={campaign.founderAvatar || "/placeholder.svg"} alt={campaign.founderName} />
-                          <AvatarFallback className="bg-blue-200 text-blue-700 text-xs">
-                            {campaign.founderName
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-xs text-gray-600">{campaign.founderName}</span>
-                        {renderStarRating(campaign.founderRating)}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="w-6 h-6">
+                            <AvatarImage src={campaign.founderAvatar || "/placeholder.svg"} alt={campaign.founderName} />
+                            <AvatarFallback className="bg-blue-200 text-blue-700 text-xs">
+                              {campaign.founderName
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-xs text-gray-600">{campaign.founderName}</span>
+                          {renderStarRating(campaign.founderRating)}
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
           </div>
         </div>
@@ -579,93 +581,95 @@ export default function ExploreCampaigns() {
                   </TableHeader>
                   <TableBody>
                     {paginatedCampaigns.map((campaign) => (
-                      <TableRow
-                        key={campaign.id}
-                        className={`cursor-pointer transition-all duration-200 ${hoveredRow === campaign.id
-                          ? "bg-blue-100 shadow-lg scale-[1.02] border-blue-300"
-                          : "bg-green-50 hover:bg-blue-50"
-                          }`}
-                        onMouseEnter={() => setHoveredRow(campaign.id)}
-                        onMouseLeave={() => setHoveredRow(null)}
-                        onClick={() => handleCampaignClick(campaign.id)}
-                      >
-                        <TableCell className="py-4">
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-gray-50">
-                              <img
-                                src={campaign.logo || "/placeholder.svg"}
-                                alt={`${campaign.title} logo`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <h3 className="font-semibold text-gray-900 truncate mb-1">{campaign.title}</h3>
-                              <p className="text-sm text-gray-600 line-clamp-1 mb-2">{campaign.description}</p>
-                              <div className="flex flex-wrap gap-1">
-                                {campaign.categories.map((category, index) => (
-                                  <Badge
-                                    key={index}
-                                    className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs"
-                                  >
-                                    {category}
-                                  </Badge>
-                                ))}
+                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+                        <TableRow
+                          key={campaign.id}
+                          className={`cursor-pointer transition-all duration-200 ${hoveredRow === campaign.id
+                            ? "bg-blue-100 shadow-lg scale-[1.02] border-blue-300"
+                            : "bg-green-50 hover:bg-blue-50"
+                            }`}
+                          onMouseEnter={() => setHoveredRow(campaign.id)}
+                          onMouseLeave={() => setHoveredRow(null)}
+                          onClick={() => handleCampaignClick(campaign.id)}
+                        >
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-gray-50">
+                                <img
+                                  src={campaign.logo || "/placeholder.svg"}
+                                  alt={`${campaign.title} logo`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h3 className="font-semibold text-gray-900 truncate mb-1">{campaign.title}</h3>
+                                <p className="text-sm text-gray-600 line-clamp-1 mb-2">{campaign.description}</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {campaign.categories.map((category, index) => (
+                                    <Badge
+                                      key={index}
+                                      className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs"
+                                    >
+                                      {category}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Avatar className="w-8 h-8">
-                              <AvatarImage
-                                src={campaign.founderAvatar || "/placeholder.svg"}
-                                alt={campaign.founderName}
-                              />
-                              <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 text-xs">
-                                {campaign.founderName
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{campaign.founderName}</p>
-                              {renderStarRating(campaign.founderRating)}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Avatar className="w-8 h-8">
+                                <AvatarImage
+                                  src={campaign.founderAvatar || "/placeholder.svg"}
+                                  alt={campaign.founderName}
+                                />
+                                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 text-xs">
+                                  {campaign.founderName
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">{campaign.founderName}</p>
+                                {renderStarRating(campaign.founderRating)}
+                              </div>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-32">
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="text-xs font-medium text-gray-700">
-                                {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
-                              </span>
-                              <span className="text-xs text-gray-600">{formatCurrency(campaign.amountRaised)}</span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="w-32">
+                              <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs font-medium text-gray-700">
+                                  {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
+                                </span>
+                                <span className="text-xs text-gray-600">{formatCurrency(campaign.amountRaised)}</span>
+                              </div>
+                              <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div
+                                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+                                  style={{
+                                    width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%`,
+                                  }}
+                                ></div>
+                              </div>
+                              <p className="text-xs text-gray-500 mt-1">of {formatCurrency(campaign.targetAmount)}</p>
                             </div>
-                            <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
-                              <div
-                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
-                                style={{
-                                  width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%`,
-                                }}
-                              ></div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center text-sm text-gray-700">
+                              <Users className="w-4 h-4 mr-1 text-blue-500" />
+                              {campaign.backers}
                             </div>
-                            <p className="text-xs text-gray-500 mt-1">of {formatCurrency(campaign.targetAmount)}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center text-sm text-gray-700">
-                            <Users className="w-4 h-4 mr-1 text-blue-500" />
-                            {campaign.backers}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center text-sm text-gray-700">
-                            <Calendar className="w-4 h-4 mr-1 text-blue-500" />
-                            {formatDate(campaign.endDate)}
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center text-sm text-gray-700">
+                              <Calendar className="w-4 h-4 mr-1 text-blue-500" />
+                              {formatDate(campaign.endDate)}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      </Link>
                     ))}
                   </TableBody>
                 </Table>

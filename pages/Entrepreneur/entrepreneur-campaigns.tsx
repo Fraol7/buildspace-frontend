@@ -46,7 +46,7 @@ export default function EntrepreneurCampaigns() {
   }
 
   const handleCampaignClick = (campaignId: string) => {
-    console.log("hello")
+    console.log(campaignId, "hello")
   }
 
   const handlePageChange = (page: number) => {
@@ -73,10 +73,12 @@ export default function EntrepreneurCampaigns() {
                   "You haven't launched any campaigns yet. Start your first campaign to begin raising funds for your startup."
                 }
               </p>
-              <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                <Plus className="w-5 h-5 mr-2" />
-                Launch New Campaign
-              </Button>
+              <Link href="/entrepreneur/add-campaign">
+                <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Launch New Campaign
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -93,10 +95,12 @@ export default function EntrepreneurCampaigns() {
             <h1 className="text-4xl font-bold text-gray-900">My Campaigns</h1>
             <p className="text-gray-600 mt-2">Manage and track your fundraising campaigns</p>
           </div>
-          <Button className="bg-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-            <Plus className="w-5 h-5 mr-2" />
-            Launch New Campaign
-          </Button>
+          <Link href="/entrepreneur/add-campaign">
+            <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+              <Plus className="w-5 h-5 mr-2" />
+              Launch New Campaign
+            </Button>
+          </Link>
         </div>
 
         {/* Stats Overview */}
@@ -151,7 +155,7 @@ export default function EntrepreneurCampaigns() {
         {/* Campaigns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {campaigns.map((campaign) => (
-            <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+            <Link href={`/entrepreneur/campaigns-owned/${campaign.id}`} key={campaign.id}>
               <Card
                 key={campaign.id}
                 className={`bg-gradient-to-b from-blue-50 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from "next/link"
 
 // Dummy data for investor funded campaigns (expanded for pagination)
 const allFundedCampaigns = [
@@ -216,8 +217,8 @@ export default function InvestorCampaigns() {
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-blue-800">My Investments</h1>
-            <p className="text-gray-600 mt-2">Track campaigns you've supported</p>
+            <h1 className="text-4xl font-bold text-gray-900">My Investments</h1>
+            <p className="text-gray-600 mt-2">Track campaigns you&apos;ve supported</p>
           </div>
 
           <div className="flex flex-col items-center justify-center py-16">
@@ -248,54 +249,56 @@ export default function InvestorCampaigns() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-blue-800">My Investments</h1>
-            <p className="text-gray-600 mt-2">Track campaigns you've supported and their progress</p>
+            <h1 className="text-4xl font-bold text-gray-900">My Investments</h1>
+            <p className="text-gray-600 mt-2">Track campaigns you&apos;ve supported and their progress</p>
           </div>
-          <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-            <Target className="w-5 h-5 mr-2" />
-            Explore More Campaigns
-          </Button>
+          <Link href="/entrepreneur/explore-campaigns">
+            <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+              <Target className="w-5 h-5 mr-2" />
+              Explore More Campaigns
+            </Button>
+          </Link>
         </div>
 
         {/* Investment Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-blue-400 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+          <Card className="bg-gradient-to-br from-blue-200 to-blue-100 border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
                   <DollarSign className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-blue-100 text-sm font-medium">Total Invested</p>
-                  <p className="text-3xl font-bold text-white">{formatCurrency(totalInvested)}</p>
+                  <p className="text-gray-700 text-sm font-medium">Total Invested</p>
+                  <p className="text-3xl font-bold text-black">{formatCurrency(totalInvested)}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-400 to-green-600 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+          <Card className="bg-gradient-to-br from-green-100 to-green-50 border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                  <Target className="w-6 h-6 text-white" />
+                <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
+                  <Target className="w-6 h-6 text-gray-100" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-green-100 text-sm font-medium">Campaigns Backed</p>
-                  <p className="text-3xl font-bold text-white">{allFundedCampaigns.length}</p>
+                  <p className="text-gray-700 text-sm font-medium">Campaigns Backed</p>
+                  <p className="text-3xl font-bold text-black">{allFundedCampaigns.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+          <Card className="bg-gradient-to-br from-blue-200 to-blue-100 border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-blue-100 text-sm font-medium">Active Investments</p>
-                  <p className="text-3xl font-bold text-white">{activeCampaigns}</p>
+                  <p className="text-gray-700 text-sm font-medium">Active Investments</p>
+                  <p className="text-3xl font-bold text-black">{activeCampaigns}</p>
                 </div>
               </div>
             </CardContent>
@@ -307,7 +310,7 @@ export default function InvestorCampaigns() {
           {fundedCampaigns.map((campaign) => (
             <Card
               key={campaign.id}
-              className={`bg-gradient-to-b from-blue-100 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${hoveredCard === campaign.id ? "scale-105 shadow-2xl" : "hover:scale-102"
+              className={`bg-gradient-to-b from-blue-50 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${hoveredCard === campaign.id ? "scale-105 shadow-2xl" : "hover:scale-102"
                 }`}
               onMouseEnter={() => setHoveredCard(campaign.id)}
               onMouseLeave={() => setHoveredCard(null)}
@@ -354,18 +357,18 @@ export default function InvestorCampaigns() {
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm font-semibold text-gray-700">Campaign Progress</span>
-                    <span className="text-sm font-bold text-green-600">
+                    <span className="text-sm font-bold text-green-500">
                       {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
                     </span>
                   </div>
                   <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full"
+                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-200 to-green-300 rounded-full"
                       style={{ width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%` }}
                     ></div>
                   </div>
                   <div className="flex justify-between mt-3">
-                    <span className="font-bold text-green-600 text-lg">
+                    <span className="font-bold text-green-500 text-lg">
                       {formatCurrency(campaign.amountRaised)} raised
                     </span>
                     <span className="text-gray-500 font-medium">of {formatCurrency(campaign.targetAmount)}</span>
@@ -410,14 +413,16 @@ export default function InvestorCampaigns() {
 
                   <div className="flex gap-2">
                     {campaign.status === "Active" && (
-                      <Button
-                        size="sm"
-                        onClick={(e) => handleInvestMore(campaign.id, e)}
-                        className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-                      >
-                        <DollarSign className="w-4 h-4 mr-1" />
-                        Invest More
-                      </Button>
+                      <Link href="/payment">
+                        <Button
+                          size="sm"
+                          onClick={(e) => handleInvestMore(campaign.id, e)}
+                          className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+                        >
+                          <DollarSign className="w-4 h-4 mr-1" />
+                          Invest More
+                        </Button>
+                      </Link>  
                     )}
                   </div>
                 </div>
