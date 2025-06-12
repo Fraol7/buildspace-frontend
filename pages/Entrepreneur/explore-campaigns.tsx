@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
+import Image from "next/image"
 
 // Dummy data for explore campaigns
 const allCampaigns = [
@@ -376,10 +377,12 @@ export default function ExploreCampaigns() {
                     <CardHeader className="pb-2 pt-6">
                       <div className="flex items-start gap-4">
                         <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                          <img
+                          <Image
                             src={campaign.logo || "/placeholder.svg"}
                             alt={`${campaign.title} logo`}
-                            className="w-full h-full object-cover"
+                            className="object-cover"
+                            width={48}    // example width, adjust to your container size
+                            height={48}   // example height, adjust to your container size
                           />
                         </div>
                         <div className="flex-1 pr-16">
@@ -567,8 +570,8 @@ export default function ExploreCampaigns() {
               </Button>
             </div>
           ) : (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
-              <div className="overflow-x-auto">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-x-auto">
+              <div className="min-w-full">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -581,7 +584,7 @@ export default function ExploreCampaigns() {
                   </TableHeader>
                   <TableBody>
                     {paginatedCampaigns.map((campaign) => (
-                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id} style={{ display: 'contents' }}>
                         <TableRow
                           key={campaign.id}
                           className={`cursor-pointer transition-all duration-200 ${hoveredRow === campaign.id
