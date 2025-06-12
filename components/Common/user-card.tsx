@@ -91,7 +91,7 @@ export default function UserCard({ user }: UserCardProps) {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-bold text-gray-900 truncate mb-2">{user.name}</h3>
+            <h3 className="text-lg font-bold text-gray-900 truncate mb-0">{user.name}</h3>
             <StarRating rating={user.rating} />
           </div>
         </div>

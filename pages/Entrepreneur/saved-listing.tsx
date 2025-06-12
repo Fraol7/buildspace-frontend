@@ -1,6 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import type React from "react"
+
+import { useState, useMemo } from "react"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Pagination,
   PaginationContent,
@@ -17,11 +23,38 @@ const ITEMS_PER_PAGE = 5
 export default function SavedListing() {
   const [currentPage, setCurrentPage] = useState(1)
   const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const totalPages = Math.ceil(DUMMY_SAVED.length / ITEMS_PER_PAGE)
+  // Filter startups based on search query
+  const filteredStartups = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return DUMMY_SAVED
+    }
+
+    const query = searchQuery.toLowerCase().trim()
+    return DUMMY_SAVED.filter((startup) => {
+      return (
+        startup.title.toLowerCase().includes(query) ||
+        startup.description.toLowerCase().includes(query) ||
+        startup.location.toLowerCase().includes(query) ||
+        startup.stage.toLowerCase().includes(query) ||
+        startup.entrepreneur.name.toLowerCase().includes(query) ||
+        startup.badges.some((badge) => badge.toLowerCase().includes(query))
+      )
+    })
+  }, [searchQuery])
+
+  // Reset to first page when search changes
+  const resetPageOnSearch = (query: string) => {
+    setSearchQuery(query)
+    setCurrentPage(1)
+  }
+
+  // Calculate pagination based on filtered results
+  const totalPages = Math.ceil(filteredStartups.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentStartups = DUMMY_SAVED.slice(startIndex, endIndex)
+  const currentStartups = filteredStartups.slice(startIndex, endIndex)
 
   const handleSave = (startupId: string) => {
     setSavedStartups((prev) => {
@@ -40,13 +73,76 @@ export default function SavedListing() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Search is handled by the useMemo hook above
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-blue-100">
-      {/* Header */}
-      <div className="container mx-auto px-6 py-12">
-        {/* Startup Cards */}
-        <div className="space-y-8 mb-16">
-          {currentStartups.map((startup, index) => (
+    <div className="space-y-8 p-6">
+      {/* Search and Add Button */}
+      <Card className="shadow-none border-0">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="flex-1 w-full sm:max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="search"
+                  placeholder="Search startups by name, location, or stage..."
+                  className="pl-10 pr-4 py-3 w-full bg-gray-50 border-sky-100 focus-visible:ring-sky-500 rounded-xl"
+                  value={searchQuery}
+                  onChange={(e) => resetPageOnSearch(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => resetPageOnSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+
+          {/* Results Info */}
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-sky-100">
+            <div className="text-sm text-gray-600">
+              {searchQuery ? (
+                <>
+                  Found <span className="font-semibold text-sky-600">{filteredStartups.length}</span> startup
+                  {filteredStartups.length !== 1 ? "s" : ""} matching &quot;{searchQuery}&quot;
+                  {filteredStartups.length > 0 && (
+                    <>
+                      {" "}
+                      • Showing{" "}
+                      <span className="font-semibold text-sky-600">
+                        {startIndex + 1}-{Math.min(endIndex, filteredStartups.length)}
+                      </span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  Showing{" "}
+                  <span className="font-semibold text-sky-600">
+                    {startIndex + 1}-{Math.min(endIndex, filteredStartups.length)}
+                  </span>{" "}
+                  of <span className="font-semibold text-sky-600">{filteredStartups.length}</span> startups
+                </>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Startup Cards */}
+      <div className="space-y-6">
+        {currentStartups.length > 0 ? (
+          currentStartups.map((startup, index) => (
             <div
               key={startup.id}
               className="animate-in slide-in-from-bottom-4 duration-700"
@@ -54,78 +150,87 @@ export default function SavedListing() {
             >
               <StartupCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
             </div>
-          ))}
-        </div>
+          ))
+        ) : (
+          <Card className="bg-gray-50 border-gray-200">
+            <CardContent className="p-12 text-center">
+              <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-600 mb-2">No startups found</h3>
+              <p className="text-gray-500 mb-4">
+                No startups match your search for &quot;{searchQuery}&quot;. Try adjusting your search terms.
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => resetPageOnSearch("")}
+                className="border-sky-200 text-sky-600 hover:bg-sky-50"
+              >
+                Clear search
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mb-8">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-sky-200/50 p-3">
-              <Pagination>
-                <PaginationContent className="gap-2">
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e: { preventDefault: () => void }) => {
-                        e.preventDefault()
-                        if (currentPage > 1) handlePageChange(currentPage - 1)
-                      }}
-                      className={`rounded-xl transition-all duration-200 ${
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
-                      }`}
-                    />
-                  </PaginationItem>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <div className="">
+            <Pagination>
+              <PaginationContent className="gap-2">
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      if (currentPage > 1) handlePageChange(currentPage - 1)
+                    }}
+                    className={`rounded-xl transition-all duration-200 ${
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
+                    }`}
+                  />
+                </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handlePageChange(page)
-                        }}
-                        isActive={currentPage === page}
-                        className={`rounded-xl transition-all duration-200 ${
-                          currentPage === page
-                            ? "bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg hover:shadow-xl"
-                            : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
-                        }`}
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-
-                  <PaginationItem>
-                    <PaginationNext
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
                       href="#"
                       onClick={(e) => {
                         e.preventDefault()
-                        if (currentPage < totalPages) handlePageChange(currentPage + 1)
+                        handlePageChange(page)
                       }}
+                      isActive={currentPage === page}
                       className={`rounded-xl transition-all duration-200 ${
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
+                        currentPage === page
+                          ? "bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg hover:shadow-xl"
                           : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
                       }`}
-                    />
+                    >
+                      {page}
+                    </PaginationLink>
                   </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        )}
+                ))}
 
-        {/* Results Summary */}
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm text-sky-700 font-semibold rounded-full py-3 px-6 shadow-lg border border-sky-200/50">
-            <div className="w-2 h-2 bg-sky-500 rounded-full animate-pulse"></div>
-            Showing {startIndex + 1}-{Math.min(endIndex, DUMMY_SAVED.length)} of {DUMMY_SAVED.length} startups
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      if (currentPage < totalPages) handlePageChange(currentPage + 1)
+                    }}
+                    className={`rounded-xl transition-all duration-200 ${
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
+                    }`}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

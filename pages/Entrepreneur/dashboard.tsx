@@ -2,7 +2,7 @@
 
 import AutoScrollingTrendingProjects from "@/components/Entrepreneur/autochanging-trends"
 import ChartsSection from "@/components/Entrepreneur/chart-section"
-import InvestmentsSection from "@/components/Entrepreneur/investment-section"
+import StartupsSection from "@/components/Entrepreneur/startups-section"
 import ProjectsGrid from "@/components/Entrepreneur/project-grid"
 import StatsCards from "@/components/Entrepreneur/stats-card"
 
@@ -29,7 +29,7 @@ export default function Dashboard() {
         <ProjectsGrid />
 
         {/* Investments Section with Manual Navigation */}
-        <InvestmentsSection />
+        <StartupsSection />
       </div>
     </div>
   )

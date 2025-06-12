@@ -2,7 +2,7 @@
 
 import AutoScrollingTrendingProjects from "@/components/Entrepreneur/autochanging-trends"
 import ChartsSection from "@/components/Entrepreneur/chart-section"
-import InvestmentsSection from "@/components/Entrepreneur/investment-section"
+import InvestmentsSection from "@/components/Entrepreneur/startups-section"
 import ProjectsGrid from "@/components/Entrepreneur/project-grid"
 import StatsCards from "@/components/Entrepreneur/stats-card"
 

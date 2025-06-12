@@ -7,7 +7,7 @@ import { useState, useEffect } from "react"
 import { STAT_DATA, StatCard } from "@/constants"
 
 // Component to render the star rating
-const StarRating = ({ rating }: { rating: number }) => {
+export const StarRating = ({ rating }: { rating: number }) => {
   // Calculate the number of full and partial stars
   const fullStars = Math.floor(rating)
   const partialStar = rating % 1

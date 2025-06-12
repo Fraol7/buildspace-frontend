@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RISING_PROJECTS_DATA, SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL, MVP_TOTAL, SEED_TOTAL, FINAL_TOTAL } from "@/constants";
+import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
 import {
   Area,
   AreaChart,
   CartesianGrid,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -16,13 +14,13 @@ const ChartsSection = () => {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
       {/* Startup Progress Section */}
-      <Card className="shadow-lg hover:shadow-xl transition-shadow">
+      {/* <Card className="shadow-lg hover:shadow-xl transition-shadow">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">Startup Progress</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
-            {/* Chart */}
+            
             <div className="col-span-1 md:col-span-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -80,7 +78,7 @@ const ChartsSection = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Legend */}
+           
             <div className="space-y-2">
               <Card className="shadow border border-green-300 flex items-center justify-center">
                 <CardContent className="flex items-center justify-center p-4">
@@ -112,7 +110,7 @@ const ChartsSection = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Total Earning Section */}
       <Card className="shadow-lg hover:shadow-xl transition-shadow">
