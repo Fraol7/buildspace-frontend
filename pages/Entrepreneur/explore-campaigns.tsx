@@ -567,8 +567,8 @@ export default function ExploreCampaigns() {
               </Button>
             </div>
           ) : (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
-              <div className="overflow-x-auto">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-x-auto">
+              <div className="min-w-full">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -581,7 +581,7 @@ export default function ExploreCampaigns() {
                   </TableHeader>
                   <TableBody>
                     {paginatedCampaigns.map((campaign) => (
-                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id} style={{ display: 'contents' }}>
                         <TableRow
                           key={campaign.id}
                           className={`cursor-pointer transition-all duration-200 ${hoveredRow === campaign.id
