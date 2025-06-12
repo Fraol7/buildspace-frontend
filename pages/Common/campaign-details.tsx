@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import {
-  ArrowLeft,
   Bookmark,
   BookmarkCheck,
   Star,
@@ -31,6 +30,7 @@ import {
 import { Progress } from "@/components/ui/progress"
 import { useParams } from "next/navigation"
 import React from "react"
+import Image from "next/image"
 
 // Sample campaign data with appropriate logos
 const campaignData = {
@@ -169,10 +169,10 @@ export default function CampaignDetails() {
     setTimeout(() => setShowSuccessMessage(false), 5000)
   }
 
-  const handleGoBack = () => {
-    console.log("Navigating back to campaigns list")
-    // In a real app, this would navigate back to the campaigns list
-  }
+  // const handleGoBack = () => {
+  //   console.log("Navigating back to campaigns list")
+  //   // In a real app, this would navigate back to the campaigns list
+  // }
 
   return (
     <div className="min-h-screen bg-white">
@@ -206,10 +206,14 @@ export default function CampaignDetails() {
           <div className="absolute inset-0 bg-gradient-to-br from-sky-100 via-sky-200 to-sky-300">
             {/* Logo as background */}
             <div className="absolute inset-0 opacity-10 flex items-center justify-center">
-              <img
+              <Image
                 src={campaignData.logo || "/placeholder.svg"}
                 alt=""
                 className="w-full h-full object-cover object-center scale-150 blur-sm"
+                width={500} // Provide an appropriate width
+                height={500} // Provide an appropriate height
+                placeholder="blur" // Optional: Adds a placeholder for lazy-loaded images
+                blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-sky-500/10 via-transparent to-sky-500/20"></div>
@@ -226,10 +230,15 @@ export default function CampaignDetails() {
           <div className="absolute inset-0 flex items-center p-6 z-20">
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-xl overflow-hidden bg-white shadow-lg ring-2 ring-white/30">
-                <img
+                <Image
                   src={campaignData.logo || "/placeholder.svg"}
                   alt={`${campaignData.title} logo`}
                   className="w-full h-full object-cover"
+                  width={500} // Adjust width as per requirement
+                  height={500} // Adjust height as per requirement
+                  priority // Optional: Ensures critical images load faster
+                  placeholder="blur" // Optional: Adds a low-quality blur placeholder
+                  blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder
                 />
               </div>
               <div>
@@ -312,10 +321,15 @@ export default function CampaignDetails() {
               <CardContent>
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 shadow-lg">
-                    <img
+                    <Image
                       src={campaignData.founderAvatar || "/placeholder.svg"}
                       alt={campaignData.founderName}
                       className="w-full h-full object-cover"
+                      width={100} // Adjust width as per requirement
+                      height={100} // Adjust height as per requirement
+                      priority // Optional: Ensures critical images load faster
+                      placeholder="blur" // Optional: Adds a low-quality blur placeholder
+                      blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder for blur effect
                     />
                   </div>
                   <div className="flex-1">

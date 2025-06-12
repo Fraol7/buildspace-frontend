@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { allCampaigns } from '@/constants'
+import Image from "next/image"
 
 const ITEMS_PER_PAGE = 6
 
@@ -173,10 +174,12 @@ export default function EntrepreneurCampaigns() {
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                      <img
+                      <Image
                         src={campaign.logo || "/placeholder.svg"}
                         alt={`${campaign.title} logo`}
-                        className="w-full h-full object-cover"
+                        width={48}    // set to container size or desired width
+                        height={48}   // set to container size or desired height
+                        className="object-cover"
                       />
                     </div>
                     <div className="flex-1 pr-16">

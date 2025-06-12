@@ -30,6 +30,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
   availableSkills = [],
   availableLocations = [],
 }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const defaultProfile: Profile = {
     fullName: "",
     bio: "",

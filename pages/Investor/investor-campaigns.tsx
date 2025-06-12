@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
+import Image from "next/image"
 
 // Dummy data for investor funded campaigns (expanded for pagination)
 const allFundedCampaigns = [
@@ -324,10 +325,12 @@ export default function InvestorCampaigns() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                    <img
+                    <Image
                       src={campaign.logo || "/placeholder.svg"}
                       alt={`${campaign.title} logo`}
-                      className="w-full h-full object-cover"
+                      layout="fill"
+                      objectFit="cover"
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex-1 pr-16">

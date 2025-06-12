@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 // import { useParams } from "next/navigation"
+import Image from "next/image"
 
 // Sample campaign data for owner view
 const campaignData = {
@@ -118,10 +119,12 @@ export default function CampaignOwnerDashboard() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shadow-lg">
-                <img
+                <Image
                   src={campaignData.logo || "/placeholder.svg"}
                   alt={`${campaignData.title} logo`}
-                  className="w-full h-full object-cover"
+                  className="object-cover"
+                  width={100}   // adjust width as needed
+                  height={100}  // adjust height as needed
                 />
               </div>
               <div>
