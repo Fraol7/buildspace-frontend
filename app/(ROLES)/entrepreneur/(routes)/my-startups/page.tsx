@@ -1,5 +1,5 @@
 import React from 'react'
-import StartupDashboard from '@/pages/Entrepreneur/startup-dashboard';
+import StartupDashboard from '@/pages/Common/startup-dashboard';
 
 const page = () => {
   return (
