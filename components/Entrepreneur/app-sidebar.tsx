@@ -33,6 +33,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useProfile } from "@/lib/profile-context"
+import { usePathname } from "next/navigation"
 import ProfileDialog from "@/components/Profile/ProfileEdit"
 import { EntrepreneurNavMain } from "@/constants"
 import Logo from "@/components/Common/Logo"
@@ -71,11 +72,30 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
     email: userProfile?.email || defaultProfile.email,
   }
 
-  const [activeItem, setActiveItem] = useState("dashboard")
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
+  const pathname = usePathname()
 
-  const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId)
+  // Helper function to check if a menu item is active
+  const isItemActive = (url: string, itemId: string, isCollapsible: boolean = false) => {
+    if (!pathname) return false;
+    
+    // For dashboard, only match exact path
+    if (itemId === 'dashboard') {
+      return pathname === url;
+    }
+    
+    // For collapsible items, only match exact path (not children)
+    if (isCollapsible) {
+      return pathname === url;
+    }
+    
+    // For other items, check if the current path exactly matches the item's URL
+    // or if it's a direct child of the item's URL (one level deep)
+    const isExactMatch = pathname === url;
+    const isDirectChild = pathname.startsWith(url + '/') && 
+                         pathname.substring(url.length + 1).split('/').length === 1;
+    
+    return isExactMatch || isDirectChild;
   }
 
   return (
@@ -103,9 +123,7 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        onClick={() => handleItemClick(item.id)}
-                        isActive={activeItem === item.id}
-                        className={activeItem === item.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
+                        // isActive={isItemActive(item.url, item.id, true)}
                       >
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
@@ -118,9 +136,8 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                     <Link href={item.url}>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        isActive={activeItem === item.id}
-                        onClick={() => handleItemClick(item.id)}
-                        className={activeItem === item.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
+                        isActive={isItemActive(item.url, item.id)}
+                        className={isItemActive(item.url, item.id) ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
                       >
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
@@ -136,9 +153,8 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                             <Link href={subItem.url}>
                               <SidebarMenuSubButton
                                 asChild
-                                isActive={activeItem === subItem.id}
-                                onClick={() => handleItemClick(subItem.id)}
-                                className={activeItem === subItem.id ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
+                                isActive={isItemActive(subItem.url, subItem.id)}
+                                className={isItemActive(subItem.url, subItem.id) ? "bg-blue-400 text-white hover:bg-blue-500" : ""}
                               >
                                 <span>{subItem.title}</span>
                               </SidebarMenuSubButton>
