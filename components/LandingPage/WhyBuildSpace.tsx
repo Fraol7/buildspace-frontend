@@ -17,7 +17,7 @@ const FeatureCard = ({ title, description, linkText }: { title: string; descript
           {description}
         </p>
         <Button asChild variant="link" className="px-0 text-blue-600 hover:text-white group-hover:text-white transition-colors duration-300">
-          <Link href="#">
+          <Link href="/auth/signup">
             {linkText} →
           </Link>
         </Button>

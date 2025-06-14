@@ -76,7 +76,7 @@ const Header = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectItem value="eng">English</SelectItem>
-                  <SelectItem value="amh">Amharic</SelectItem>
+                  {/* <SelectItem value="amh">Amharic</SelectItem> */}
                 </SelectGroup>
               </SelectContent>
             </Select>

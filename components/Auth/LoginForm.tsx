@@ -63,7 +63,7 @@ export default function LoginForm() {
           {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-2">
-            <Label htmlFor="remember-me">Remember Me</Label>
+              <Label htmlFor="remember-me">Remember Me</Label>
               <Switch id="remember-me" />
             </div>
             <a href="#" className="text-blue-600 hover:underline">
@@ -81,23 +81,23 @@ export default function LoginForm() {
             </Link>
           </div>
 
-            {/* Divider */}
-            <div className="flex items-center justify-center space-x-2">
-              <div className="h-px bg-gray-300 flex-grow" />
-              <span className="text-gray-500 text-sm">or</span>
-              <div className="h-px bg-gray-300 flex-grow" />
-            </div>
+          {/* Divider */}
+          <div className="flex items-center justify-center space-x-2">
+            <div className="h-px bg-gray-300 flex-grow" />
+            <span className="text-gray-500 text-sm">or</span>
+            <div className="h-px bg-gray-300 flex-grow" />
+          </div>
 
-            {/* Google Sign In */}
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
-              >
-                <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
-                <span className="text-sm text-gray-700">Sign in with Google</span>
-              </button>
-            </div>
+          {/* Google Sign In */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
+            >
+              <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
+              <span className="text-sm text-gray-700">Sign in with Google</span>
+            </button>
+          </div>
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
