@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import RoleSelector from "./RoleSelector";
+import { toast } from "sonner";
 
 interface SignUpFormData {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: string;
   password: string;
@@ -13,8 +16,11 @@ interface SignUpFormData {
 }
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<SignUpFormData>({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     role: "",
     password: "",
@@ -26,9 +32,47 @@ export default function SignUpForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!formData.role) {
+      toast.error("Please select a role");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      // TODO: Replace with your actual signup API call
+      // const response = await fetch('/api/auth/signup', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(formData)
+      // });
+      // const data = await response.json();
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Redirect based on role
+      if (formData.role === 'investor') {
+        // For investors, first go to profile setup
+        router.push('/profile-setup?role=investor');
+      } else {
+        // For entrepreneurs, go directly to dashboard after signup
+        router.push('/profile-setup?role=entrepreneur');
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+      toast.error("Signup failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,21 +80,38 @@ export default function SignUpForm() {
       <div className="rounded-lg p-4 w-[70%]">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up</h1>
         <form onSubmit={handleSubmit} className="space-y-2">
-          {/* Full Name */}
-          <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="mt-1 text-sm w-full border border-gray-300 rounded-full shadow-sm px-4 py-2 focus:ring-blue-100 focus:border-blue-100"
-              placeholder="Enter your full name"
-              required
-            />
+          {/* Name Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="mt-1 text-sm w-full border border-gray-300 rounded-full shadow-sm px-4 py-2 focus:ring-blue-100 focus:border-blue-100"
+                placeholder="First name"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="mt-1 text-sm w-full border border-gray-300 rounded-full shadow-sm px-4 py-2 focus:ring-blue-100 focus:border-blue-100"
+                placeholder="Last name"
+                required
+              />
+            </div>
           </div>
 
           {/* Email */}
@@ -75,7 +136,10 @@ export default function SignUpForm() {
             <label htmlFor="role" className="block text-sm font-medium text-gray-700">
               Role
             </label>
-            <RoleSelector />
+            <RoleSelector 
+              value={formData.role}
+              onChange={(value) => setFormData(prev => ({ ...prev, role: value }))}
+            />
           </div>
 
           {/* Password */}
@@ -116,9 +180,12 @@ export default function SignUpForm() {
           <div className="flex flex-col items-center space-y-4">
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700"
+              disabled={isLoading}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
+                isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
             >
-              Sign Up
+              {isLoading ? 'Signing up...' : 'Sign up'}
             </button>
             <button
               type="button"

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Search, Filter, ChevronDown, Calendar, Users, TrendingUp, Star, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +11,6 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-import Image from "next/image"
 
 // Dummy data for explore campaigns
 const allCampaigns = [
@@ -598,9 +598,11 @@ export default function ExploreCampaigns() {
                           <TableCell className="py-4">
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-gray-50">
-                                <img
+                                <Image
                                   src={campaign.logo || "/placeholder.svg"}
                                   alt={`${campaign.title} logo`}
+                                  width={48}
+                                  height={48}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
