@@ -219,6 +219,7 @@ export default function StartupSetup() {
       console.error("Error creating project:", error)
       toast.error("Failed to create startup. Please try again.")
     } finally {
+      console.log("isSubmitting", isSubmitting)
       setIsSubmitting(false)
       setShowConfirmDialog(false)
     }

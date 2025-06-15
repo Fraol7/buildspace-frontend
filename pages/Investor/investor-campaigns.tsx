@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Calendar, DollarSign, Eye, Target, TrendingUp, Users, Star, ChevronLeft, ChevronRight } from "lucide-react"
+import { Calendar, DollarSign, Target, TrendingUp, Users, Star, ChevronLeft, ChevronRight } from "lucide-react"
 import PaymentPopup from "@/pages/Common/payment-popup"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -186,12 +186,12 @@ export default function InvestorCampaigns() {
     // In real app: router.push(`/founders/${founderName}`)
   }
 
-  const handleInvestMore = (campaignId: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    // Dummy navigation to investment page
-    console.log(`Investing more in campaign: ${campaignId}`)
-    // In real app: router.push(`/invest/${campaignId}`)
-  }
+  // const handleInvestMore = (campaignId: string, e: React.MouseEvent) => {
+  //   e.stopPropagation()
+  //   // Dummy navigation to investment page
+  //   console.log(`Investing more in campaign: ${campaignId}`)
+  //   // In real app: router.push(`/invest/${campaignId}`)
+  // }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -407,10 +407,10 @@ export default function InvestorCampaigns() {
                         campaignTitle={campaign.title}
                         amount={campaign.minimumFunding}
                         buttonLabel="Invest More"
-                        onPaymentSuccess={() => {
-                          console.log(`Successfully invested in ${campaign.title}`)
+                        // onPaymentSuccess={() => {
+                        //   console.log(`Successfully invested in ${campaign.title}`)
                           // You can add additional success handling here
-                        }}
+                        // }}
                       >
                         <Button
                           size="sm"

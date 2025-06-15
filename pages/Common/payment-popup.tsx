@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -13,18 +14,29 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { DollarSign  } from "lucide-react"
+import { DollarSign } from "lucide-react"
 
 interface PaymentPopupProps {
   campaignTitle: string;
   amount: number;
   buttonLabel?: string;
-  onPaymentSuccess?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export default function PaymentPopup({ campaignTitle, amount: initialAmount, buttonLabel, onPaymentSuccess, children }: PaymentPopupProps) {
-  const [amount, setAmount] = useState(initialAmount.toString())
+function PaymentPopupComponent({ 
+  campaignTitle, 
+  amount: initialAmount = 0, 
+  buttonLabel = 'Invest Now',
+  children 
+}: PaymentPopupProps) {
+  const [amount, setAmount] = useState('0')
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Only set initial amount after component mounts to avoid hydration issues
+  useEffect(() => {
+    setIsMounted(true)
+    setAmount(initialAmount?.toString() || '0')
+  }, [initialAmount])
   const [isOpen, setIsOpen] = useState(false)
 
   const handlePayWithChapa = () => {
@@ -43,13 +55,20 @@ export default function PaymentPopup({ campaignTitle, amount: initialAmount, but
     // For example: redirectToChapa(amount)
   }
 
+  // Don't render anything during SSR
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-md p-2">
-          <DollarSign  className="mr-2 h-4 w-4" />
-          {buttonLabel || 'Contribute Now'}
-        </Button>
+        {children || (
+          <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-md p-2">
+            <DollarSign className="mr-2 h-4 w-4" />
+            {buttonLabel}
+          </Button>
+        )}
       </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -84,7 +103,7 @@ export default function PaymentPopup({ campaignTitle, amount: initialAmount, but
               onClick={handlePayWithChapa} 
               className="bg-green-600 hover:bg-green-700"
             >
-              <DollarSign  className="mr-2 h-4 w-4" />
+              <DollarSign className="mr-2 h-4 w-4" />
               Contribute with Chapa
             </Button>
           </DialogFooter>
@@ -92,3 +111,10 @@ export default function PaymentPopup({ campaignTitle, amount: initialAmount, but
       </Dialog>
   )
 }
+
+// Export a dynamic component that only renders on the client side
+const PaymentPopup = dynamic(() => Promise.resolve(PaymentPopupComponent), {
+  ssr: false,
+});
+
+export default PaymentPopup;

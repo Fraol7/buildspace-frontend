@@ -6,7 +6,7 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+// import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +30,7 @@ interface HeaderProps {
 export default function Header({
   userName = "Feven",
   userAvatar,
-  notificationCount = 0,
+  // notificationCount = 0,
   onProfileClick,
   onSettingsClick,
   onNotificationClick,

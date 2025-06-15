@@ -2,9 +2,29 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Building2, FileText, CheckCircle, Upload, Globe, ChevronDown, X, Save } from "lucide-react"
+import type { StaticImageData } from "next/image"
+
+interface FormData {
+  name: string
+  logo: File | null
+  logoUrl: string | StaticImageData
+  tagline: string
+  description: string
+  industries: string[]
+  fundGoal: string
+  startupStage: string
+  location: string
+  amountRaised: string
+  businessModel: string
+  revenue: string
+  website: string
+  [key: string]: string | string[] | File | null | StaticImageData | undefined // Include StaticImageData in the index signature
+}
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -62,18 +82,18 @@ export default function StartupEdit() {
   const [startupId, setStartupId] = useState<string | null>(null)
 
   // Form data
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
-    logo: null as File | null,
+    logo: null,
     logoUrl: "",
     tagline: "",
     description: "",
-    industries: [] as string[],
+    industries: [],
     fundGoal: "",
     startupStage: "",
     location: "",
     amountRaised: "",
-    businessModel: "B2B SaaS", // Default to B2B
+    businessModel: "B2B SaaS",
     revenue: "",
     website: "",
   })
@@ -91,7 +111,29 @@ export default function StartupEdit() {
     "Mature",
   ]
 
-  const industries = [
+  // type Industry =
+  //   | "Technology"
+  //   | "Healthcare"
+  //   | "Finance"
+  //   | "E-commerce"
+  //   | "Education"
+  //   | "Real Estate"
+  //   | "Manufacturing"
+  //   | "Food & Beverage"
+  //   | "Entertainment"
+  //   | "Transportation"
+  //   | "Energy"
+  //   | "Artificial Intelligence"
+  //   | "Blockchain"
+  //   | "Cybersecurity"
+  //   | "Biotechnology"
+  //   | "Renewable Energy"
+  //   | "Logistics"
+  //   | "Retail"
+  //   | "Agriculture"
+  //   | "Other"
+
+  const industries = useMemo(() => [
     "Technology",
     "Healthcare",
     "Finance",
@@ -111,8 +153,8 @@ export default function StartupEdit() {
     "Logistics",
     "Retail",
     "Agriculture",
-    "Other",
-  ]
+    "Other"
+  ], []) // Empty dependency array means this is only computed once
 
   const businessModels = [
     "B2B SaaS",
@@ -194,7 +236,7 @@ export default function StartupEdit() {
       // If no ID, this is a new startup
       setIsLoading(false)
     }
-  }, [])
+  }, [industries])
 
   // Add this after the existing useEffect for fetching project data
   useEffect(() => {
@@ -208,38 +250,44 @@ export default function StartupEdit() {
     }
   }, [])
 
-  // Update formData.industries when selectedIndustries changes
+  // Update form data when selected industries or other industry text changes
   useEffect(() => {
-    let updatedIndustries = [...selectedIndustries]
-
-    // Add "Other" with custom text if it exists
-    if (selectedIndustries.includes("Other") && otherIndustry.trim()) {
-      updatedIndustries = updatedIndustries.filter((i) => i !== "Other")
-      updatedIndustries.push(`Other: ${otherIndustry.trim()}`)
+    // If "Other" is selected and there's custom text, include it
+    const updatedIndustries = [...selectedIndustries]
+    const otherIndex = updatedIndustries.indexOf("Other")
+    
+    if (otherIndex !== -1 && otherIndustry) {
+      updatedIndustries[otherIndex] = `Other: ${otherIndustry}`
     }
-
-    handleInputChange("industries", updatedIndustries)
+    
+    // Update form data with the latest industries
+    setFormData(prev => ({
+      ...prev,
+      industries: updatedIndustries
+    }))
   }, [selectedIndustries, otherIndustry])
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: keyof FormData, value: string | string[] | File | null | StaticImageData) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }))
 
-    // Clear location error when user types in location field
+    // Validate location format when location changes
     if (field === "location") {
-      setLocationError("")
+      validateLocation(value as string)
     }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      handleInputChange("logo", file)
-      // Create a temporary URL for preview
+    if (e.target.files?.[0]) {
+      const file = e.target.files[0]
       const fileUrl = URL.createObjectURL(file)
-      handleInputChange("logoUrl", fileUrl)
+      setFormData(prev => ({
+        ...prev,
+        logo: file,
+        logoUrl: fileUrl
+      }))
     }
   }
 
@@ -257,12 +305,11 @@ export default function StartupEdit() {
     })
   }
 
-  const removeIndustry = (industryToRemove: string) => {
-    if (industryToRemove.startsWith("Other:")) {
-      setSelectedIndustries((prev) => prev.filter((i) => i !== "Other"))
+  const removeIndustry = (industry: string) => {
+    setSelectedIndustries((prev) => prev.filter((i) => i !== industry))
+    // Only clear otherIndustry if the removed industry was "Other"
+    if (industry === "Other") {
       setOtherIndustry("")
-    } else {
-      setSelectedIndustries((prev) => prev.filter((i) => i !== industryToRemove))
     }
   }
 
@@ -278,21 +325,33 @@ export default function StartupEdit() {
     }
   }
 
-  const validateLocation = () => {
+  const validateLocation = (value: string): boolean => {
     // Check if location contains both city and country (separated by comma)
     const locationRegex = /^[A-Za-z\s]+,\s*[A-Za-z\s]+$/
-    if (!locationRegex.test(formData.location)) {
-      setLocationError("Please enter location in format: City, Country")
+    if (value && !locationRegex.test(value)) {
+      setLocationError("Please enter a valid location in the format 'City, Country'")
       return false
+    } else {
+      setLocationError("")
+      return true
     }
-    return true
   }
+  
+  // Initialize location validation
+  useEffect(() => {
+    if (formData.location) {
+      validateLocation(formData.location)
+    }
+  }, [formData.location])
 
   const handleSubmitConfirm = async () => {
-    // Validate location format
-    if (!validateLocation()) {
-      setShowConfirmDialog(false)
-      return
+    // Validate location format if location is provided
+    if (formData.location) {
+      const isValid = validateLocation(formData.location)
+      if (!isValid) {
+        setShowConfirmDialog(false)
+        return
+      }
     }
 
     try {
@@ -497,11 +556,15 @@ export default function StartupEdit() {
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
                         {formData.logo || formData.logoUrl ? (
-                          <img
-                            src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
-                            alt="Logo preview"
-                            className="w-full h-full object-cover"
-                          />
+                          <div className="relative w-full h-full">
+                            <Image
+                              src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
+                              alt="Logo preview"
+                              fill
+                              className="object-cover"
+                              sizes="64px"
+                            />
+                          </div>
                         ) : (
                           <Upload className="w-6 h-6 text-gray-400" />
                         )}
@@ -773,11 +836,15 @@ export default function StartupEdit() {
                   <div className="bg-blue-50 rounded-lg p-6">
                     <div className="flex items-start gap-4">
                       {(formData.logo || formData.logoUrl) && (
-                        <img
-                          src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
-                          alt="Startup logo"
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
+                        <div className="relative w-16 h-16">
+                          <Image
+                            src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
+                            alt="Startup logo"
+                            fill
+                            className="rounded-lg object-cover"
+                            sizes="64px"
+                          />
+                        </div>
                       )}
                       <div className="flex-1">
                         <h3 className="text-xl font-bold text-gray-900 mb-1">{formData.name}</h3>
@@ -914,13 +981,13 @@ export default function StartupEdit() {
                       <p>• Select all industries that apply to your startup</p>
                       <p>• Update your funding goal if your needs have changed</p>
                       <p>• Make sure your startup stage reflects your current progress</p>
-                      <p>• Enter your location in the format "City, Country" for better visibility</p>
+                      <p>• Enter your location in the format &quot;City, Country&quot; for better visibility</p>
                     </>
                   )}
                   {currentStep === 3 && (
                     <>
                       <p>• Review all changes carefully before saving</p>
-                      <p>• You can use the "Save All Changes" button at any time</p>
+                      <p>• You can use the &quot;Save All Changes&quot; button at any time</p>
                       <p>• Your changes will be visible to investors immediately</p>
                     </>
                   )}
