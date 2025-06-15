@@ -12,8 +12,8 @@ import type { Startup } from "@/constants";
 
 interface StartupCardProps {
   startup: Startup
-  isSaved: boolean
-  onSave: (id: string) => void
+  isSaved?: boolean
+  onSave?: (id: string) => void
 }
 
 // Custom Save Icon Component
@@ -51,18 +51,20 @@ export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-sky-50 via-white to-blue-50 opacity-60" />
 
-      {/* Save Button - Floating */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => onSave(startup.id)}
-        className="absolute top-4 right-4 z-10 p-2 h-auto bg-white/80 backdrop-blur-sm hover:bg-white border border-sky-200 hover:border-sky-300 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-      >
-        <SaveIcon
-          filled={isSaved}
-          className={`h-4 w-4 ${isSaved ? "text-sky-600" : "text-gray-500 hover:text-sky-600"} transition-colors`}
-        />
-      </Button>
+      {/* Save Button - Floating (only shown if onSave is provided) */}
+      {onSave && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onSave(startup.id)}
+          className="absolute top-4 right-4 z-10 p-2 h-auto bg-white/80 backdrop-blur-sm hover:bg-white border border-sky-200 hover:border-sky-300 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <SaveIcon
+            filled={isSaved}
+            className={`h-4 w-4 ${isSaved ? "text-sky-600" : "text-gray-500 hover:text-sky-600"} transition-colors`}
+          />
+        </Button>
+      )}
 
       <CardContent className="relative p-0">
         <Link href={`/entrepreneur/startup-details/${startup.id}`} className="block">

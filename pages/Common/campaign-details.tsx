@@ -340,9 +340,9 @@ const CampaignDetailsComponent = () => {
                 </CardContent>
               </Card>
 
-              <Card className="text-center shadow-lg border-0 bg-gradient-to-br from-blue-50 to-blue-100">
+              <Card className="text-center shadow-lg border-0 bg-gradient-to-br from-green-50 to-green-100">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-2xl font-bold text-gray-900 mb-1">{campaignData.backers}</div>
