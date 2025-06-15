@@ -4,8 +4,14 @@ import {
   Network,
   MessageSquare,
   Rocket,
-  Target, LayoutDashboard, CircleDollarSign, Users, ChartCandlestick, Telescope, MessagesSquare
-} from "lucide-react"
+  Target,
+  LayoutDashboard,
+  CircleDollarSign,
+  Users,
+  ChartCandlestick,
+  Telescope,
+  MessagesSquare,
+} from "lucide-react";
 
 export const DEFAULT_SKILLS = [
   "LinkedIn Portfolio",
@@ -47,7 +53,7 @@ export const DEFAULT_SKILLS = [
   "Email Marketing",
   "Brand Management",
   "Public Relations",
-]
+];
 
 export const DEFAULT_LOCATIONS = [
   "Australia - Brisbane, QLD",
@@ -159,24 +165,23 @@ export const DEFAULT_LOCATIONS = [
   "United States - Portland, OR",
   "United States - Raleigh, NC",
   "United States - San Jose, CA",
-  "Remote"
+  "Remote",
 ];
-
 
 export interface FormData {
   // Step 1: Brand Basics
-  logo: string | null
-  startupName: string
-  tagline: string
-  location: string
-  website: string
+  logo: string | null;
+  startupName: string;
+  tagline: string;
+  location: string;
+  website: string;
 
   // Step 2: What You're Building
-  productStage: string
-  fundingRoundType: string
-  startupDescription: string
-  totalRaised: string
-  additionalInfo: string
+  productStage: string;
+  fundingRoundType: string;
+  startupDescription: string;
+  totalRaised: string;
+  additionalInfo: string;
 }
 
 export const INITIAL_PROFILE_DATA = {
@@ -185,7 +190,7 @@ export const INITIAL_PROFILE_DATA = {
   skills: ["LinkedIn Portfolio"],
   address: "",
   avatar: null,
-}
+};
 
 export const INITIAL_EMAIL_ADDRESSES = [
   {
@@ -193,7 +198,7 @@ export const INITIAL_EMAIL_ADDRESSES = [
     email: "feventeaf322@gmail.com",
     addedDate: "1 month ago",
   },
-]
+];
 
 export const INITIAL_FORM_DATA: FormData = {
   logo: null,
@@ -206,7 +211,7 @@ export const INITIAL_FORM_DATA: FormData = {
   startupDescription: "",
   totalRaised: "",
   additionalInfo: "",
-}
+};
 
 export const PRODUCT_STAGES = [
   "💡 Idea",
@@ -214,7 +219,7 @@ export const PRODUCT_STAGES = [
   "🧪 Beta",
   "📢 Launch",
   "📈 Growth",
-  "🌍 Scale"
+  "🌍 Scale",
 ];
 
 export const FUNDING_ROUNDS = [
@@ -223,30 +228,34 @@ export const FUNDING_ROUNDS = [
   "💰 Series A",
   "💵 Series B",
   "🏦 Series C+",
-  "🚫 Not fundraising"
+  "🚫 Not fundraising",
 ];
 
 export const FEATURES = [
   {
     title: "🔍 AI-Powered Investment Insights",
-    description: "Utilize advanced sentiment analysis to make data-driven decisions for your startup.",
-    linkText: "Learn More"
+    description:
+      "Utilize advanced sentiment analysis to make data-driven decisions for your startup.",
+    linkText: "Learn More",
   },
   {
     title: "🤝 Matchmaking That Matters",
-    description: "Launch and manage campaigns seamlessly, connecting with investors worldwide.",
-    linkText: "Learn More"
+    description:
+      "Launch and manage campaigns seamlessly, connecting with investors worldwide.",
+    linkText: "Learn More",
   },
   {
     title: "🚀 Accelerate Startup Growth",
-    description: "Find the perfect investors or startups effortlessly with our AI-driven matchmaking tools.",
-    linkText: "Learn More"
+    description:
+      "Find the perfect investors or startups effortlessly with our AI-driven matchmaking tools.",
+    linkText: "Learn More",
   },
   {
     title: "🌐 A Hub for Collaboration",
-    description: "Collaborate in real-time with like-minded entrepreneurs and investors.",
-    linkText: "Learn More"
-  }
+    description:
+      "Collaborate in real-time with like-minded entrepreneurs and investors.",
+    linkText: "Learn More",
+  },
 ];
 
 export const EntrepreneurNavMain = [
@@ -315,7 +324,7 @@ export const EntrepreneurNavMain = [
     icon: MessageSquare,
     id: "collab-space",
   },
-]
+];
 
 export const InvestorNavMain = [
   {
@@ -538,8 +547,8 @@ export const TRENDING_PROJECTS = [
 export const PROJECTS_GRID = [
   {
     id: "1",
-    name: "EcoTech Solutions",
-    category: "CleanTech",
+    startup_name: "EcoTech Solutions",
+    industry: "CleanTech",
     image: "/images/eco.jpg",
     funding: "$2.4M",
     status: "In Progress",
@@ -614,8 +623,7 @@ export const PROJECTS_GRID = [
     avatar: "/images/Portfolio1.png",
     rating: 4.3,
   },
-]
-
+];
 
 // Mock data for startups
 export const STARTUPS = [
@@ -627,7 +635,7 @@ export const STARTUPS = [
     image: "/images/eco.jpg",
     stage: "Profitable",
     saved: 3,
-    industry: ["ai-tech", "bee-farm", "call-away"]
+    industry: ["ai-tech", "bee-farm", "call-away"],
   },
   {
     id: 2,
@@ -637,7 +645,7 @@ export const STARTUPS = [
     image: "/images/eco.jpg",
     stage: "Profitable",
     saved: 3,
-    industry: ["ai-tech", "bee-farm", "call-away"]
+    industry: ["ai-tech", "bee-farm", "call-away"],
   },
   {
     id: 3,
@@ -647,7 +655,7 @@ export const STARTUPS = [
     image: "/images/eco.jpg",
     stage: "Profitable",
     saved: 3,
-    industry: ["ai-tech", "bee-farm", "call-away"]
+    industry: ["ai-tech", "bee-farm", "call-away"],
   },
   {
     id: 4,
@@ -657,9 +665,9 @@ export const STARTUPS = [
     image: "/images/eco.jpg",
     stage: "Profitable",
     saved: 3,
-    industry: ["ai-tech", "bee-farm", "call-away"]
+    industry: ["ai-tech", "bee-farm", "call-away"],
   },
-]
+];
 
 // Mock data for investments
 export const INVESTMENTS = [
@@ -703,7 +711,7 @@ export const INVESTMENTS = [
     image: "/images/eco.jpg",
     status: "Profitable",
   },
-]
+];
 
 // Mock data for Rising Projects chart
 export const RISING_PROJECTS_DATA = [
@@ -749,7 +757,7 @@ export const RISING_PROJECTS_DATA = [
     Seed: 4,
     Final: 3,
   },
-]
+];
 
 // Mock data for Your Spending chart
 export const SPENDING_DATA = [
@@ -785,21 +793,16 @@ export const SPENDING_DATA = [
     month: "Aug",
     amount: 4800,
   },
-]
+];
 
 // Define types for our stats data
 export interface StatCard {
-  id: string
-  title: string
-  value: string | number
-  change: {
-    value: string
-    trend: "up" | "down" | "neutral"
-    text: string
-  }
-  icon: "dollar" | "trending" | "star"
-  link: string
-  rating?: number // Only used for rating card
+  id: string;
+  title: string;
+  value: string | number;
+  icon: "dollar" | "trending" | "star";
+  link: string;
+  rating?: number; // Only used for rating card
 }
 
 // Dummy data for demonstration
@@ -808,11 +811,6 @@ export const STAT_DATA: StatCard[] = [
     id: "startups",
     title: "Total Startups",
     value: 300,
-    change: {
-      value: "+12%",
-      trend: "up",
-      text: "from last month",
-    },
     icon: "dollar",
     link: "/startups",
   },
@@ -820,11 +818,6 @@ export const STAT_DATA: StatCard[] = [
     id: "earnings",
     title: "Total Earnings",
     value: "$5,000.00",
-    change: {
-      value: "+8%",
-      trend: "up",
-      text: "this quarter",
-    },
     icon: "trending",
     link: "/earnings",
   },
@@ -832,16 +825,11 @@ export const STAT_DATA: StatCard[] = [
     id: "rating",
     title: "Rating",
     value: "3.5/5",
-    change: {
-      value: "",
-      trend: "neutral",
-      text: "",
-    },
     icon: "star",
     link: "/ratings",
     rating: 3.5,
   },
-]
+];
 
 import type { User } from "@/types/user";
 
@@ -1285,28 +1273,28 @@ export const sampleUsers: User[] = [
     address: "Singapore",
     role: "Investor",
     totalInvestment: "$38.9M",
-  }
-]
+  },
+];
 
 interface Entrepreneur {
-  id: string
-  name: string
-  avatar: string
-  rating: number
+  id: string;
+  name: string;
+  avatar: string;
+  rating: number;
 }
 
 export interface Startup {
-  id: string
-  title: string
-  logo: string
-  description: string
-  location: string
-  stage: string
-  badges: string[]
-  entrepreneur: Entrepreneur
-  investedAmount: number
-  requiredInvestment: number
-  slug: string
+  id: string;
+  title: string;
+  logo: string;
+  description: string;
+  location: string;
+  stage: string;
+  badges: string[];
+  entrepreneur: Entrepreneur;
+  investedAmount: number;
+  requiredInvestment: number;
+  slug: string;
 }
 
 export const DUMMY_SAVED: Startup[] = [
@@ -1347,7 +1335,7 @@ export const DUMMY_SAVED: Startup[] = [
     investedAmount: 800000,
     requiredInvestment: 2000000,
     slug: "healthai",
-  }
+  },
 ];
 
 export const DUMMY_STARTUPS: Startup[] = [
@@ -1579,8 +1567,7 @@ export const DUMMY_STARTUPS: Startup[] = [
     requiredInvestment: 9000000,
     slug: "retail-vision",
   },
-]
-
+];
 
 // Dummy data for entrepreneur campaigns (expanded for pagination)
 export const allCampaigns = [
@@ -1614,7 +1601,8 @@ export const allCampaigns = [
     id: "STARTUP003",
     title: "Sustainable Fashion Marketplace",
     logo: "/images/Portfolio22.png",
-    description: "Connecting eco-conscious consumers with sustainable fashion brands and second-hand luxury items.",
+    description:
+      "Connecting eco-conscious consumers with sustainable fashion brands and second-hand luxury items.",
     targetAmount: 10000,
     amountRaised: 10000,
     minimumFunding: 25,
@@ -1626,7 +1614,8 @@ export const allCampaigns = [
     id: "STARTUP004",
     title: "Urban Farming Solutions",
     logo: "/images/Portfolio22.png",
-    description: "Vertical farming kits for urban apartments, making fresh produce accessible in city environments.",
+    description:
+      "Vertical farming kits for urban apartments, making fresh produce accessible in city environments.",
     targetAmount: 8000,
     amountRaised: 3200,
     minimumFunding: 75,
@@ -1686,7 +1675,7 @@ export const allCampaigns = [
     status: "Active",
     backers: 168,
   },
-]
+];
 
 // Dummy data for explore campaigns
 const allCampaignsTable = [
@@ -1728,7 +1717,8 @@ const allCampaignsTable = [
     id: "CAMP003",
     title: "Sustainable Fashion Marketplace",
     logo: "/images/Portfolio2.png",
-    description: "Connecting eco-conscious consumers with sustainable fashion brands and second-hand luxury items.",
+    description:
+      "Connecting eco-conscious consumers with sustainable fashion brands and second-hand luxury items.",
     targetAmount: 10000,
     amountRaised: 10000,
     minimumFunding: 25,
@@ -1744,7 +1734,8 @@ const allCampaignsTable = [
     id: "CAMP004",
     title: "Urban Farming Solutions",
     logo: "/images/Portfolio2.png",
-    description: "Vertical farming kits for urban apartments, making fresh produce accessible in city environments.",
+    description:
+      "Vertical farming kits for urban apartments, making fresh produce accessible in city environments.",
     targetAmount: 8000,
     amountRaised: 3200,
     minimumFunding: 75,
@@ -1845,7 +1836,8 @@ const allCampaignsTable = [
     id: "CAMP010",
     title: "Sustainable Food Delivery",
     logo: "/images/Portfolio2.png",
-    description: "Eco-friendly food delivery service using electric vehicles and biodegradable packaging solutions.",
+    description:
+      "Eco-friendly food delivery service using electric vehicles and biodegradable packaging solutions.",
     targetAmount: 22000,
     amountRaised: 18700,
     minimumFunding: 120,
@@ -1891,7 +1883,7 @@ const allCampaignsTable = [
     founderAvatar: "/images/Portfolio22.png",
     founderRating: 4.7,
   },
-]
+];
 
 export const CROWDFUNDING_TOTAL = "12,345.78"; // Dummy data for Crowdfunding
 export const INVEST_TOTAL = "2,050.50"; // Dummy data for Invest

@@ -1,21 +1,49 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import { getSession, signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
-    console.log({ email, password });
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (res?.ok) {
+      const session = await getSession();
+
+      const role = (session?.user as { role?: string })?.role;
+
+      if (role === "startup") {
+        router.push("/entrepreneur");
+      } else if (role === "investor") {
+        router.push("/investor");
+      }
+    } else {
+      toast({
+        title: "Failed to login",
+        description: "Please check your connection and try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -43,7 +71,7 @@ export default function LoginForm() {
             <label className="text-sm text-gray-600">Password</label>
             <div className="relative flex flex-row items-center justify-between">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="********"
@@ -63,7 +91,7 @@ export default function LoginForm() {
           {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-2">
-            <Label htmlFor="remember-me">Remember Me</Label>
+              <Label htmlFor="remember-me">Remember Me</Label>
               <Switch id="remember-me" />
             </div>
             <Link href="/forgot-password" className="text-blue-600 hover:underline">
@@ -73,35 +101,40 @@ export default function LoginForm() {
 
           {/* Login Button */}
           <div className="flex flex-col items-center">
-            <Link
-              href="/entrepreneur"
+            <Button
+              type="submit"
               className="w-[60%] bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md text-center transition duration-300"
             >
               Login
-            </Link>
+            </Button>
           </div>
 
-            {/* Divider */}
-            <div className="flex items-center justify-center space-x-2">
-              <div className="h-px bg-gray-300 flex-grow" />
-              <span className="text-gray-500 text-sm">or</span>
-              <div className="h-px bg-gray-300 flex-grow" />
-            </div>
+          {/* Divider */}
+          <div className="flex items-center justify-center space-x-2">
+            <div className="h-px bg-gray-300 flex-grow" />
+            <span className="text-gray-500 text-sm">or</span>
+            <div className="h-px bg-gray-300 flex-grow" />
+          </div>
 
-            {/* Google Sign In */}
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
-              >
-                <Image src="/icons/google.svg" alt="Google" width={20} height={20} />
-                <span className="text-sm text-gray-700">Sign in with Google</span>
-              </button>
-            </div>
+          {/* Google Sign In */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
+            >
+              <Image
+                src="/icons/google.svg"
+                alt="Google"
+                width={20}
+                height={20}
+              />
+              <span className="text-sm text-gray-700">Sign in with Google</span>
+            </button>
+          </div>
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
-            Don&apos;t have an account?{' '}
+            Don&apos;t have an account?{" "}
             <a href="/auth/signup" className="text-blue-600 hover:underline">
               Sign Up
             </a>

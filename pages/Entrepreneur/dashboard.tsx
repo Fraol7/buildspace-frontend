@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import AutoScrollingTrendingProjects from "@/components/Common/autochanging-trends"
-import ChartsSection from "@/components/Entrepreneur/chart-section"
-import StartupsSection from "@/components/Entrepreneur/startups-section"
-import ProjectsGrid from "@/components/Entrepreneur/project-grid"
-import StatsCards from "@/components/Entrepreneur/stats-card"
+import AutoScrollingTrendingProjects from "@/components/Common/autochanging-trends";
+import ChartsSection from "@/components/Entrepreneur/chart-section";
+import StartupsSection from "@/components/Entrepreneur/startups-section";
+import ProjectsGrid from "@/components/Entrepreneur/project-grid";
+import StatsCards from "@/components/Entrepreneur/stats-card";
 
 export default function Dashboard() {
   // This function could be replaced with a data fetching hook in the future
@@ -20,17 +20,17 @@ export default function Dashboard() {
         <AutoScrollingTrendingProjects />
 
         {/* Stats Cards */}
-        <StatsCards />
+        {/* <StatsCards /> */}
 
         {/* Charts Section */}
-        <ChartsSection />
+        {/* <ChartsSection /> */}
 
         {/* Projects Grid */}
-        <ProjectsGrid />
+        {/* <ProjectsGrid /> */}
 
         {/* Investments Section with Manual Navigation */}
         <StartupsSection />
       </div>
     </div>
-  )
+  );
 }
