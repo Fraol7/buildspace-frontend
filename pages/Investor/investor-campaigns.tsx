@@ -199,7 +199,7 @@ export default function InvestorCampaigns() {
 
   if (allFundedCampaigns.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white md:m-4 rounded-lg">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900">My Investments</h1>
@@ -229,7 +229,7 @@ export default function InvestorCampaigns() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white md:m-4 rounded-lg">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">

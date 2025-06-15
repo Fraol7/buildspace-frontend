@@ -166,9 +166,9 @@ export default function Component() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 m-4 rounded-lg">
       {/* Enhanced Clean Header Section */}
-      <div className="relative bg-gradient-to-r p-4 from-blue-100 to-indigo-100 border-b border-blue-200 overflow-hidden">
+      <div className="relative bg-gradient-to-r p-4 from-gray-100 to-blue-100 border-b border-blue-200 overflow-hidden">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-40">
           <div className="absolute top-10 left-10 w-32 h-32 bg-blue-300/30 rounded-full blur-xl"></div>
