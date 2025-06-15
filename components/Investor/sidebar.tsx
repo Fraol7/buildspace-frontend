@@ -88,7 +88,7 @@ export function InvestorSidebar() {
                           </a>
                         </SidebarMenuButton>
                         <SidebarMenuButton asChild>
-                          <a href="/investor/campaigns">
+                          <a href="/investor/explore-campaigns">
                             <span>Campaigns</span>
                           </a>
                         </SidebarMenuButton>

@@ -1,13 +1,137 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
-import { Calendar, DollarSign, Eye, Target, Plus, Users, ChevronLeft, ChevronRight } from "lucide-react"
+import { Calendar, DollarSign, Target, TrendingUp, Users, Star, ChevronLeft, ChevronRight } from "lucide-react"
+import PaymentPopup from "@/pages/Common/payment-popup"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-import { allCampaigns } from '@/constants'
 import Image from "next/image"
+
+// Dummy data for investor funded campaigns (expanded for pagination)
+const allFundedCampaigns = [
+  {
+    id: "STARTUP005",
+    title: "Green Energy Storage Solutions",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Next-generation battery technology for renewable energy storage in residential and commercial applications.",
+    targetAmount: 50000,
+    amountRaised: 35000,
+    minimumFunding: 200,
+    endDate: "2024-08-15",
+    status: "Active",
+    backers: 175,
+    myContribution: 1500,
+    founderName: "Sarah Chen",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.8,
+  },
+  {
+    id: "STARTUP006",
+    title: "Mental Health AI Assistant",
+    logo: "/images/Portfolio22.png",
+    description:
+      "AI-powered mental health support platform providing 24/7 personalized guidance and therapy resources.",
+    targetAmount: 30000,
+    amountRaised: 28500,
+    minimumFunding: 100,
+    endDate: "2024-07-20",
+    status: "Active",
+    backers: 285,
+    myContribution: 750,
+    founderName: "Dr. Michael Rodriguez",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.9,
+  },
+  {
+    id: "STARTUP008",
+    title: "AR Learning Tools for Kids",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Augmented reality educational tools that make learning interactive and engaging for children aged 6-12.",
+    targetAmount: 18000,
+    amountRaised: 12600,
+    minimumFunding: 75,
+    endDate: "2024-09-01",
+    status: "Active",
+    backers: 168,
+    myContribution: 300,
+    founderName: "Emma Wilson",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.6,
+  },
+  {
+    id: "STARTUP009",
+    title: "Smart Home Security System",
+    logo: "/images/Portfolio22.png",
+    description:
+      "AI-powered home security with facial recognition, smart alerts, and integration with existing smart home devices.",
+    targetAmount: 40000,
+    amountRaised: 31200,
+    minimumFunding: 250,
+    endDate: "2024-08-25",
+    status: "Active",
+    backers: 124,
+    myContribution: 1000,
+    founderName: "James Park",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.5,
+  },
+  {
+    id: "STARTUP010",
+    title: "Sustainable Food Delivery",
+    logo: "/images/Portfolio22.png",
+    description: "Eco-friendly food delivery service using electric vehicles and biodegradable packaging solutions.",
+    targetAmount: 22000,
+    amountRaised: 18700,
+    minimumFunding: 120,
+    endDate: "2024-08-30",
+    status: "Active",
+    backers: 156,
+    myContribution: 800,
+    founderName: "Maria Garcia",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.4,
+  },
+  {
+    id: "STARTUP011",
+    title: "Wearable Health Monitor",
+    logo: "/images/Portfolio22.png",
+    description:
+      "Advanced health monitoring wearable with continuous tracking of vital signs and early disease detection.",
+    targetAmount: 35000,
+    amountRaised: 21000,
+    minimumFunding: 180,
+    endDate: "2024-09-15",
+    status: "Active",
+    backers: 117,
+    myContribution: 900,
+    founderName: "David Kim",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.7,
+  },
+  {
+    id: "STARTUP012",
+    title: "Sustainable Water Purifier",
+    logo: "/images/Portfolio22.png",
+    description: "Solar-powered water purification system for regions with limited access to clean drinking water.",
+    targetAmount: 28000,
+    amountRaised: 19600,
+    minimumFunding: 140,
+    endDate: "2024-08-20",
+    status: "Active",
+    backers: 140,
+    myContribution: 700,
+    founderName: "Priya Sharma",
+    founderAvatar: "/images/Portfolio22.png",
+    founderRating: 4.8,
+  },
+]
 
 const ITEMS_PER_PAGE = 6
 
@@ -15,9 +139,9 @@ export default function EntrepreneurCampaigns() {
   const [currentPage, setCurrentPage] = useState(1)
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
 
-  const totalPages = Math.ceil(allCampaigns.length / ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(allFundedCampaigns.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const campaigns = allCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  const fundedCampaigns = allFundedCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -46,40 +170,57 @@ export default function EntrepreneurCampaigns() {
       : "bg-blue-100 text-blue-600 border-blue-200"
   }
 
+  const totalInvested = allFundedCampaigns.reduce((sum, campaign) => sum + campaign.myContribution, 0)
+  const activeCampaigns = allFundedCampaigns.filter((c) => c.status === "Active").length
+
   const handleCampaignClick = (campaignId: string) => {
-    console.log(campaignId, "hello")
+    // Dummy navigation to campaign details
+    console.log(`Navigating to campaign details: ${campaignId}`)
+    // In real app: router.push(`/campaigns/${campaignId}`)
   }
+
+  const handleFounderClick = (founderName: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    // Dummy navigation to founder profile
+    console.log(`Navigating to founder profile: ${founderName}`)
+    // In real app: router.push(`/founders/${founderName}`)
+  }
+
+  // const handleInvestMore = (campaignId: string, e: React.MouseEvent) => {
+  //   e.stopPropagation()
+  //   // Dummy navigation to investment page
+  //   console.log(`Investing more in campaign: ${campaignId}`)
+  //   // In real app: router.push(`/invest/${campaignId}`)
+  // }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
 
-  if (allCampaigns.length === 0) {
+  if (allFundedCampaigns.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">My Campaigns</h1>
-            <p className="text-gray-600 mt-2">Manage and track your fundraising campaigns</p>
+            <h1 className="text-4xl font-bold text-gray-900">My Investments</h1>
+            <p className="text-gray-600 mt-2">Track campaigns you&apos;ve supported</p>
           </div>
 
           <div className="flex flex-col items-center justify-center py-16">
             <div className="text-center">
               <div className="w-32 h-32 bg-gradient-to-b from-blue-200 to-blue-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Target className="w-16 h-16 text-white" />
+                <DollarSign className="w-16 h-16 text-white" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-2">No campaigns yet</h3>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">No investments yet</h3>
               <p className="text-gray-600 mb-8 max-w-md">
                 {
-                  "You haven't launched any campaigns yet. Start your first campaign to begin raising funds for your startup."
+                  "You haven't invested in any campaigns yet. Explore campaigns to start supporting innovative startups."
                 }
               </p>
-              <Link href="/entrepreneur/add-campaign">
-                <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                  <Plus className="w-5 h-5 mr-2" />
-                  Launch New Campaign
-                </Button>
-              </Link>
+              <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                <Target className="w-5 h-5 mr-2" />
+                Explore Campaigns
+              </Button>
             </div>
           </div>
         </div>
@@ -88,33 +229,33 @@ export default function EntrepreneurCampaigns() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">My Campaigns</h1>
-            <p className="text-gray-600 mt-2">Manage and track your fundraising campaigns</p>
+            <h1 className="text-4xl font-bold text-gray-900">My Investments</h1>
+            <p className="text-gray-600 mt-2">Track campaigns you&apos;ve supported and their progress</p>
           </div>
-          <Link href="/entrepreneur/add-campaign">
-            <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-              <Plus className="w-5 h-5 mr-2" />
-              Launch New Campaign
+          <Link href="/entrepreneur/explore-campaigns">
+            <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+              <Target className="w-5 h-5 mr-2" />
+              Explore More Campaigns
             </Button>
           </Link>
         </div>
 
-        {/* Stats Overview */}
+        {/* Investment Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-blue-200 to-blue-100 border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
-                  <Target className="w-6 h-6 text-white" />
+                  <DollarSign className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Campaigns</p>
-                  <p className="text-3xl font-bold text-gray-700">{allCampaigns.length}</p>
+                  <p className="text-gray-700 text-sm font-medium">Total Invested</p>
+                  <p className="text-3xl font-bold text-black">{formatCurrency(totalInvested)}</p>
                 </div>
               </div>
             </CardContent>
@@ -124,13 +265,11 @@ export default function EntrepreneurCampaigns() {
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
-                  <DollarSign className="w-6 h-6 text-white" />
+                  <Target className="w-6 h-6 text-gray-100" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Raised</p>
-                  <p className="text-3xl font-bold text-black">
-                    {formatCurrency(allCampaigns.reduce((sum, campaign) => sum + campaign.amountRaised, 0))}
-                  </p>
+                  <p className="text-gray-700 text-sm font-medium">Campaigns Backed</p>
+                  <p className="text-3xl font-bold text-black">{allFundedCampaigns.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -140,106 +279,160 @@ export default function EntrepreneurCampaigns() {
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="p-3 bg-black/20 rounded-xl backdrop-blur-sm">
-                  <Users className="w-6 h-6 text-white" />
+                  <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Backers</p>
-                  <p className="text-3xl font-bold text-black">
-                    {allCampaigns.reduce((sum, campaign) => sum + campaign.backers, 0)}
-                  </p>
+                  <p className="text-gray-700 text-sm font-medium">Active Investments</p>
+                  <p className="text-3xl font-bold text-black">{activeCampaigns}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Campaigns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {campaigns.map((campaign) => (
-            <Link href={`/entrepreneur/campaigns-owned/${campaign.id}`} key={campaign.id}>
-              <Card
-                key={campaign.id}
-                className={`bg-gradient-to-b from-blue-50 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${
-                  hoveredCard === campaign.id ? "scale-105 shadow-2xl" : "hover:scale-102"
+        {/* Funded Campaigns Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {fundedCampaigns.map((campaign) => (
+            <Card
+              key={campaign.id}
+              className={`bg-gradient-to-b from-blue-50 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${hoveredCard === campaign.id ? "scale-105 shadow-2xl" : "hover:scale-102"
                 }`}
-                onMouseEnter={() => setHoveredCard(campaign.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-                onClick={() => handleCampaignClick(campaign.id)}
-              >
-                <CardHeader className="pb-4 relative">
-                  <div className="absolute top-4 right-4">
-                    <Badge className={`${getStatusColor(campaign.status)} border font-medium px-3 py-1 rounded-full`}>
-                      {campaign.status}
-                    </Badge>
+              onMouseEnter={() => setHoveredCard(campaign.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => handleCampaignClick(campaign.id)}
+            >
+              <CardHeader className="pb-4 relative">
+                <div className="absolute top-4 right-4">
+                  <Badge className={`${getStatusColor(campaign.status)} border font-medium px-3 py-1 rounded-full`}>
+                    {campaign.status}
+                  </Badge>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
+                    <Image
+                      src={campaign.logo || "/placeholder.jpg"}
+                      alt={`${campaign.title} logo`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="object-cover"
+                    />
                   </div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                      <Image
-                        src={campaign.logo || "/placeholder.jpg"}
-                        alt={`${campaign.title} logo`}
-                        width={48}    // set to container size or desired width
-                        height={48}   // set to container size or desired height
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 pr-16">
-                      <CardTitle className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        {campaign.title}
-                      </CardTitle>
-                      <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{campaign.description}</p>
-                    </div>
+                  <div className="flex-1 pr-16">
+                    <CardTitle className="text-xl font-bold text-gray-900 mb-2 leading-tight">
+                      {campaign.title}
+                    </CardTitle>
+                    <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{campaign.description}</p>
                   </div>
-                </CardHeader>
+                </div>
+              </CardHeader>
 
-                <CardContent className="pt-0">
-                  {/* Funding Progress */}
-                  <div className="mb-6">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-sm font-semibold text-gray-700">Funding Progress</span>
-                      <span className="text-sm font-bold text-blue-600">
-                        {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
-                      </span>
+              <CardContent className="pt-0">
+                {/* Campaign Title */}
+                <h3 className="text-lg font-semibold text-gray-900 my-2">{campaign.title}</h3>
+                
+                {/* My Investment Highlight */}
+                <div className="bg-gradient-to-r from-blue-100 to-blue-50 rounded-xl p-2 mb-6 border border-blue-200">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-xs font-medium text-gray-600">Your Investment</p>
+                      <p className="text-xl font-bold text-blue-700">{formatCurrency(campaign.myContribution)}</p>
                     </div>
-                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
-                      <div
-                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
-                        style={{ width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%` }}
-                      ></div>
+                    <div className="w-12 h-12 bg-gradient-to-b from-blue-200 to-blue-300 rounded-full flex items-center justify-center">
+                      <DollarSign className="w-5 h-5 text-white" />
                     </div>
-                    <div className="flex justify-between mt-3">
-                      <span className="font-bold text-blue-600 text-lg">
-                        {formatCurrency(campaign.amountRaised)} raised
-                      </span>
-                      <span className="text-gray-500 font-medium">of {formatCurrency(campaign.targetAmount)}</span>
+                  </div>
+                </div>
+
+                {/* Funding Progress */}
+                <div className="mb-6">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-sm font-semibold text-gray-700">Campaign Progress</span>
+                    <span className="text-sm font-bold text-green-500">
+                      {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
+                    </span>
+                  </div>
+                  <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-200 to-green-300 rounded-full"
+                      style={{ width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between mt-3">
+                    <span className="font-bold text-green-500 text-lg">
+                      {formatCurrency(campaign.amountRaised)} raised
+                    </span>
+                    <span className="text-gray-500 font-medium">of {formatCurrency(campaign.targetAmount)}</span>
+                  </div>
+                </div>
+
+                {/* Campaign Details */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
+                    <Users className="w-4 h-4 mr-2 text-blue-500" />
+                    <span className="font-medium">{campaign.backers} backers</span>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
+                    <Calendar className="w-4 h-4 mr-2 text-blue-500" />
+                    <span className="font-medium">Ends {formatDate(campaign.endDate)}</span>
+                  </div>
+                </div>
+
+                {/* Founder Profile & Action Buttons */}
+                <div className="flex justify-between items-center">
+                  <div
+                    className="flex items-center gap-3 cursor-pointer hover:bg-blue-50 rounded-lg p-2 -m-2 transition-colors duration-200"
+                    onClick={(e) => handleFounderClick(campaign.founderName, e)}
+                  >
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={campaign.founderAvatar || "/placeholder.jpg"} alt={campaign.founderName} />
+                      <AvatarFallback className="bg-blue-200 text-blue-700">
+                        {campaign.founderName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{campaign.founderName}</p>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-xs text-gray-600">{campaign.founderRating}</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Campaign Details */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
-                      <DollarSign className="w-4 h-4 mr-2 text-green-500" />
-                      <span className="font-medium">Min: {formatCurrency(campaign.minimumFunding)}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
-                      <Calendar className="w-4 h-4 mr-2 text-blue-500" />
-                      <span className="font-medium">Ends {formatDate(campaign.endDate)}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 col-span-2 shadow-sm">
-                      <Users className="w-4 h-4 mr-2 text-blue-500" />
-                      <span className="font-medium">{campaign.backers} backers supporting this campaign</span>
-                    </div>
+                  <div className="flex gap-2">
+                    {campaign.status === "Active" && (
+                      <PaymentPopup 
+                        campaignTitle={campaign.title}
+                        amount={campaign.minimumFunding}
+                        buttonLabel="Invest More"
+                        // onPaymentSuccess={() => {
+                        //   console.log(`Successfully invested in ${campaign.title}`)
+                          // You can add additional success handling here
+                        // }}
+                      >
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+                        >
+                          <DollarSign className="w-4 h-4 mr-1" />
+                          Invest More
+                        </Button>
+                      </PaymentPopup>
+                    )}
                   </div>
+                </div>
 
-                  {/* Click to view hint */}
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                      <Eye className="w-3 h-3" />
-                      Click to view details
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+                {/* Click to view hint */}
+                {/* <div className="text-center mt-4">
+                  <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
+                    <Eye className="w-3 h-3" />
+                    Click to view details
+                  </p>
+                </div> */}
+              </CardContent>
+            </Card>
           ))}
         </div>
 
