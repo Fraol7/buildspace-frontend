@@ -74,11 +74,11 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
             <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
-              <Link href="/auth/login">Get Started</Link>
+              <Link href="/auth/signup">Get Started</Link>
             </Button>
 
             <Button asChild variant="outline" className="bg-blue-800 text-white hover:bg-white px-8 py-6 text-lg">
-              <Link href="/auth/login">Explore Opportunities</Link>
+              <Link href="/auth/signup">Explore Opportunities</Link>
             </Button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,14 +10,34 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CreditCard } from "lucide-react"
+import { DollarSign } from "lucide-react"
 
-export default function PaymentPopup() {
-  const [amount, setAmount] = useState("")
-  const [isOpen, setIsOpen] = useState(true)
+interface PaymentPopupProps {
+  campaignTitle: string;
+  amount: number;
+  buttonLabel?: string;
+  children?: React.ReactNode;
+}
+
+function PaymentPopupComponent({ 
+  campaignTitle, 
+  amount: initialAmount = 0, 
+  buttonLabel = 'Invest Now',
+  children 
+}: PaymentPopupProps) {
+  const [amount, setAmount] = useState('0')
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Only set initial amount after component mounts to avoid hydration issues
+  useEffect(() => {
+    setIsMounted(true)
+    setAmount(initialAmount?.toString() || '0')
+  }, [initialAmount])
+  const [isOpen, setIsOpen] = useState(false)
 
   const handlePayWithChapa = () => {
     if (!amount || Number.parseFloat(amount) <= 0) {
@@ -34,19 +55,25 @@ export default function PaymentPopup() {
     // For example: redirectToChapa(amount)
   }
 
+  // Don't render anything during SSR
+  if (!isMounted) {
+    return null
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        {/* <DialogTrigger asChild>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <CreditCard className="mr-2 h-4 w-4" />
-            Make Payment
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        {children || (
+          <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-md p-2">
+            <DollarSign className="mr-2 h-4 w-4" />
+            {buttonLabel}
           </Button>
-        </DialogTrigger> */}
+        )}
+      </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Enter Payment Amount</DialogTitle>
-            <DialogDescription>Enter the amount you want to pay and proceed with Chapa payment.</DialogDescription>
+            <DialogTitle>Contribute to {campaignTitle}</DialogTitle>
+            <DialogDescription>Enter the amount you want to contribute and proceed with Chapa payment.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -72,13 +99,22 @@ export default function PaymentPopup() {
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handlePayWithChapa} className="bg-green-600 hover:bg-green-700">
-              <CreditCard className="mr-2 h-4 w-4" />
-              Pay with Chapa
+            <Button 
+              onClick={handlePayWithChapa} 
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <DollarSign className="mr-2 h-4 w-4" />
+              Contribute with Chapa
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
   )
 }
+
+// Export a dynamic component that only renders on the client side
+const PaymentPopup = dynamic(() => Promise.resolve(PaymentPopupComponent), {
+  ssr: false,
+});
+
+export default PaymentPopup;

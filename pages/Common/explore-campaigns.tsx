@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Search, Filter, ChevronDown, Calendar, Users, TrendingUp, Star, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +11,6 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-import Image from "next/image"
 
 // Dummy data for explore campaigns
 const allCampaigns = [
@@ -365,10 +365,10 @@ export default function ExploreCampaigns() {
               .sort((a, b) => b.backers - a.backers)
               .slice(0, 3)
               .map((campaign) => (
-                <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id}>
+                <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id} className="h-full">
                   <Card
                     key={campaign.id}
-                    className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                    className="h-full flex flex-col bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer hover:scale-[1.02]"
                     onClick={() => handleCampaignClick(campaign.id)}
                   >
                     <div className="absolute top-4 right-4">
@@ -394,7 +394,7 @@ export default function ExploreCampaigns() {
                       </div>
                     </CardHeader>
 
-                    <CardContent className="pt-2">
+                    <CardContent className="pt-2 flex-grow flex flex-col">
                       {/* Categories */}
                       <div className="flex flex-wrap gap-1 mb-4">
                         {campaign.categories.map((category, index) => (
@@ -434,19 +434,21 @@ export default function ExploreCampaigns() {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Avatar className="w-6 h-6">
-                            <AvatarImage src={campaign.founderAvatar || "/placeholder.svg"} alt={campaign.founderName} />
-                            <AvatarFallback className="bg-blue-200 text-blue-700 text-xs">
-                              {campaign.founderName
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span className="text-xs text-gray-600">{campaign.founderName}</span>
-                          {renderStarRating(campaign.founderRating)}
+                      <div className="mt-auto pt-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-6 h-6">
+                              <AvatarImage src={campaign.founderAvatar || "/placeholder.jpg"} alt={campaign.founderName} />
+                              <AvatarFallback className="bg-blue-200 text-blue-700 text-xs">
+                                {campaign.founderName
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="text-xs text-gray-600">{campaign.founderName}</span>
+                            {renderStarRating(campaign.founderRating)}
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -598,9 +600,11 @@ export default function ExploreCampaigns() {
                           <TableCell className="py-4">
                             <div className="flex items-center gap-4">
                               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-gray-50">
-                                <img
-                                  src={campaign.logo || "/placeholder.svg"}
+                                <Image
+                                  src={campaign.logo || "/placeholder.jpg"}
                                   alt={`${campaign.title} logo`}
+                                  width={48}
+                                  height={48}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -624,7 +628,7 @@ export default function ExploreCampaigns() {
                             <div className="flex items-center gap-2">
                               <Avatar className="w-8 h-8">
                                 <AvatarImage
-                                  src={campaign.founderAvatar || "/placeholder.svg"}
+                                  src={campaign.founderAvatar || "/placeholder.jpg"}
                                   alt={campaign.founderName}
                                 />
                                 <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 text-xs">

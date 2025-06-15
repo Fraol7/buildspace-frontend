@@ -66,9 +66,9 @@ export default function LoginForm() {
             <Label htmlFor="remember-me">Remember Me</Label>
               <Switch id="remember-me" />
             </div>
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link href="/forgot-password" className="text-blue-600 hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           {/* Login Button */}

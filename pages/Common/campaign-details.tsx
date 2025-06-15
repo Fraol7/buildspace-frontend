@@ -1,13 +1,43 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
+import dynamic from 'next/dynamic';
+import PaymentPopup from "./payment-popup"
+
+type InvestmentTier = {
+  amount: number;
+  title: string;
+  perks: string[];
+};
+
+type CampaignData = {
+  id: string;
+  title: string;
+  logo: string;
+  coverImage: string;
+  description: string;
+  shortDescription: string;
+  targetAmount: number;
+  amountRaised: number;
+  minimumFunding: number;
+  endDate: string;
+  startDate: string;
+  status: string;
+  backers: number;
+  categories: string[];
+  founderName: string;
+  founderAvatar: string;
+  founderBio: string;
+  founderRating: number;
+  investmentTiers: InvestmentTier[];
+};
+
 import {
   Bookmark,
   BookmarkCheck,
   Star,
   ExternalLink,
   CheckCircle,
-  X,
   Calendar,
   Users,
   Target,
@@ -28,88 +58,119 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Progress } from "@/components/ui/progress"
-import { useParams } from "next/navigation"
 import React from "react"
 import Image from "next/image"
 
-// Sample campaign data with appropriate logos
-const campaignData = {
-  id: "CAMP002",
-  title: "AI-Powered Learning Platform",
-  logo: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=120&h=120&fit=crop&crop=center", // AI/Tech themed
-  coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop&crop=center", // Education/Learning themed
-  description:
-    "Personalized education platform using machine learning to adapt to individual student learning patterns. Our AI-driven system analyzes learning behaviors and creates custom curriculum paths that evolve with each student's progress.",
-  shortDescription:
-    "An AI-powered education platform that creates personalized learning experiences. Our system adapts to each student's unique learning style, providing custom curriculum paths and real-time feedback to improve educational outcomes.",
-  targetAmount: 25000,
-  amountRaised: 22100,
-  minimumFunding: 50,
-  endDate: "2024-06-15",
-  startDate: "2024-03-15",
-  status: "Active",
-  backers: 356,
-  categories: ["Education", "AI", "Technology", "SaaS"],
-  founderName: "Dr. Michael Rodriguez",
-  founderAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face",
-  founderBio:
-    "Former education technology researcher with 15+ years of experience in AI and machine learning applications for education. PhD in Educational Technology from Stanford University.",
-  founderRating: 4.9,
-  investmentTiers: [
-    {
-      amount: 50,
-      title: "Early Supporter",
-      perks: ["1-month free subscription", "Early access to new features"],
-    },
-    {
-      amount: 250,
-      title: "Education Advocate",
-      perks: ["6-month free subscription", "Early access to new features", "Quarterly investor updates"],
-    },
-    {
-      amount: 1000,
-      title: "Learning Partner",
-      perks: [
-        "12-month free subscription",
-        "Early access to new features",
-        "Quarterly investor updates",
-        "Recognition on our platform",
-      ],
-    },
-    {
-      amount: 5000,
-      title: "Education Innovator",
-      perks: [
-        "Lifetime free subscription",
-        "Early access to new features",
-        "Quarterly investor updates",
-        "Recognition on our platform",
-        "Advisory board invitation",
-      ],
-    },
-  ],
-}
+// First, define the component
+const CampaignDetailsComponent = () => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [investmentAmount, setInvestmentAmount] = useState(0);
+  const [showInvestModal, setShowInvestModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [campaign, setCampaign] = useState<CampaignData | null>(null);
 
-export default function CampaignDetails() {
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [investmentAmount, setInvestmentAmount] = useState(campaignData.investmentTiers[0].amount)
-  const [showInvestModal, setShowInvestModal] = useState(false)
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  // Sample campaign data with appropriate logos
+  const sampleCampaignData = useMemo<CampaignData>(() => ({
+    id: "CAMP002",
+    title: "AI-Powered Learning Platform",
+    logo: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=120&h=120&fit=crop&crop=center",
+    coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop&crop=center",
+    description: "Personalized education platform using machine learning to adapt to individual student learning patterns. Our AI-driven system analyzes learning behaviors and creates custom curriculum paths that evolve with each student's progress.",
+    shortDescription: "An AI-powered education platform that creates personalized learning experiences. Our system adapts to each student's unique learning style, providing custom curriculum paths and real-time feedback to improve educational outcomes.",
+    targetAmount: 25000,
+    amountRaised: 22100,
+    minimumFunding: 50,
+    endDate: "2024-06-15",
+    startDate: "2024-03-15",
+    status: "Active",
+    backers: 356,
+    categories: ["Education", "AI", "Technology", "SaaS"],
+    founderName: "Dr. Michael Rodriguez",
+    founderAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face",
+    founderBio: "Former education technology researcher with 15+ years of experience in AI and machine learning applications for education. PhD in Educational Technology from Stanford University.",
+    founderRating: 4.9,
+    investmentTiers: [
+      {
+        amount: 50,
+        title: "Early Supporter",
+        perks: ["1-month free subscription", "Early access to new features"],
+      },
+      {
+        amount: 250,
+        title: "Education Advocate",
+        perks: ["6-month free subscription", "Early access to new features", "Quarterly investor updates"],
+      },
+      {
+        amount: 1000,
+        title: "Learning Partner",
+        perks: [
+          "12-month free subscription",
+          "Early access to new features",
+          "Quarterly investor updates",
+          "Recognition on our platform",
+        ],
+      },
+      {
+        amount: 5000,
+        title: "Education Innovator",
+        perks: [
+          "Lifetime free subscription",
+          "Early access to new features",
+          "Quarterly investor updates",
+          "Recognition on our platform",
+          "Advisory board invitation",
+        ],
+      },
+    ],
+  }), []); // Empty dependency array to ensure this is only created once
 
-  const params = useParams()
-  const campaignId = params?.id as string
+  // Removed unused campaignId as it's not being used
 
-  // In a real app, we would fetch the campaign data based on the ID
-  console.log(`Fetching campaign details for ID: ${campaignId}`)
+  // Set client-side state and load data
+  useEffect(() => {
+    setIsClient(true);
+    // In a real app, you would fetch the campaign data here
+    // For now, we'll use the static data after a small delay to simulate loading
+    const timer = setTimeout(() => {
+      setCampaign(sampleCampaignData);
+      setInvestmentAmount(sampleCampaignData.investmentTiers[0]?.amount || 0);
+      setLoading(false);
+    }, 100);
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    return () => clearTimeout(timer);
+  }, [sampleCampaignData]); // Added sampleCampaignData to dependency array
+
+  // Don't render anything during SSR
+  if (!isClient) {
+    return null;
+  }
+
+  // Show loading state
+  if (loading || !campaign) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+  
+  // Use the campaign data from state
+  // Use campaign with sampleCampaignData as fallback
+  const currentCampaign = campaign || sampleCampaignData;
+
+  // Replace all campaignData references with currentCampaign
+  const campaignData = currentCampaign;
+
+  const formatCurrency = (amount: number | undefined) => {
+    if (typeof amount !== 'number') return '$0';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -119,9 +180,10 @@ export default function CampaignDetails() {
     })
   }
 
-  const getProgressPercentage = (raised: number, target: number) => {
-    return Math.min((raised / target) * 100, 100)
-  }
+  const getProgressPercentage = (raised: number | undefined, target: number | undefined) => {
+    if (typeof raised !== 'number' || typeof target !== 'number' || target <= 0) return 0;
+    return Math.min(Math.round((raised / target) * 100), 100);
+  };
 
   const getDaysRemaining = () => {
     const endDate = new Date(campaignData.endDate)
@@ -165,8 +227,8 @@ export default function CampaignDetails() {
   const handleInvest = () => {
     // In a real app, this would handle the investment process
     setShowInvestModal(false)
-    setShowSuccessMessage(true)
-    setTimeout(() => setShowSuccessMessage(false), 5000)
+    // Show success message or redirect to success page
+    console.log('Investment successful!');
   }
 
   // const handleGoBack = () => {
@@ -177,17 +239,6 @@ export default function CampaignDetails() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Success Message */}
-        {showSuccessMessage && (
-          <div className="fixed top-4 right-4 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-in slide-in-from-top duration-300">
-            <CheckCircle className="w-5 h-5" />
-            <span>Investment successful! Thank you for your support.</span>
-            <Button onClick={() => setShowSuccessMessage(false)} className="ml-2">
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
-
         {/* Back Button */}
         {/* <div className="mb-6">
           <Button
@@ -231,7 +282,7 @@ export default function CampaignDetails() {
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-xl overflow-hidden bg-white shadow-lg ring-2 ring-white/30">
                 <Image
-                  src={campaignData.logo || "/placeholder.svg"}
+                  src={campaignData.logo || "/placeholder.jpg"}
                   alt={`${campaignData.title} logo`}
                   className="w-full h-full object-cover"
                   width={500} // Adjust width as per requirement
@@ -244,7 +295,7 @@ export default function CampaignDetails() {
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">{campaignData.title}</h1>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {campaignData.categories.map((category, index) => (
+                  {campaignData.categories.map((category: string, index: number) => (
                     <Badge
                       key={index}
                       className="bg-white/80 text-sky-700 border-sky-200 backdrop-blur-sm text-xs px-2 py-0.5"
@@ -322,14 +373,14 @@ export default function CampaignDetails() {
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 shadow-lg">
                     <Image
-                      src={campaignData.founderAvatar || "/placeholder.svg"}
+                      src={campaignData.founderAvatar || "/placeholder.jpg"}
                       alt={campaignData.founderName}
                       className="w-full h-full object-cover"
                       width={100} // Adjust width as per requirement
                       height={100} // Adjust height as per requirement
                       priority // Optional: Ensures critical images load faster
                       placeholder="blur" // Optional: Adds a low-quality blur placeholder
-                      blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder for blur effect
+                      blurDataURL="/placeholder.jpg" // Optional: Base64-encoded placeholder for blur effect
                     />
                   </div>
                   <div className="flex-1">
@@ -374,9 +425,18 @@ export default function CampaignDetails() {
                 </div>
 
                 <div className="flex flex-col gap-3">
+                  {campaignData?.title && typeof campaignData?.minimumFunding === 'number' && (
+                    <PaymentPopup 
+                      campaignTitle={campaignData.title}
+                      amount={campaignData.minimumFunding}
+                      buttonLabel="Contribute Now"
+                    />
+                  )}
+                  
+                  {/* Keep the existing dialog for reference, but it's now replaced by PaymentPopup */}
                   <Dialog open={showInvestModal} onOpenChange={setShowInvestModal}>
                     <DialogTrigger asChild>
-                      <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3">
+                      <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3 opacity-0 h-0 p-0 border-0 m-0">
                         Contribute Now
                       </Button>
                     </DialogTrigger>
@@ -403,7 +463,7 @@ export default function CampaignDetails() {
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-gray-700">Investment Tiers</label>
                           <div className="space-y-2">
-                            {campaignData.investmentTiers.map((tier, index) => (
+                            {campaignData.investmentTiers.map((tier: InvestmentTier, index: number) => (
                               <div
                                 key={index}
                                 className={`border rounded-lg p-3 cursor-pointer transition-all ${
@@ -416,7 +476,7 @@ export default function CampaignDetails() {
                                   <span className="text-blue-600 font-medium">{formatCurrency(tier.amount)}</span>
                                 </div>
                                 <ul className="mt-2 space-y-1">
-                                  {tier.perks.map((perk, i) => (
+                                  {tier.perks.map((perk: string, i: number) => (
                                     <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
                                       <CheckCircle className="w-3 h-3 text-green-500" />
                                       {perk}
@@ -486,3 +546,15 @@ export default function CampaignDetails() {
     </div>
   )
 }
+
+// Export a dynamic component that only renders on the client side
+const CampaignDetails = dynamic(() => Promise.resolve(CampaignDetailsComponent), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  ),
+});
+
+export default CampaignDetails;

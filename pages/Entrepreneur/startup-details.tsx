@@ -14,7 +14,7 @@ import { Camera, ArrowLeft, ArrowRight, Check } from "lucide-react"
 import { useRef } from "react"
 import { DEFAULT_LOCATIONS, INITIAL_FORM_DATA, FUNDING_ROUNDS, PRODUCT_STAGES, FormData } from "@/constants"
 
-export default function StartupProfile() {
+export default function StartupDetails() {
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -367,7 +367,7 @@ export default function StartupProfile() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Startup Profile</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Startup Details</h1>
           <div className="w-16 h-1 bg-blue-600 mx-auto"></div>
         </div>
 

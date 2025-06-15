@@ -1,10 +1,10 @@
 import React from 'react'
-import StartupProfile from '@/pages/Entrepreneur/startup-profile'
+import StartupDetails from '@/pages/Entrepreneur/startup-details'
 
 const page = () => {
   return (
     <div>
-        <StartupProfile />
+        <StartupDetails />
     </div>
   )
 }

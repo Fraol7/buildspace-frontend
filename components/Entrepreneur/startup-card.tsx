@@ -65,7 +65,7 @@ export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
       </Button>
 
       <CardContent className="relative p-0">
-        <Link href={`/startups/${startup.slug}`} className="block">
+        <Link href={`/entrepreneur/startup-details/${startup.id}`} className="block">
           {/* Header Section */}
           <div className="flex gap-6 p-6 pb-4">
             {/* Logo */}
