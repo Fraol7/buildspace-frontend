@@ -346,7 +346,7 @@ export const InvestorNavMain = [
     title: "Explore",
     url: "/investor/startups",
     icon: Telescope,
-    id: "explore",
+    id: "explore-campaigns",
     items: [
       {
         title: "All Startups",
@@ -360,7 +360,7 @@ export const InvestorNavMain = [
       },
       {
         title: "Campaigns",
-        url: "/investor/campaigns",
+        url: "/investor/explore-campaigns",
         id: "campaigns",
       },
     ],

@@ -115,7 +115,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
               <Collapsible
                 key={item.title}
                 asChild
-                defaultOpen={item.id === "my-investments" || item.id === "explore"}
+                defaultOpen={item.id === "my-investments" || item.id === "explore-campaigns"}
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
