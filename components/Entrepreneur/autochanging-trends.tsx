@@ -78,7 +78,7 @@ const AutoScrollingTrendingProjects = () => {
                   {currentProject.industries.map((industry, index) => (
                     <Badge
                       key={index}
-                      className="bg-blue-400 text-gray-200 border-blue-400 shadow-xs"
+                      className="bg-blue-500 text-gray-200 border-blue-400 shadow-xs"
                     >
                       {industry}
                     </Badge>

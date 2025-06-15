@@ -120,9 +120,9 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
             </CardContent>
           </Card>
         ))
-        : statsData.map((stat) => (
+        : statsData.map((stat, index) => (
           <Link href={stat.link} key={stat.id} className="block">
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className={`${index % 2 !== 0 ? 'bg-green-50' : 'bg-gradient-to-br from-blue-50 to-blue-100'} border-0 shadow-lg hover:shadow-xl transition-shadow`}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -137,7 +137,7 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
                       renderChangeIndicator(stat.change, stat.id === "rating")
                     )}
                   </div>
-                  <div className="bg-blue-500 p-3 rounded-full">{renderIcon(stat.icon)}</div>
+                  <div className={`${index % 2 !== 0 ? 'bg-green-500' : 'bg-blue-500'} p-3 rounded-full`}>{renderIcon(stat.icon)}</div>
                 </div>
               </CardContent>
             </Card>

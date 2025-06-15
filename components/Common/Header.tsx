@@ -90,7 +90,7 @@ export default function Header({
         {/* Right side - Notifications and Profile */}
         <div className="flex items-center space-x-4">
           {/* Notification Bell */}
-          <Button variant="ghost" size="sm" className="relative p-2 hover:bg-gray-100" onClick={onNotificationClick}>
+          {/* <Button variant="ghost" size="sm" className="relative p-2 hover:bg-gray-100" onClick={onNotificationClick}>
             <Bell className="h-5 w-5 text-gray-600" />
             {notificationCount > 0 && (
               <Badge
@@ -100,7 +100,7 @@ export default function Header({
                 {notificationCount > 99 ? "99+" : notificationCount}
               </Badge>
             )}
-          </Button>
+          </Button> */}
 
           {/* Profile Dropdown */}
           <DropdownMenu>

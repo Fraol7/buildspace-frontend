@@ -9,6 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,7 +17,7 @@ import { CreditCard } from "lucide-react"
 
 export default function PaymentPopup() {
   const [amount, setAmount] = useState("")
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handlePayWithChapa = () => {
     if (!amount || Number.parseFloat(amount) <= 0) {
@@ -37,12 +38,12 @@ export default function PaymentPopup() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        {/* <DialogTrigger asChild>
+        <DialogTrigger asChild>
           <Button className="bg-blue-600 hover:bg-blue-700">
             <CreditCard className="mr-2 h-4 w-4" />
             Make Payment
           </Button>
-        </DialogTrigger> */}
+        </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Enter Payment Amount</DialogTitle>

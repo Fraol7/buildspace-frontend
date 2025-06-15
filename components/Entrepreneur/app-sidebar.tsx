@@ -4,7 +4,7 @@ import type * as React from "react"
 // import Image from "next/image";
 import { useState } from "react"
 import Link from "next/link"
-import { ChevronRight, LifeBuoy, Send, Settings2, Briefcase, UserCircle } from "lucide-react"
+import { ChevronRight, LogOut , UserCircle } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -224,21 +224,21 @@ export function EntrepreneurSidebar({ ...props }: React.ComponentProps<typeof Si
                   <UserCircle className="mr-2 h-4 w-4" />
                   Edit Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem>
                   <Briefcase className="mr-2 h-4 w-4" />
                   Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                </DropdownMenuItem> */}
+                {/* <DropdownMenuItem>
                   <Settings2 className="mr-2 h-4 w-4" />
                   Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                </DropdownMenuItem> */}
+                {/* <DropdownMenuItem>
                   <LifeBuoy className="mr-2 h-4 w-4" />
                   Support
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                </DropdownMenuItem> */}
+                {/* <DropdownMenuSeparator /> */}
                 <DropdownMenuItem>
-                  <Send className="mr-2 h-4 w-4" />
+                  <LogOut  className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -1,10 +1,10 @@
 "use client"
 
 import type React from "react"
-import { useRouter } from "next/navigation"
+
 import { useState, useEffect } from "react"
-import { Building2, FileText, CheckCircle, Upload, Globe, ChevronDown, X } from "lucide-react"
-import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { Building2, FileText, CheckCircle, Upload, Globe, ChevronDown, X, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,14 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,41 +31,44 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { toast } from "sonner"
 
-export default function StartupSetup() {
+// Dummy data to simulate retrieving an existing startup
+const dummyStartupData = {
+  name: "EcoTech Solutions",
+  logoUrl: "/placeholder.svg?height=200&width=200",
+  tagline: "Sustainable technology for a greener tomorrow",
+  description:
+    "EcoTech Solutions is developing innovative clean energy solutions that help businesses reduce their carbon footprint while saving on operational costs. Our patented technology converts waste heat into electricity, providing a sustainable energy source for industrial applications.",
+  industries: ["Technology", "Renewable Energy", "Manufacturing"],
+  fundGoal: "500000",
+  startupStage: "Series A",
+  location: "Boston, USA",
+  amountRaised: "250000",
+  businessModel: "B2B SaaS",
+  revenue: "120000",
+  website: "https://ecotechsolutions.example.com",
+}
+
+export default function StartupEdit() {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [otherIndustry, setOtherIndustry] = useState("")
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([])
   const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [locationError, setLocationError] = useState("")
-  // const [projectCreated, setProjectCreated] = useState(false)
-  const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [startupId, setStartupId] = useState<string | null>(null)
 
   // Form data
-  interface FormData {
-    name: string;
-    logo: File | null;
-    tagline: string;
-    description: string;
-    industries: string[];
-    fundGoal: string;
-    startupStage: string;
-    location: string;
-    amountRaised: string;
-    businessModel: string;
-    revenue: string;
-    website: string;
-  }
-
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     name: "",
-    logo: null,
+    logo: null as File | null,
+    logoUrl: "",
     tagline: "",
     description: "",
-    industries: [],
+    industries: [] as string[],
     fundGoal: "",
     startupStage: "",
     location: "",
@@ -117,6 +128,86 @@ export default function StartupSetup() {
     "Other",
   ]
 
+  // Get startup ID from URL and fetch data
+  useEffect(() => {
+    // Get startup ID from URL - only run on client side
+    let id: string | null = null;
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      id = urlParams.get('id')
+      setStartupId(id)
+    }
+
+    const fetchStartupData = async () => {
+      try {
+        setIsLoading(true)
+        
+        // In a real app, you would fetch data from an API using the ID
+        // For example: const response = await fetch(`/api/startups/${id}`)
+        // const data = await response.json()
+        
+        // For now, we'll use dummy data
+        setTimeout(() => {
+          // Set form data from dummy data
+          setFormData({
+            name: dummyStartupData.name,
+            logo: null, // No file object for existing logo
+            logoUrl: dummyStartupData.logoUrl,
+            tagline: dummyStartupData.tagline,
+            description: dummyStartupData.description,
+            industries: dummyStartupData.industries,
+            fundGoal: dummyStartupData.fundGoal,
+            startupStage: dummyStartupData.startupStage,
+            location: dummyStartupData.location,
+            amountRaised: dummyStartupData.amountRaised,
+            businessModel: dummyStartupData.businessModel,
+            revenue: dummyStartupData.revenue,
+            website: dummyStartupData.website,
+          })
+
+          // Set selected industries for the dropdown
+          setSelectedIndustries(
+            dummyStartupData.industries.filter(
+              (industry) => !industry.startsWith("Other:") && industries.includes(industry),
+            ),
+          )
+
+          // Check if there's an "Other" industry and extract its value
+          const otherIndustryValue = dummyStartupData.industries.find((industry) => industry.startsWith("Other:"))
+          if (otherIndustryValue) {
+            setSelectedIndustries((prev) => [...prev, "Other"])
+            setOtherIndustry(otherIndustryValue.replace("Other: ", ""))
+          }
+
+          setIsLoading(false)
+        }, 1000)
+      } catch (error) {
+        console.error('Error fetching startup data:', error)
+        setIsLoading(false)
+      }
+    }
+
+
+    if (id) {
+      fetchStartupData()
+    } else {
+      // If no ID, this is a new startup
+      setIsLoading(false)
+    }
+  }, [])
+
+  // Add this after the existing useEffect for fetching project data
+  useEffect(() => {
+    // Get startup ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search)
+    const projectId = urlParams.get("id")
+
+    if (projectId) {
+      console.log("Loading startup with ID:", projectId)
+      // In a real app, you would fetch the specific startup data using this ID
+    }
+  }, [])
+
   // Update formData.industries when selectedIndustries changes
   useEffect(() => {
     let updatedIndustries = [...selectedIndustries]
@@ -130,7 +221,7 @@ export default function StartupSetup() {
     handleInputChange("industries", updatedIndustries)
   }, [selectedIndustries, otherIndustry])
 
-  const handleInputChange = (field: string, value: string | File | string[]) => {
+  const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -146,6 +237,9 @@ export default function StartupSetup() {
     const file = e.target.files?.[0]
     if (file) {
       handleInputChange("logo", file)
+      // Create a temporary URL for preview
+      const fileUrl = URL.createObjectURL(file)
+      handleInputChange("logoUrl", fileUrl)
     }
   }
 
@@ -201,26 +295,32 @@ export default function StartupSetup() {
       return
     }
 
-    setIsSubmitting(true)
-
     try {
-      // In a real app, this would submit the project data to your API
-      console.log("Creating project:", formData)
+      // In a real app, you would make an API call to save the data
+      // For example:
+      // const method = startupId ? 'PUT' : 'POST';
+      // const url = startupId ? `/api/startups/${startupId}` : '/api/startups';
+      // const response = await fetch(url, {
+      //   method,
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(formData)
+      // });
+      // const data = await response.json();
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // For now, just log the data and show success
+      console.log("Saving startup changes:", formData)
       
       // Show success message
-      toast.success("Startup created successfully!")
-      
-      // Redirect to entrepreneur dashboard
-      router.push('/entrepreneur/dashboard')
-    } catch (error) {
-      console.error("Error creating project:", error)
-      toast.error("Failed to create startup. Please try again.")
-    } finally {
-      setIsSubmitting(false)
       setShowConfirmDialog(false)
+      setShowSuccessModal(true)
+      
+      // In a real app, you might want to redirect after a delay
+      // setTimeout(() => {
+      //   router.push(`/Entrepreneur/startup-detail?id=${startupId || data.id}`)
+      // }, 2000)
+    } catch (error) {
+      console.error('Error saving startup:', error)
+      // Handle error (show error message to user)
     }
   }
 
@@ -243,7 +343,7 @@ export default function StartupSetup() {
       case 2:
         return "Business Details"
       case 3:
-        return "Review & Create"
+        return "Review Changes"
       default:
         return ""
     }
@@ -252,7 +352,7 @@ export default function StartupSetup() {
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.name && formData.logo && formData.tagline && formData.description
+        return formData.name && (formData.logo || formData.logoUrl) && formData.tagline && formData.description
       case 2:
         return formData.industries.length > 0 && formData.fundGoal && formData.startupStage && formData.location
       case 3:
@@ -272,18 +372,58 @@ export default function StartupSetup() {
     return `${formData.industries.slice(0, 2).join(", ")} +${formData.industries.length - 2} more`
   }
 
+  // Show loading state while fetching data
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-t-blue-500 border-blue-200 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading startup data...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Success message will be shown via toast */}
+        {/* Success Modal */}
+        <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-black flex items-center gap-2">
+                <CheckCircle className="w-6 h-6 text-green-500" />
+                Changes Saved Successfully!
+              </DialogTitle>
+              <DialogDescription>Your startup has been updated successfully.</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                onClick={() => {
+                  setShowSuccessModal(false)
+                  if (startupId) {
+                    router.push(`/Entrepreneur/startup-detail?id=${startupId}`)
+                  } else {
+                    // If it's a new startup, go to the startups list
+                    router.push('/Entrepreneur/startups')
+                  }
+                }}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              >
+                {startupId ? 'View Startup' : 'Back to Startups'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Confirmation Dialog */}
         <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Create Startup</AlertDialogTitle>
+              <AlertDialogTitle>Save Changes</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to create this startup? Once created, it will be visible to potential investors.
+                Are you sure you want to save these changes? The updated information will be visible to potential
+                investors.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -292,7 +432,7 @@ export default function StartupSetup() {
                 onClick={handleSubmitConfirm}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
               >
-                Create Startup
+                Save Changes
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -301,27 +441,34 @@ export default function StartupSetup() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-gray-900">Set Up Your Startup</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Edit Startup</h1>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => window.open(`/startup/1`, '_blank')}
+            >
+              View Startup
+            </Button>
           </div>
         </div>
 
-        {/* Progress Header */}
+        {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-sm text-gray-500">
-              Step {currentStep} of {totalSteps}
-            </div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">
+              Step {currentStep} of {totalSteps}: {getStepTitle(currentStep)}
+            </span>
+            <span className="text-sm text-gray-500">
+              {Math.round((currentStep / totalSteps) * 100)}% Complete
+            </span>
           </div>
-          <div className="flex items-center gap-4 mb-4">
-            <Progress value={(currentStep / totalSteps) * 100} className="flex-1 h-2" />
-            <span className="text-sm font-medium text-gray-700">{Math.round((currentStep / totalSteps) * 100)}%</span>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-800">{getStepTitle(currentStep)}</h2>
+          <Progress value={(currentStep / totalSteps) * 100} className="h-2" />
         </div>
 
-        {/* Form Content */}
+        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Form */}
+          {/* Form Content */}
           <div className="lg:col-span-2">
             {/* Step 1: Basic Information */}
             {currentStep === 1 && (
@@ -329,13 +476,13 @@ export default function StartupSetup() {
                 <CardHeader>
                   <CardTitle className="text-xl text-black flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
-                    Startup Information
+                    Basic Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Project Name */}
+                  {/* Startup Name */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Project Name *</Label>
+                    <Label className="text-sm font-medium text-gray-700">Startup Name *</Label>
                     <Input
                       value={formData.name}
                       onChange={(e) => handleInputChange("name", e.target.value)}
@@ -348,28 +495,24 @@ export default function StartupSetup() {
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700">Startup Logo *</Label>
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                        {formData.logo ? (
-                          <Image
-                            src={URL.createObjectURL(formData.logo) || "/placeholder.svg"}
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+                        {formData.logo || formData.logoUrl ? (
+                          <img
+                            src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
                             alt="Logo preview"
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-cover rounded-lg"
+                            className="w-full h-full object-cover"
                           />
                         ) : (
                           <Upload className="w-6 h-6 text-gray-400" />
                         )}
                       </div>
                       <div className="flex-1">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileChange}
-                          className="border-gray-300"
-                          required
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Upload a square image (PNG, JPG) - Required</p>
+                        <Input type="file" accept="image/*" onChange={handleFileChange} className="border-gray-300" />
+                        <p className="text-xs text-gray-500 mt-1">
+                          {formData.logoUrl && !formData.logo
+                            ? "Current logo will be used if no new file is selected"
+                            : "Upload a square image (PNG, JPG)"}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -616,25 +759,23 @@ export default function StartupSetup() {
               </Card>
             )}
 
-            {/* Step 3: Review & Create */}
+            {/* Step 3: Review Changes */}
             {currentStep === 3 && (
               <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50/30">
                 <CardHeader>
                   <CardTitle className="text-xl text-black flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-blue-600" />
-                    Review Your Startup
+                    Review Your Changes
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Startup Summary */}
                   <div className="bg-blue-50 rounded-lg p-6">
                     <div className="flex items-start gap-4">
-                      {formData.logo && (
-                        <Image
-                          src={URL.createObjectURL(formData.logo) || "/placeholder.svg"}
-                          alt="Project logo"
-                          width={64}
-                          height={64}
+                      {(formData.logo || formData.logoUrl) && (
+                        <img
+                          src={formData.logo ? URL.createObjectURL(formData.logo) : formData.logoUrl}
+                          alt="Startup logo"
                           className="w-16 h-16 rounded-lg object-cover"
                         />
                       )}
@@ -674,9 +815,9 @@ export default function StartupSetup() {
                     </div>
                   </div>
 
-                  {/* Project Details */}
+                  {/* Startup Details */}
                   <div className="bg-white rounded-lg p-4 border border-gray-200">
-                    <h4 className="font-medium text-gray-900 mb-3">Project Details</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">Startup Details</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div className="space-y-2">
                         <div className="flex justify-between">
@@ -725,7 +866,7 @@ export default function StartupSetup() {
             {/* Progress Card */}
             <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-blue-100">
               <CardHeader>
-                <CardTitle className="text-lg text-black">Setup Progress</CardTitle>
+                <CardTitle className="text-lg text-black">Edit Progress</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -756,31 +897,31 @@ export default function StartupSetup() {
             {/* Tips Card */}
             <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50/30">
               <CardHeader>
-                <CardTitle className="text-lg text-black">💡 Setup Tips</CardTitle>
+                <CardTitle className="text-lg text-black">💡 Editing Tips</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm text-gray-700">
                   {currentStep === 1 && (
                     <>
-                      <p>• Choose a memorable name that reflects your project&apos;s mission</p>
-                      <p>• Upload a high-quality logo that represents your brand</p>
-                      <p>• Keep your tagline clear and compelling - it&apos;s the first thing investors see</p>
-                      <p>• Write a description that tells your story and explains the problem you solve</p>
+                      <p>• Keep your startup name consistent with your brand</p>
+                      <p>• You can keep your existing logo or upload a new one</p>
+                      <p>• A clear tagline helps investors quickly understand your value</p>
+                      <p>• Update your description with your latest achievements</p>
                     </>
                   )}
                   {currentStep === 2 && (
                     <>
-                      <p>• Select all industries that apply to your project from the dropdown</p>
-                      <p>• Be realistic with your funding goal based on actual business needs</p>
-                      <p>• Select the startup stage that best matches your current situation</p>
-                      <p>• Enter your location in the format &quot;City, Country&quot; for better visibility</p>
+                      <p>• Select all industries that apply to your startup</p>
+                      <p>• Update your funding goal if your needs have changed</p>
+                      <p>• Make sure your startup stage reflects your current progress</p>
+                      <p>• Enter your location in the format "City, Country" for better visibility</p>
                     </>
                   )}
                   {currentStep === 3 && (
                     <>
-                      <p>• Review all information carefully - this is what investors will see</p>
-                      <p>• Make sure your project tells a complete and compelling story</p>
-                      <p>• Once created, you can always edit your project details later</p>
+                      <p>• Review all changes carefully before saving</p>
+                      <p>• You can use the "Save All Changes" button at any time</p>
+                      <p>• Your changes will be visible to investors immediately</p>
                     </>
                   )}
                 </div>
@@ -815,8 +956,8 @@ export default function StartupSetup() {
                 disabled={!isStepValid(currentStep)}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
               >
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Create Project
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
               </Button>
             )}
           </div>

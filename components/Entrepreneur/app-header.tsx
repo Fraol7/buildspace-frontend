@@ -65,12 +65,13 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
         </div>
 
         {/* Notification bell */}
-        <Button variant="ghost" size="icon" className="h-9 w-9 relative" onClick={handleNotificationClick}>
+        {/* <Button variant="ghost" size="icon" className="h-9 w-9 relative" onClick={handleNotificationClick}>
           <Bell className="h-4 w-4 md:h-5 md:w-5" />
-          <span className="sr-only">Notifications</span>
+          <span className="sr-only">Notifications</span> */}
           {/* Conditional notification badge */}
-          {hasUnreadNotifications && <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>}
-        </Button>
+          {/* {hasUnreadNotifications && <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>} */}
+        {/* </Button> */}
+        
       </div>
     </header>
   )
