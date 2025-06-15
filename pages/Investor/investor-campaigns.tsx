@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { Calendar, DollarSign, Eye, Target, TrendingUp, Users, Star, ChevronLeft, ChevronRight } from "lucide-react"
+import PaymentPopup from "@/pages/Common/payment-popup"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -46,23 +47,6 @@ const allFundedCampaigns = [
     founderName: "Dr. Michael Rodriguez",
     founderAvatar: "/images/Portfolio22.png",
     founderRating: 4.9,
-  },
-  {
-    id: "STARTUP007",
-    title: "Blockchain Supply Chain Tracker",
-    logo: "/images/Portfolio22.png",
-    description:
-      "Transparent supply chain management using blockchain technology for food safety and authenticity verification.",
-    targetAmount: 20000,
-    amountRaised: 20000,
-    minimumFunding: 150,
-    endDate: "2024-05-30",
-    status: "Ended",
-    backers: 133,
-    myContribution: 500,
-    founderName: "Alex Thompson",
-    founderAvatar: "/images/Portfolio22.png",
-    founderRating: 4.7,
   },
   {
     id: "STARTUP008",
@@ -343,15 +327,18 @@ export default function InvestorCampaigns() {
               </CardHeader>
 
               <CardContent className="pt-0">
+                {/* Campaign Title */}
+                <h3 className="text-lg font-semibold text-gray-900 my-2">{campaign.title}</h3>
+                
                 {/* My Investment Highlight */}
-                <div className="bg-gradient-to-r from-blue-200 to-blue-100 rounded-xl p-4 mb-6 border border-blue-300">
+                <div className="bg-gradient-to-r from-blue-100 to-blue-50 rounded-xl p-2 mb-6 border border-blue-200">
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Your Investment</p>
-                      <p className="text-2xl font-bold text-blue-700">{formatCurrency(campaign.myContribution)}</p>
+                      <p className="text-xs font-medium text-gray-600">Your Investment</p>
+                      <p className="text-xl font-bold text-blue-700">{formatCurrency(campaign.myContribution)}</p>
                     </div>
-                    <div className="w-16 h-16 bg-gradient-to-b from-blue-300 to-blue-400 rounded-full flex items-center justify-center">
-                      <DollarSign className="w-8 h-8 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-b from-blue-200 to-blue-300 rounded-full flex items-center justify-center">
+                      <DollarSign className="w-5 h-5 text-white" />
                     </div>
                   </div>
                 </div>
@@ -416,27 +403,34 @@ export default function InvestorCampaigns() {
 
                   <div className="flex gap-2">
                     {campaign.status === "Active" && (
-                      <Link href="/payment">
+                      <PaymentPopup 
+                        campaignTitle={campaign.title}
+                        amount={campaign.minimumFunding}
+                        buttonLabel="Invest More"
+                        onPaymentSuccess={() => {
+                          console.log(`Successfully invested in ${campaign.title}`)
+                          // You can add additional success handling here
+                        }}
+                      >
                         <Button
                           size="sm"
-                          onClick={(e) => handleInvestMore(campaign.id, e)}
                           className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
                         >
                           <DollarSign className="w-4 h-4 mr-1" />
                           Invest More
                         </Button>
-                      </Link>  
+                      </PaymentPopup>
                     )}
                   </div>
                 </div>
 
                 {/* Click to view hint */}
-                <div className="text-center mt-4">
+                {/* <div className="text-center mt-4">
                   <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
                     <Eye className="w-3 h-3" />
                     Click to view details
                   </p>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           ))}

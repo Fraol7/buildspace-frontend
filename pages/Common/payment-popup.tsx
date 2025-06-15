@@ -13,15 +13,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CreditCard } from "lucide-react"
+import { DollarSign  } from "lucide-react"
 
 interface PaymentPopupProps {
   campaignTitle: string;
   amount: number;
+  buttonLabel?: string;
   onPaymentSuccess?: () => void;
+  children: React.ReactNode;
 }
 
-export default function PaymentPopup({ campaignTitle, amount: initialAmount, onPaymentSuccess }: PaymentPopupProps) {
+export default function PaymentPopup({ campaignTitle, amount: initialAmount, buttonLabel, onPaymentSuccess, children }: PaymentPopupProps) {
   const [amount, setAmount] = useState(initialAmount.toString())
   const [isOpen, setIsOpen] = useState(false)
 
@@ -44,9 +46,9 @@ export default function PaymentPopup({ campaignTitle, amount: initialAmount, onP
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3">
-          <CreditCard className="mr-2 h-4 w-4" />
-          Contribute Now
+        <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-md p-2">
+          <DollarSign  className="mr-2 h-4 w-4" />
+          {buttonLabel || 'Contribute Now'}
         </Button>
       </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
@@ -82,7 +84,7 @@ export default function PaymentPopup({ campaignTitle, amount: initialAmount, onP
               onClick={handlePayWithChapa} 
               className="bg-green-600 hover:bg-green-700"
             >
-              <CreditCard className="mr-2 h-4 w-4" />
+              <DollarSign  className="mr-2 h-4 w-4" />
               Contribute with Chapa
             </Button>
           </DialogFooter>

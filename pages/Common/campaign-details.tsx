@@ -380,10 +380,9 @@ export default function CampaignDetails() {
                     amount={campaignData.minimumFunding}
                     onPaymentSuccess={() => {
                       // Handle successful payment
-                      setShowInvestModal(false);
+                      setShowInvestModal(false)
                       // You can add any additional success handling here
-                    }}
-                  />
+                    } } children={undefined}                  />
                   
                   {/* Keep the existing dialog for reference, but it's now replaced by PaymentPopup */}
                   <Dialog open={showInvestModal} onOpenChange={setShowInvestModal}>
