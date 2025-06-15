@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -11,6 +12,21 @@ import {
 } from "recharts";
 
 const ChartsSection = () => {
+  const [crowdfundingTotal, setCrowdfundingTotal] =
+    useState(CROWDFUNDING_TOTAL);
+  const [investmentTotal, setInvestmentTotal] = useState(INVEST_TOTAL);
+  const [spendingData, setSpendingData] = useState(SPENDING_DATA);
+
+  useEffect(() => {
+    fetch("/api/startup-earning")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setCrowdfundingTotal(data.result.total_crowdfunding);
+        setInvestmentTotal(data.result.total_investment);
+        setSpendingData(data.result.gain_over_time);
+      });
+  }, []);
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
       {/* Startup Progress Section */}
@@ -115,7 +131,9 @@ const ChartsSection = () => {
       {/* Total Earning Section */}
       <Card className="shadow-lg hover:shadow-xl transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Total Earning</CardTitle>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Total Earning
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
@@ -124,13 +142,17 @@ const ChartsSection = () => {
               <Card className="shadow border border-green-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
                   <span className="text-sm text-gray-500">Crowdfunding</span>
-                  <span className="text-lg font-semibold text-green-600">${CROWDFUNDING_TOTAL}</span>
+                  <span className="text-lg font-semibold text-green-600">
+                    ${crowdfundingTotal}
+                  </span>
                 </CardContent>
               </Card>
               <Card className="shadow border border-blue-300 flex items-center justify-center">
                 <CardContent className="flex flex-col items-center justify-center p-4">
                   <span className="text-sm text-gray-500">Invest</span>
-                  <span className="text-lg font-semibold text-blue-600">${INVEST_TOTAL}</span>
+                  <span className="text-lg font-semibold text-blue-600">
+                    ${investmentTotal}
+                  </span>
                 </CardContent>
               </Card>
             </div>
@@ -139,7 +161,7 @@ const ChartsSection = () => {
             <div className="col-span-1 md:col-span-4 h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                  data={SPENDING_DATA}
+                  data={spendingData}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -166,14 +188,24 @@ const ChartsSection = () => {
                     }}
                   />
                   <defs>
-                    <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient
+                      id="colorAmount"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
                       <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
+                      <stop
+                        offset="95%"
+                        stopColor="#3b82f6"
+                        stopOpacity={0.1}
+                      />
                     </linearGradient>
                   </defs>
                   <Area
                     type="monotone"
-                    dataKey="amount"
+                    dataKey="gain"
                     stroke="#2563eb"
                     strokeWidth={2}
                     fillOpacity={1}
