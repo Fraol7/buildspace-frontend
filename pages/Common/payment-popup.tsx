@@ -15,8 +15,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CreditCard } from "lucide-react"
 
-export default function PaymentPopup() {
-  const [amount, setAmount] = useState("")
+interface PaymentPopupProps {
+  campaignTitle: string;
+  amount: number;
+  onPaymentSuccess?: () => void;
+}
+
+export default function PaymentPopup({ campaignTitle, amount: initialAmount, onPaymentSuccess }: PaymentPopupProps) {
+  const [amount, setAmount] = useState(initialAmount.toString())
   const [isOpen, setIsOpen] = useState(false)
 
   const handlePayWithChapa = () => {
@@ -36,18 +42,17 @@ export default function PaymentPopup() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <CreditCard className="mr-2 h-4 w-4" />
-            Make Payment
-          </Button>
-        </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3">
+          <CreditCard className="mr-2 h-4 w-4" />
+          Contribute Now
+        </Button>
+      </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Enter Payment Amount</DialogTitle>
-            <DialogDescription>Enter the amount you want to pay and proceed with Chapa payment.</DialogDescription>
+            <DialogTitle>Contribute to {campaignTitle}</DialogTitle>
+            <DialogDescription>Enter the amount you want to contribute and proceed with Chapa payment.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -73,13 +78,15 @@ export default function PaymentPopup() {
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handlePayWithChapa} className="bg-green-600 hover:bg-green-700">
+            <Button 
+              onClick={handlePayWithChapa} 
+              className="bg-green-600 hover:bg-green-700"
+            >
               <CreditCard className="mr-2 h-4 w-4" />
-              Pay with Chapa
+              Contribute with Chapa
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
   )
 }

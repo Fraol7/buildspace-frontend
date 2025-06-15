@@ -35,7 +35,7 @@ import {
 // Dummy data to simulate retrieving an existing startup
 const dummyStartupData = {
   name: "EcoTech Solutions",
-  logoUrl: "/placeholder.svg?height=200&width=200",
+  logoUrl: "/placeholder.jpg?height=200&width=200",
   tagline: "Sustainable technology for a greener tomorrow",
   description:
     "EcoTech Solutions is developing innovative clean energy solutions that help businesses reduce their carbon footprint while saving on operational costs. Our patented technology converts waste heat into electricity, providing a sustainable energy source for industrial applications.",

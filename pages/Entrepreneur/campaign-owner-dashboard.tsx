@@ -120,7 +120,7 @@ export default function CampaignOwnerDashboard() {
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shadow-lg">
                 <Image
-                  src={campaignData.logo || "/placeholder.svg"}
+                  src={campaignData.logo || "/placeholder.jpg"}
                   alt={`${campaignData.title} logo`}
                   className="object-cover"
                   width={100}   // adjust width as needed

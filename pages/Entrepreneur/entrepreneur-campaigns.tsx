@@ -175,7 +175,7 @@ export default function EntrepreneurCampaigns() {
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
                       <Image
-                        src={campaign.logo || "/placeholder.svg"}
+                        src={campaign.logo || "/placeholder.jpg"}
                         alt={`${campaign.title} logo`}
                         width={48}    // set to container size or desired width
                         height={48}   // set to container size or desired height

@@ -326,7 +326,7 @@ export default function InvestorCampaigns() {
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
                     <Image
-                      src={campaign.logo || "/placeholder.svg"}
+                      src={campaign.logo || "/placeholder.jpg"}
                       alt={`${campaign.title} logo`}
                       layout="fill"
                       objectFit="cover"
@@ -397,7 +397,7 @@ export default function InvestorCampaigns() {
                     onClick={(e) => handleFounderClick(campaign.founderName, e)}
                   >
                     <Avatar className="w-8 h-8">
-                      <AvatarImage src={campaign.founderAvatar || "/placeholder.svg"} alt={campaign.founderName} />
+                      <AvatarImage src={campaign.founderAvatar || "/placeholder.jpg"} alt={campaign.founderName} />
                       <AvatarFallback className="bg-blue-200 text-blue-700">
                         {campaign.founderName
                           .split(" ")

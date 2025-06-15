@@ -351,7 +351,7 @@ export default function StartupSetup() {
                       <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
                         {formData.logo ? (
                           <Image
-                            src={URL.createObjectURL(formData.logo) || "/placeholder.svg"}
+                            src={URL.createObjectURL(formData.logo) || "/placeholder.jpg"}
                             alt="Logo preview"
                             width={64}
                             height={64}
@@ -631,7 +631,7 @@ export default function StartupSetup() {
                     <div className="flex items-start gap-4">
                       {formData.logo && (
                         <Image
-                          src={URL.createObjectURL(formData.logo) || "/placeholder.svg"}
+                          src={URL.createObjectURL(formData.logo) || "/placeholder.jpg"}
                           alt="Project logo"
                           width={64}
                           height={64}

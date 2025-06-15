@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import PaymentPopup from "./payment-popup"
 import {
   Bookmark,
   BookmarkCheck,
@@ -231,7 +232,7 @@ export default function CampaignDetails() {
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-xl overflow-hidden bg-white shadow-lg ring-2 ring-white/30">
                 <Image
-                  src={campaignData.logo || "/placeholder.svg"}
+                  src={campaignData.logo || "/placeholder.jpg"}
                   alt={`${campaignData.title} logo`}
                   className="w-full h-full object-cover"
                   width={500} // Adjust width as per requirement
@@ -322,14 +323,14 @@ export default function CampaignDetails() {
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 shadow-lg">
                     <Image
-                      src={campaignData.founderAvatar || "/placeholder.svg"}
+                      src={campaignData.founderAvatar || "/placeholder.jpg"}
                       alt={campaignData.founderName}
                       className="w-full h-full object-cover"
                       width={100} // Adjust width as per requirement
                       height={100} // Adjust height as per requirement
                       priority // Optional: Ensures critical images load faster
                       placeholder="blur" // Optional: Adds a low-quality blur placeholder
-                      blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder for blur effect
+                      blurDataURL="/placeholder.jpg" // Optional: Base64-encoded placeholder for blur effect
                     />
                   </div>
                   <div className="flex-1">
@@ -374,9 +375,20 @@ export default function CampaignDetails() {
                 </div>
 
                 <div className="flex flex-col gap-3">
+                  <PaymentPopup 
+                    campaignTitle={campaignData.title}
+                    amount={campaignData.minimumFunding}
+                    onPaymentSuccess={() => {
+                      // Handle successful payment
+                      setShowInvestModal(false);
+                      // You can add any additional success handling here
+                    }}
+                  />
+                  
+                  {/* Keep the existing dialog for reference, but it's now replaced by PaymentPopup */}
                   <Dialog open={showInvestModal} onOpenChange={setShowInvestModal}>
                     <DialogTrigger asChild>
-                      <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3">
+                      <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-lg py-3 opacity-0 h-0 p-0 border-0 m-0">
                         Contribute Now
                       </Button>
                     </DialogTrigger>
