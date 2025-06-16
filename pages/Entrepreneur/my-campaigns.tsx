@@ -1,23 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Calendar, DollarSign, Eye, Target, Plus, Users, ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-import { allCampaigns } from '@/constants'
-import Image from "next/image"
+import { useState } from "react";
+import {
+  Calendar,
+  DollarSign,
+  Eye,
+  Target,
+  Plus,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { allCampaigns } from "@/constants";
+import Image from "next/image";
 
-const ITEMS_PER_PAGE = 6
+const ITEMS_PER_PAGE = 6;
 
 export default function MyCampaigns() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
-  const totalPages = Math.ceil(allCampaigns.length / ITEMS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const campaigns = allCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(allCampaigns.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const campaigns = allCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -25,34 +34,34 @@ export default function MyCampaigns() {
       currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
-    })
-  }
+    });
+  };
 
   const getProgressPercentage = (raised: number, target: number) => {
-    return Math.min((raised / target) * 100, 100)
-  }
+    return Math.min((raised / target) * 100, 100);
+  };
 
   const getStatusColor = (status: string) => {
     return status === "Active"
       ? "bg-green-100 text-green-700 border-green-200"
-      : "bg-blue-100 text-blue-600 border-blue-200"
-  }
+      : "bg-blue-100 text-blue-600 border-blue-200";
+  };
 
   const handleCampaignClick = (campaignId: string) => {
-    console.log(campaignId, "hello")
-  }
+    console.log(campaignId, "hello");
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   if (allCampaigns.length === 0) {
     return (
@@ -60,7 +69,9 @@ export default function MyCampaigns() {
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900">My Campaigns</h1>
-            <p className="text-gray-600 mt-2">Manage and track your fundraising campaigns</p>
+            <p className="text-gray-600 mt-2">
+              Manage and track your fundraising campaigns
+            </p>
           </div>
 
           <div className="flex flex-col items-center justify-center py-16">
@@ -68,7 +79,9 @@ export default function MyCampaigns() {
               <div className="w-32 h-32 bg-gradient-to-b from-blue-200 to-blue-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <Target className="w-16 h-16 text-white" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-2">No campaigns yet</h3>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                No campaigns yet
+              </h3>
               <p className="text-gray-600 mb-8 max-w-md">
                 {
                   "You haven't launched any campaigns yet. Start your first campaign to begin raising funds for your startup."
@@ -84,7 +97,7 @@ export default function MyCampaigns() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -94,7 +107,9 @@ export default function MyCampaigns() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-gray-900">My Campaigns</h1>
-            <p className="text-gray-600 mt-2">Manage and track your fundraising campaigns</p>
+            <p className="text-gray-600 mt-2">
+              Manage and track your fundraising campaigns
+            </p>
           </div>
           <Link href="/entrepreneur/add-campaign">
             <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
@@ -113,8 +128,12 @@ export default function MyCampaigns() {
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Campaigns</p>
-                  <p className="text-3xl font-bold text-gray-700">{allCampaigns.length}</p>
+                  <p className="text-gray-700 text-sm font-medium">
+                    Total Campaigns
+                  </p>
+                  <p className="text-3xl font-bold text-gray-700">
+                    {allCampaigns.length}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -127,9 +146,16 @@ export default function MyCampaigns() {
                   <DollarSign className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Raised</p>
+                  <p className="text-gray-700 text-sm font-medium">
+                    Total Raised
+                  </p>
                   <p className="text-3xl font-bold text-black">
-                    {formatCurrency(allCampaigns.reduce((sum, campaign) => sum + campaign.amountRaised, 0))}
+                    {formatCurrency(
+                      allCampaigns.reduce(
+                        (sum, campaign) => sum + campaign.amount_raised,
+                        0
+                      )
+                    )}
                   </p>
                 </div>
               </div>
@@ -143,9 +169,14 @@ export default function MyCampaigns() {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-gray-700 text-sm font-medium">Total Backers</p>
+                  <p className="text-gray-700 text-sm font-medium">
+                    Total Backers
+                  </p>
                   <p className="text-3xl font-bold text-black">
-                    {allCampaigns.reduce((sum, campaign) => sum + campaign.backers, 0)}
+                    {allCampaigns.reduce(
+                      (sum, campaign) => sum + campaign.total_funders,
+                      0
+                    )}
                   </p>
                 </div>
               </div>
@@ -156,11 +187,16 @@ export default function MyCampaigns() {
         {/* Campaigns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {campaigns.map((campaign) => (
-            <Link href={`/entrepreneur/campaigns-owned/${campaign.id}`} key={campaign.id}>
+            <Link
+              href={`/entrepreneur/campaigns-owned/${campaign.id}`}
+              key={campaign.id}
+            >
               <Card
                 key={campaign.id}
                 className={`bg-gradient-to-b from-blue-50 to-blue-50 border border-blue-200 shadow-lg hover:shadow-2xl transform transition-all duration-300 cursor-pointer ${
-                  hoveredCard === campaign.id ? "scale-105 shadow-2xl" : "hover:scale-102"
+                  hoveredCard === campaign.id
+                    ? "scale-105 shadow-2xl"
+                    : "hover:scale-102"
                 }`}
                 onMouseEnter={() => setHoveredCard(campaign.id)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -168,7 +204,11 @@ export default function MyCampaigns() {
               >
                 <CardHeader className="pb-4 relative">
                   <div className="absolute top-4 right-4">
-                    <Badge className={`${getStatusColor(campaign.status)} border font-medium px-3 py-1 rounded-full`}>
+                    <Badge
+                      className={`${getStatusColor(
+                        campaign.is_active ? "Active" : "Inactive"
+                      )} border font-medium px-3 py-1 rounded-full`}
+                    >
                       {campaign.status}
                     </Badge>
                   </div>
@@ -177,8 +217,8 @@ export default function MyCampaigns() {
                       <Image
                         src={campaign.logo || "/placeholder.jpg"}
                         alt={`${campaign.title} logo`}
-                        width={48}    // set to container size or desired width
-                        height={48}   // set to container size or desired height
+                        width={48} // set to container size or desired width
+                        height={48} // set to container size or desired height
                         className="object-cover"
                       />
                     </div>
@@ -186,7 +226,9 @@ export default function MyCampaigns() {
                       <CardTitle className="text-xl font-bold text-gray-900 mb-2 leading-tight">
                         {campaign.title}
                       </CardTitle>
-                      <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{campaign.description}</p>
+                      <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
+                        {campaign.description}
+                      </p>
                     </div>
                   </div>
                 </CardHeader>
@@ -195,22 +237,37 @@ export default function MyCampaigns() {
                   {/* Funding Progress */}
                   <div className="mb-6">
                     <div className="flex justify-between items-center mb-3">
-                      <span className="text-sm font-semibold text-gray-700">Funding Progress</span>
+                      <span className="text-sm font-semibold text-gray-700">
+                        Funding Progress
+                      </span>
                       <span className="text-sm font-bold text-blue-600">
-                        {Math.round(getProgressPercentage(campaign.amountRaised, campaign.targetAmount))}%
+                        {Math.round(
+                          getProgressPercentage(
+                            campaign.amountRaised,
+                            campaign.targetAmount
+                          )
+                        )}
+                        %
                       </span>
                     </div>
                     <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
-                        style={{ width: `${getProgressPercentage(campaign.amountRaised, campaign.targetAmount)}%` }}
+                        style={{
+                          width: `${getProgressPercentage(
+                            campaign.amount_raised,
+                            campaign.target_amount
+                          )}%`,
+                        }}
                       ></div>
                     </div>
                     <div className="flex justify-between mt-3">
                       <span className="font-bold text-blue-600 text-lg">
-                        {formatCurrency(campaign.amountRaised)} raised
+                        {formatCurrency(campaign.amount_raised)} raised
                       </span>
-                      <span className="text-gray-500 font-medium">of {formatCurrency(campaign.targetAmount)}</span>
+                      <span className="text-gray-500 font-medium">
+                        of {formatCurrency(campaign.target_amount)}
+                      </span>
                     </div>
                   </div>
 
@@ -218,15 +275,21 @@ export default function MyCampaigns() {
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
                       <DollarSign className="w-4 h-4 mr-2 text-green-500" />
-                      <span className="font-medium">Min: {formatCurrency(campaign.minimumFunding)}</span>
+                      <span className="font-medium">
+                        Min: {formatCurrency(campaign.minimum_investment)}
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 shadow-sm">
                       <Calendar className="w-4 h-4 mr-2 text-blue-500" />
-                      <span className="font-medium">Ends {formatDate(campaign.endDate)}</span>
+                      <span className="font-medium">
+                        Ends {formatDate(campaign.end_date)}
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 col-span-2 shadow-sm">
                       <Users className="w-4 h-4 mr-2 text-blue-500" />
-                      <span className="font-medium">{campaign.backers} backers supporting this campaign</span>
+                      <span className="font-medium">
+                        {campaign.backers} backers supporting this campaign
+                      </span>
                     </div>
                   </div>
 
@@ -287,5 +350,5 @@ export default function MyCampaigns() {
         </div>
       </div>
     </div>
-  )
+  );
 }

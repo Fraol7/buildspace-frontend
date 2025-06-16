@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Send,
   MoreVertical,
@@ -17,169 +17,195 @@ import {
   FileText,
   ImageIcon,
   type File,
-} from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useToast } from "@/hooks/use-toast"
-import { useChatContext } from "./chat-context"
-import { FileUpload } from "./file-upload"
-import Link from "next/link"
-import type { Contact } from "./chat-interface"
-import { EmojiPickerComponent } from "./emoji-picker"
-import Image from "next/image"
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
+import { useChatContext } from "./chat-context";
+import { FileUpload } from "./file-upload";
+import Link from "next/link";
+import type { Contact } from "./chat-interface";
+import { EmojiPickerComponent } from "./emoji-picker";
+import Image from "next/image";
+import { useChatStore } from "@/store/chatStore";
+import { useSession } from "next-auth/react";
 
 interface ChatAreaProps {
-  selectedContact: Contact | null
-  onDeleteChat: (contactId: string) => void
-  isMobile?: boolean
-  onBackToContacts?: () => void
+  selectedContact: Contact | null;
+  onDeleteChat: (contactId: string) => void;
+  isMobile?: boolean;
+  onBackToContacts?: () => void;
 }
 
 // Helper function to format date
 const formatDate = (date: Date) => {
-  const today = new Date()
-  const yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
 
   if (date.toDateString() === today.toDateString()) {
-    return "Today"
+    return "Today";
   } else if (date.toDateString() === yesterday.toDateString()) {
-    return "Yesterday"
+    return "Yesterday";
   } else {
     return date.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
+    });
   }
-}
+};
 
 // Helper function to check if two dates are on different days
 const isDifferentDay = (date1: Date, date2: Date) => {
-  return date1.toDateString() !== date2.toDateString()
-}
+  return date1.toDateString() !== date2.toDateString();
+};
 
-export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBackToContacts }: ChatAreaProps) {
-  const [message, setMessage] = useState("")
-  const [isConnected] = useState(true)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { toast } = useToast()
-  const { messages, sendMessage, sendFile, retryMessage } = useChatContext()
+export function ChatArea({
+  selectedContact,
+  onDeleteChat,
+  isMobile = false,
+  onBackToContacts,
+}: ChatAreaProps) {
+  const [message, setMessage] = useState("");
+  const [isConnected] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const { messages, sendMessage } = useChatStore();
+  const { data: session } = useSession();
 
-  const currentMessages = useMemo(() => {
-    if (!selectedContact) return []
-    return messages.filter(
-      ({ senderId, receiverId }) =>
-        (senderId === selectedContact.id && receiverId === "current-user") ||
-        (senderId === "current-user" && receiverId === selectedContact.id),
-    )
-  }, [selectedContact, messages])
+  const currentMessages = messages;
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [currentMessages])
+    console.log("Session data in ChatArea:", session); // Debug log
+  }, []);
+  useEffect(() => {
+    console.log("Current messages updated:", currentMessages); // Debug log
+    scrollToBottom();
+  }, [currentMessages]);
 
   const handleSendMessage = async () => {
-    if (!message.trim() || !selectedContact) return
+    if (!message.trim() || !selectedContact) return;
 
     try {
-      await sendMessage(message, selectedContact.id)
-      setMessage("")
+      if (!session?.user?.id) {
+        toast({
+          title: "User not authenticated",
+          description: "Please sign in to send messages.",
+          variant: "destructive",
+        });
+        return;
+      }
+      await sendMessage({
+        content: message,
+        senderId: session.user.id,
+        receiverId: selectedContact.email,
+        accessToken: session?.accessToken,
+      });
+      setMessage("");
       // Focus back to input after sending
-      inputRef.current?.focus()
+      inputRef.current?.focus();
     } catch (error) {
-      console.error("Error sending message:", error)
+      console.error("Error sending message:", error);
       toast({
         title: "Failed to send message",
         description: "Please check your connection and try again.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleRetry = async (messageId: string) => {
     try {
-      await retryMessage(messageId)
+      // await retryMessage(messageId);
       toast({
         title: "Message sent",
         description: "Your message has been delivered.",
-      })
+      });
     } catch (error) {
-      console.error("Error sending message:", error)
+      console.error("Error sending message:", error);
       toast({
         title: "Retry failed",
         description: "Please check your connection and try again.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleFileSelect = async (file: File) => {
-    if (!selectedContact) return
+    if (!selectedContact) return;
 
     try {
-      await sendFile(file, selectedContact.id)
+      await sendFile(file, selectedContact.user_id);
       toast({
         title: "File sent",
         description: `${file.name} has been shared.`,
-      })
+      });
     } catch (error) {
-      console.error("Error sending message:", error)
+      console.error("Error sending message:", error);
       toast({
         title: "Failed to send file",
         description: "Please check your connection and try again.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleEmojiSelect = useCallback(
     (emoji: string) => {
-      console.log("Emoji selected in chat area:", emoji) // Debug log
+      console.log("Emoji selected in chat area:", emoji); // Debug log
 
       if (!inputRef.current) {
-        console.log("Input ref not available") // Debug log
-        setMessage((prev) => prev + emoji)
-        return
+        console.log("Input ref not available"); // Debug log
+        setMessage((prev) => prev + emoji);
+        return;
       }
 
-      const input = inputRef.current
-      const cursorPosition = input.selectionStart || message.length
-      const newMessage = message.slice(0, cursorPosition) + emoji + message.slice(cursorPosition)
+      const input = inputRef.current;
+      const cursorPosition = input.selectionStart || message.length;
+      const newMessage =
+        message.slice(0, cursorPosition) +
+        emoji +
+        message.slice(cursorPosition);
 
-      console.log("Updating message from:", message, "to:", newMessage) // Debug log
-      setMessage(newMessage)
+      console.log("Updating message from:", message, "to:", newMessage); // Debug log
+      setMessage(newMessage);
 
       // Focus back to input and set cursor position after emoji
       setTimeout(() => {
         if (input) {
-          input.focus()
-          const newCursorPosition = cursorPosition + emoji.length
-          input.setSelectionRange(newCursorPosition, newCursorPosition)
+          input.focus();
+          const newCursorPosition = cursorPosition + emoji.length;
+          input.setSelectionRange(newCursorPosition, newCursorPosition);
         }
-      }, 0)
+      }, 0);
     },
-    [message],
-  )
+    [message]
+  );
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   const handleDeleteChat = () => {
-    onDeleteChat(selectedContact!.id)
+    onDeleteChat(selectedContact!.user_id);
     if (isMobile && onBackToContacts) {
-      onBackToContacts()
+      onBackToContacts();
     }
-  }
+  };
 
   if (!selectedContact) {
     return (
@@ -188,11 +214,15 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Send className="h-8 w-8 text-blue-600" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Select a conversation</h3>
-          <p className="text-gray-500">Choose a contact from the list to start chatting</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Select a conversation
+          </h3>
+          <p className="text-gray-500">
+            Choose a contact from the list to start chatting
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -204,19 +234,23 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
             <div className="relative">
               <Avatar className="h-10 w-10">
                 <AvatarFallback className="bg-blue-100 text-blue-600">
-                  {selectedContact.name
+                  {selectedContact.first_name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              {selectedContact.isOnline && (
+              {selectedContact.is_online && (
                 <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-white rounded-full"></div>
               )}
             </div>
             <div>
-              <h2 className="font-medium text-gray-900">{selectedContact.name}</h2>
-              <p className="text-sm text-gray-500">{selectedContact.isOnline ? "Online" : "Offline"}</p>
+              <h2 className="font-medium text-gray-900">
+                {selectedContact.first_name}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {selectedContact.is_online ? "Online" : "Offline"}
+              </p>
             </div>
           </div>
 
@@ -227,20 +261,32 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                 <span className="text-sm">Connection issues</span>
               </div>
             )}
-            <Button asChild variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
-              <Link href={`/profile/${selectedContact.id}`}>
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <Link href={`/profile/${selectedContact.user_id}`}>
                 <User className="h-4 w-4" />
               </Link>
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/profile/${selectedContact.id}`} className="flex items-center gap-2">
+                  <Link
+                    href={`/profile/${selectedContact.user_id}`}
+                    className="flex items-center gap-2"
+                  >
                     <User className="h-4 w-4" />
                     View Profile
                   </Link>
@@ -268,7 +314,7 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mx-auto mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-lg font-semibold">
-                      {selectedContact?.name
+                      {selectedContact?.first_name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
@@ -276,7 +322,8 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Start a conversation with {selectedContact?.name.split(" ")[0]}
+                  Start a conversation with{" "}
+                  {selectedContact?.first_name.split(" ")[0]}
                 </h3>
                 <p className="text-gray-500 text-sm mb-4 leading-relaxed">
                   Say hello and start chatting! Your messages will appear here.
@@ -291,109 +338,147 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
         ) : (
           // Existing messages
           <div className="space-y-1">
-            {currentMessages.map((msg, index) => {
-              const messageDate = new Date(msg.timestamp)
-              const prevMessageDate = index > 0 ? new Date(currentMessages[index - 1].timestamp) : null
-              const showDateSeparator = !prevMessageDate || isDifferentDay(messageDate, prevMessageDate)
+            {[...currentMessages]
+              .sort(
+                (a, b) =>
+                  new Date(a.timestamp).getTime() -
+                  new Date(b.timestamp).getTime()
+              )
+              .map((msg, index) => {
+                const messageDate = new Date(msg.timestamp);
+                const prevMessageDate =
+                  index > 0
+                    ? new Date(currentMessages[index - 1].timestamp)
+                    : null;
+                const showDateSeparator =
+                  !prevMessageDate ||
+                  isDifferentDay(messageDate, prevMessageDate);
 
-              return (
-                <div key={msg.id}>
-                  {/* Date Separator */}
-                  {showDateSeparator && (
-                    <div className="flex justify-center my-4">
-                      <div className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">
-                        {formatDate(messageDate)}
+                return (
+                  <div key={msg.id}>
+                    {/* Date Separator */}
+                    {showDateSeparator && (
+                      <div className="flex justify-center my-4">
+                        <div className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full">
+                          {formatDate(messageDate)}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Message */}
-                  <div className={`flex ${msg.senderId === "current-user" ? "justify-end" : "justify-start"} mb-2`}>
+                    {/* Message */}
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.senderId === "current-user" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-900"
-                        } ${isMobile ? "max-w-[280px]" : ""}`}
+                      className={`flex ${
+                        msg.senderId === session?.user?.id
+                          ? "justify-end"
+                          : "justify-start"
+                      } mb-2`}
                     >
-                      {msg.type === "file" && msg.fileData ? (
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            {msg.fileData.type.startsWith("image/") ? (
-                              <ImageIcon className="h-4 w-4" />
-                            ) : (
-                              <FileText className="h-4 w-4" />
-                            )}
-                            <span className="text-sm font-medium">{msg.fileData.name}</span>
-                          </div>
-                          {msg.fileData.type.startsWith("image/") ? (
-                            <Image
-                              src={msg.fileData.url || "/placeholder.jpg"}
-                              alt={msg.fileData.name}
-                              className="max-w-full h-auto rounded"
-                              width={300}
-                              height={200}
-                            />
-                          ) : (
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs opacity-75">
-                                {(msg.fileData.size / 1024 / 1024).toFixed(2)} MB
+                      <div
+                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                          msg.senderId === session?.user?.id
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-100 text-gray-900"
+                        } ${isMobile ? "max-w-[280px]" : ""}`}
+                      >
+                        {msg.type === "file" && msg.fileData ? (
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              {msg.fileData.type.startsWith("image/") ? (
+                                <ImageIcon className="h-4 w-4" />
+                              ) : (
+                                <FileText className="h-4 w-4" />
+                              )}
+                              <span className="text-sm font-medium">
+                                {msg.fileData.name}
                               </span>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className={`h-auto p-1 ${msg.senderId === "current-user"
-                                  ? "text-blue-200 hover:text-white"
-                                  : "text-gray-600 hover:text-gray-900"
+                            </div>
+                            {msg.fileData.type.startsWith("image/") ? (
+                              <Image
+                                src={msg.fileData.url || "/placeholder.jpg"}
+                                alt={msg.fileData.name}
+                                className="max-w-full h-auto rounded"
+                                width={300}
+                                height={200}
+                              />
+                            ) : (
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs opacity-75">
+                                  {(msg.fileData.size / 1024 / 1024).toFixed(2)}{" "}
+                                  MB
+                                </span>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className={`h-auto p-1 ${
+                                    msg.senderId === session?.user?.id
+                                      ? "text-blue-200 hover:text-white"
+                                      : "text-gray-600 hover:text-gray-900"
                                   }`}
-                                onClick={() => window.open(msg.fileData!.url, "_blank")}
-                              >
-                                <Download className="h-3 w-3" />
-                              </Button>
+                                  onClick={() =>
+                                    window.open(msg.fileData!.url, "_blank")
+                                  }
+                                >
+                                  <Download className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-sm whitespace-pre-wrap">
+                            {msg.content}
+                          </p>
+                        )}
+                        <div
+                          className={`flex items-center justify-between mt-1 ${
+                            msg.senderId === session?.user?.id
+                              ? "text-blue-200"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          <span className="text-xs">
+                            {new Date(msg.timestamp).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                          {msg.senderId === session?.user?.id && (
+                            <div className="flex items-center gap-1">
+                              {msg.status === "failed" && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleRetry(msg.id)}
+                                  className="h-auto p-0 text-blue-200 hover:text-white"
+                                >
+                                  <RotateCcw className="h-3 w-3" />
+                                </Button>
+                              )}
+                              <span className="text-xs">
+                                {msg.status === "sending" && "⏳"}
+                                {msg.status === "sent" && "✓"}
+                                {msg.status === "delivered" && "✓✓"}
+                                {msg.status === "read" && "✓✓"}
+                                {msg.status === "failed" && "❌"}
+                              </span>
                             </div>
                           )}
                         </div>
-                      ) : (
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                      )}
-                      <div
-                        className={`flex items-center justify-between mt-1 ${msg.senderId === "current-user" ? "text-blue-200" : "text-gray-500"
-                          }`}
-                      >
-                        <span className="text-xs">
-                          {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                        {msg.senderId === "current-user" && (
-                          <div className="flex items-center gap-1">
-                            {msg.status === "failed" && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleRetry(msg.id)}
-                                className="h-auto p-0 text-blue-200 hover:text-white"
-                              >
-                                <RotateCcw className="h-3 w-3" />
-                              </Button>
-                            )}
-                            <span className="text-xs">
-                              {msg.status === "sending" && "⏳"}
-                              {msg.status === "sent" && "✓"}
-                              {msg.status === "delivered" && "✓✓"}
-                              {msg.status === "read" && "✓✓"}
-                              {msg.status === "failed" && "❌"}
-                            </span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                );
+              })}
             <div ref={messagesEndRef} />
           </div>
         )}
       </div>
 
       {/* Message Input */}
-      <div className={`border-t border-gray-200 bg-white shrink-0 ${isMobile ? "p-3" : "p-4"}`}>
+      <div
+        className={`border-t border-gray-200 bg-white shrink-0 ${
+          isMobile ? "p-3" : "p-4"
+        }`}
+      >
         <div className="flex items-center gap-2">
           <FileUpload onFileSelect={handleFileSelect} />
           <EmojiPickerComponent onEmojiSelect={handleEmojiSelect} />
@@ -403,18 +488,21 @@ export function ChatArea({ selectedContact, onDeleteChat, isMobile = false, onBa
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message..."
             onKeyDown={handleKeyPress}
-            className={`flex-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500 ${isMobile ? "text-base" : ""
-              }`}
+            className={`flex-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500 ${
+              isMobile ? "text-base" : ""
+            }`}
           />
           <Button
             onClick={handleSendMessage}
             disabled={!message.trim()}
-            className={`bg-blue-600 hover:bg-blue-700 ${isMobile ? "px-3" : ""}`}
+            className={`bg-blue-600 hover:bg-blue-700 ${
+              isMobile ? "px-3" : ""
+            }`}
           >
             <Send className="h-4 w-4" />
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -20,13 +20,13 @@ export default function Dashboard() {
         <AutoScrollingTrendingProjects />
 
         {/* Stats Cards */}
-        {/* <StatsCards /> */}
+        <StatsCards />
 
         {/* Charts Section */}
-        {/* <ChartsSection /> */}
+        <ChartsSection />
 
         {/* Projects Grid */}
-        {/* <ProjectsGrid /> */}
+        <ProjectsGrid />
 
         {/* Investments Section with Manual Navigation */}
         <StartupsSection />

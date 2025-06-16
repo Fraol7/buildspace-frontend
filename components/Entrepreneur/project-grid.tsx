@@ -7,6 +7,8 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDashboardStore } from "@/store/dashboardStore";
+import { useSession } from "next-auth/react";
 
 export type Startup = {
   id: string;
@@ -31,64 +33,16 @@ export type Startup = {
 };
 
 const ProjectsGrid = () => {
-  const [projects, setProjects] = useState<Startup[]>([]);
+  const { recommendedStartups, fetchRecommendedStartups, loading } =
+    useDashboardStore();
+  const { data: session } = useSession();
 
   useEffect(() => {
-    fetch("/api/my-startups")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched projects for recommendation:", data);
-        if (data && Array.isArray(data.result) && data.result.length > 0) {
-          const randomIndex = Math.floor(Math.random() * data.result.length);
-          const randomId = data.result[randomIndex].id;
-          console.log("Randomly selected id:", randomId);
-          fetch(`/api/recommend-startups?startup_id=${randomId}`)
-            .then((res) => res.json())
-            .then((recommendData) => {
-              if (recommendData && Array.isArray(recommendData.result)) {
-                if (data.result) {
-                  setProjects(
-                    data.result.map((item: any) => {
-                      const progress =
-                        item.funding_goal > 0
-                          ? Math.round(
-                              (item.amount_raised / item.funding_goal) * 100
-                            )
-                          : 0;
-                      return {
-                        id: item.id,
-                        user_id: item.user_id,
-                        startup_name: item.startup_name,
-                        tag_line: item.tag_line,
-                        logo_url: item.logo_url,
-                        description: item.description,
-                        website: item.website,
-                        industry: item.industry,
-                        funding_stage: item.funding_stage,
-                        funding_goal: item.funding_goal,
-                        amount_raised: item.amount_raised,
-                        business_model: item.business_model,
-                        revenue: item.revenue,
-                        location: item.location,
-                        embedding: item.embedding,
-                        created_at: item.created_at,
-                        updated_at: item.updated_at,
-                        status:
-                          item.amount_raised === 0
-                            ? "New"
-                            : item.amount_raised < item.funding_goal
-                            ? "In Progress"
-                            : "Completed",
-                        progress,
-                      };
-                    })
-                  );
-                }
-              }
-            });
-        }
-      });
-  }, []);
+    const accessToken = session?.accessToken;
+    if (accessToken) {
+      fetchRecommendedStartups(accessToken);
+    }
+  }, [fetchRecommendedStartups]);
   return (
     <Card className="shadow-lg">
       <CardHeader>
@@ -98,7 +52,7 @@ const ProjectsGrid = () => {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {projects.map((project) => (
+          {recommendedStartups.map((project) => (
             <Link href="/" key={project.id} className="block">
               <div className="bg-gradient-to-br from-blue-200 to-gray-50 rounded-lg p-4 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-100 group">
                 {/* Project Header */}
