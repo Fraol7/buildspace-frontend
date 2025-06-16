@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useMemo } from "react"
-import { Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState, useMemo, useEffect } from "react";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
@@ -14,69 +14,87 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { SavedCard } from "@/components/Common/saved-startups"
-import { DUMMY_SAVED } from "@/constants"
+} from "@/components/ui/pagination";
+import { SavedCard } from "@/components/Entrepreneur/saved-startups";
+// import { DUMMY_SAVED } from "@/constants";
+import { useStartupStore } from "@/store/startupStore";
+import { useSession } from "next-auth/react";
+import { INDUSTRIES } from "@/constants";
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 5;
 
 export default function SavedListing() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set())
-  const [searchQuery, setSearchQuery] = useState("")
+  const [currentPage, setCurrentPage] = useState(1);
+  const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const { getSavedStartups, savedStartups: startups } = useStartupStore();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (session?.accessToken) {
+        await getSavedStartups(session.accessToken);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.accessToken, getSavedStartups]);
+
+  useEffect(() => {
+    setSavedStartups(new Set(startups.map((s) => s.id)));
+  }, [startups]);
 
   // Filter startups based on search query
   const filteredStartups = useMemo(() => {
     if (!searchQuery.trim()) {
-      return DUMMY_SAVED
+      return startups;
     }
 
-    const query = searchQuery.toLowerCase().trim()
-    return DUMMY_SAVED.filter((startup) => {
+    const query = searchQuery.toLowerCase().trim();
+    return startups.filter((startup) => {
       return (
-        startup.title.toLowerCase().includes(query) ||
+        startup.startup_name.toLowerCase().includes(query) ||
         startup.description.toLowerCase().includes(query) ||
         startup.location.toLowerCase().includes(query) ||
-        startup.stage.toLowerCase().includes(query) ||
-        startup.entrepreneur.name.toLowerCase().includes(query) ||
-        startup.badges.some((badge) => badge.toLowerCase().includes(query))
-      )
-    })
-  }, [searchQuery])
+        startup.funding_stage.toLowerCase().includes(query) ||
+        INDUSTRIES[startup.industry]
+      );
+    });
+  }, [searchQuery, startups]);
 
   // Reset to first page when search changes
   const resetPageOnSearch = (query: string) => {
-    setSearchQuery(query)
-    setCurrentPage(1)
-  }
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   // Calculate pagination based on filtered results
-  const totalPages = Math.ceil(filteredStartups.length / ITEMS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentStartups = filteredStartups.slice(startIndex, endIndex)
+  const totalPages = Math.ceil(filteredStartups.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentStartups = filteredStartups.slice(startIndex, endIndex);
 
   const handleSave = (startupId: string) => {
     setSavedStartups((prev) => {
-      const newSaved = new Set(prev)
+      const newSaved = new Set(prev);
       if (newSaved.has(startupId)) {
-        newSaved.delete(startupId)
+        newSaved.delete(startupId);
       } else {
-        newSaved.add(startupId)
+        newSaved.add(startupId);
       }
-      return newSaved
-    })
-  }
+      return newSaved;
+    });
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Search is handled by the useMemo hook above
-  }
+  };
 
   return (
     <div className="space-y-8 p-6">
@@ -113,14 +131,20 @@ export default function SavedListing() {
             <div className="text-sm text-gray-600">
               {searchQuery ? (
                 <>
-                  Found <span className="font-semibold text-sky-600">{filteredStartups.length}</span> startup
-                  {filteredStartups.length !== 1 ? "s" : ""} matching &quot;{searchQuery}&quot;
+                  Found{" "}
+                  <span className="font-semibold text-sky-600">
+                    {filteredStartups.length}
+                  </span>{" "}
+                  startup
+                  {filteredStartups.length !== 1 ? "s" : ""} matching &quot;
+                  {searchQuery}&quot;
                   {filteredStartups.length > 0 && (
                     <>
                       {" "}
                       • Showing{" "}
                       <span className="font-semibold text-sky-600">
-                        {startIndex + 1}-{Math.min(endIndex, filteredStartups.length)}
+                        {startIndex + 1}-
+                        {Math.min(endIndex, filteredStartups.length)}
                       </span>
                     </>
                   )}
@@ -129,9 +153,14 @@ export default function SavedListing() {
                 <>
                   Showing{" "}
                   <span className="font-semibold text-sky-600">
-                    {startIndex + 1}-{Math.min(endIndex, filteredStartups.length)}
+                    {startIndex + 1}-
+                    {Math.min(endIndex, filteredStartups.length)}
                   </span>{" "}
-                  of <span className="font-semibold text-sky-600">{filteredStartups.length}</span> startups
+                  of{" "}
+                  <span className="font-semibold text-sky-600">
+                    {filteredStartups.length}
+                  </span>{" "}
+                  startups
                 </>
               )}
             </div>
@@ -148,16 +177,23 @@ export default function SavedListing() {
               className="animate-in slide-in-from-bottom-4 duration-700"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <SavedCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
+              <SavedCard
+                startup={startup}
+                isSaved={savedStartups.has(startup.id)}
+                onSave={handleSave}
+              />
             </div>
           ))
         ) : (
           <Card className="bg-gray-50 border-gray-200">
             <CardContent className="p-12 text-center">
               <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">No startups found</h3>
+              <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                No startups found
+              </h3>
               <p className="text-gray-500 mb-4">
-                No startups match your search for &quot;{searchQuery}&quot;. Try adjusting your search terms.
+                No startups match your search for &quot;{searchQuery}&quot;. Try
+                adjusting your search terms.
               </p>
               <Button
                 variant="outline"
@@ -181,8 +217,8 @@ export default function SavedListing() {
                   <PaginationPrevious
                     href="#"
                     onClick={(e) => {
-                      e.preventDefault()
-                      if (currentPage > 1) handlePageChange(currentPage - 1)
+                      e.preventDefault();
+                      if (currentPage > 1) handlePageChange(currentPage - 1);
                     }}
                     className={`rounded-xl transition-all duration-200 ${
                       currentPage === 1
@@ -192,32 +228,35 @@ export default function SavedListing() {
                   />
                 </PaginationItem>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handlePageChange(page)
-                      }}
-                      isActive={currentPage === page}
-                      className={`rounded-xl transition-all duration-200 ${
-                        currentPage === page
-                          ? "bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg hover:shadow-xl"
-                          : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
-                      }`}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                        isActive={currentPage === page}
+                        className={`rounded-xl transition-all duration-200 ${
+                          currentPage === page
+                            ? "bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg hover:shadow-xl"
+                            : "hover:bg-sky-100 hover:text-sky-700 hover:shadow-md"
+                        }`}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                )}
 
                 <PaginationItem>
                   <PaginationNext
                     href="#"
                     onClick={(e) => {
-                      e.preventDefault()
-                      if (currentPage < totalPages) handlePageChange(currentPage + 1)
+                      e.preventDefault();
+                      if (currentPage < totalPages)
+                        handlePageChange(currentPage + 1);
                     }}
                     className={`rounded-xl transition-all duration-200 ${
                       currentPage === totalPages
@@ -232,5 +271,5 @@ export default function SavedListing() {
         </div>
       )}
     </div>
-  )
+  );
 }

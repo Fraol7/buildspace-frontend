@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
+import { useDashboardStore } from "@/store/dashboardStore";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import {
   Area,
@@ -12,21 +14,19 @@ import {
 } from "recharts";
 
 const ChartsSection = () => {
-  const [crowdfundingTotal, setCrowdfundingTotal] =
-    useState(CROWDFUNDING_TOTAL);
-  const [investmentTotal, setInvestmentTotal] = useState(INVEST_TOTAL);
-  const [spendingData, setSpendingData] = useState(SPENDING_DATA);
+  const { earnings, loading, fetchAll } = useDashboardStore();
+  const { data: session } = useSession();
 
   useEffect(() => {
-    fetch("/api/startup-earning")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched data:", data);
-        setCrowdfundingTotal(data.result.total_crowdfunding);
-        setInvestmentTotal(data.result.total_investment);
-        setSpendingData(data.result.gain_over_time);
-      });
-  }, []);
+    const accessToken = session?.accessToken;
+    if (accessToken) {
+      fetchAll(accessToken);
+    }
+  }, [fetchAll]);
+
+  const crowdfundingTotal = earnings?.total_crowdfunding ?? 0;
+  const investmentTotal = earnings?.total_investment ?? 0;
+  const spendingData = earnings?.gain_over_time ?? [];
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">
       {/* Startup Progress Section */}

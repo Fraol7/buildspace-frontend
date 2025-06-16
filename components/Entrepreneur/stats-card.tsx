@@ -11,6 +11,8 @@ import {
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { STAT_DATA, StatCard } from "@/constants";
+import { useDashboardStore } from "@/store/dashboardStore";
+import { useSession } from "next-auth/react";
 
 // Component to render the star rating
 export const StarRating = ({ rating }: { rating: number }) => {
@@ -55,68 +57,49 @@ interface StatsCardsProps {
 }
 
 const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
-  // Simulate fetching data from an API
-  const [statsData, setStatsData] = useState<StatCard[]>(stats);
-  const [loading, setLoading] = useState(false);
+  const { myStartups, earnings, userProfile, loading, fetchAll } =
+    useDashboardStore();
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const fetchStats = async () => {
-      setLoading(true);
-      try {
-        // Fetch all three endpoints in parallel
-        const [startupsRes, earningsRes, meRes] = await Promise.all([
-          fetch("/api/my-startups"),
-          fetch("/api/startup-earning"),
-          fetch("/api/get-me"),
-        ]);
-        const startupsData = await startupsRes.json();
-        const earningsData = await earningsRes.json();
-        const meData = await meRes.json();
-
-        // Build statsData array
-        const totalStartups = Array.isArray(startupsData.result)
-          ? startupsData.result.length
-          : 0;
-        const totalEarnings =
-          (earningsData.result?.total_investment || 0) +
-          (earningsData.result?.total_crowdfunding || 0);
-        const rating = meData.result?.rating || 0;
-
-        setStatsData([
-          {
-            id: "startups",
-            title: "Total Startups",
-            value: totalStartups,
-            icon: "dollar",
-            link: "/startups",
-          },
-          {
-            id: "earnings",
-            title: "Total Earnings",
-            value: `$${Number(totalEarnings).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`,
-            icon: "trending",
-            link: "/earnings",
-          },
-          {
-            id: "rating",
-            title: "Rating",
-            value: `${rating}`,
-            icon: "star",
-            link: "/ratings",
-            rating: rating,
-          },
-        ]);
-      } catch (err) {
-        setStatsData([]);
-      }
-      setLoading(false);
-    };
-
-    fetchStats();
+    const accessToken = session?.accessToken;
+    if (accessToken) {
+      fetchAll(accessToken);
+    }
   }, []);
+
+  const totalStartups = Array.isArray(myStartups) ? myStartups.length : 0;
+  const totalEarnings =
+    (earnings?.total_investment || 0) + (earnings?.total_crowdfunding || 0);
+  const rating = userProfile?.rating || 0;
+
+  const statsData: StatCard[] = [
+    {
+      id: "startups",
+      title: "Total Startups",
+      value: totalStartups,
+      icon: "dollar",
+      link: "/startups",
+    },
+    {
+      id: "earnings",
+      title: "Total Earnings",
+      value: `$${Number(totalEarnings).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      icon: "trending",
+      link: "/earnings",
+    },
+    {
+      id: "rating",
+      title: "Rating",
+      value: `${rating}`,
+      icon: "star",
+      link: "/ratings",
+      rating: rating,
+    },
+  ];
 
   // Function to render the appropriate icon
   const renderIcon = (iconType: string) => {
