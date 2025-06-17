@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { MapPin, Building, Target, ChevronLeft, ChevronRight, Star, DollarSign, Bookmark } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -357,10 +358,12 @@ export default function EntrepreneurProfile() {
                 >
                   {/* Project Header */}
                   <div className="flex items-center space-x-3 mb-3">
-                    <img
+                    <Image
                       src={startup.image || "/placeholder.svg"}
                       alt={startup.name}
-                      className="w-10 h-10 rounded-lg bg-gray-100 p-1"
+                      width={40}
+                      height={40}
+                      className="rounded-lg bg-gray-100 p-1 object-cover"
                     />
                     <div>
                       <h4 className="font-semibold text-gray-900 group-hover:text-blue-800">{startup.name}</h4>

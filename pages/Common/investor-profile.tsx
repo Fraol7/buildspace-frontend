@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-
+import Image from "next/image"
 // Mock data for investor
 const investorData = {
   id: "1",
@@ -357,10 +357,12 @@ export default function InvestorProfile() {
                 >
                   {/* Project Header */}
                   <div className="flex items-center space-x-3 mb-3">
-                    <img
+                    <Image
                       src={project.image || "/placeholder.svg"}
                       alt={project.name}
-                      className="w-10 h-10 rounded-lg bg-gray-100 p-1"
+                      width={40}
+                      height={40}
+                      className="rounded-lg bg-gray-100 p-1 object-cover"
                     />
                     <div>
                       <h4 className="font-semibold text-gray-900 group-hover:text-blue-800">{project.name}</h4>

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RISING_PROJECTS_DATA, SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL, MVP_TOTAL, SEED_TOTAL, FINAL_TOTAL } from "@/constants";
+import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
 import {
   Area,
   AreaChart,
