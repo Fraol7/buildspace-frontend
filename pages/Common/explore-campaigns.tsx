@@ -33,7 +33,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useCampaignStore } from "@/store/campaignStore";
+import { ExploreCampaign, useCampaignStore } from "@/store/campaignStore";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -43,6 +43,11 @@ export default function ExploreCampaigns() {
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [sortOption, setSortOption] = useState("Most Popular");
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+
+  const [lastPage, setLastPage] = useState(false);
+  const [previousCampaigns, setPreviousCampaigns] = useState<ExploreCampaign[]>(
+    []
+  );
 
   const { data: session } = useSession();
   const { allCampaigns, fetchAllCampaigns, loading, error } =
@@ -55,10 +60,30 @@ export default function ExploreCampaigns() {
         session.accessToken,
         ITEMS_PER_PAGE,
         (currentPage - 1) * ITEMS_PER_PAGE
-      );
+      ).then(() => {
+        if (allCampaigns.length === 0 && currentPage > 1) {
+          setLastPage(true);
+          setCurrentPage((prev) => prev - 1);
+          useCampaignStore.setState({ allCampaigns: previousCampaigns });
+        } else {
+          setLastPage(false);
+          setPreviousCampaigns(allCampaigns);
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.accessToken, currentPage]);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+      setLastPage(false);
+    }
+  };
 
   useEffect(() => {
     console.log("All campaigns fetched:", allCampaigns);
@@ -174,7 +199,7 @@ export default function ExploreCampaigns() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50 md:m-4 rounded-lg">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -289,6 +314,12 @@ export default function ExploreCampaigns() {
             </DropdownMenu>
           </div>
         </div>
+
+        {lastPage && (
+          <div className="text-center text-blue-600 font-semibold mb-4">
+            You have reached the last page.
+          </div>
+        )}
 
         {/* Campaigns Table */}
         <div className="mb-8">
@@ -475,7 +506,7 @@ export default function ExploreCampaigns() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
+              onClick={handlePreviousPage}
               disabled={currentPage === 1}
               className="border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 disabled:opacity-50"
             >
@@ -506,8 +537,8 @@ export default function ExploreCampaigns() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
+              onClick={handleNextPage}
+              disabled={lastPage}
               className="border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 disabled:opacity-50"
             >
               Next

@@ -1,11 +1,17 @@
 "use client"
 
-import { ArrowLeft, Search } from "lucide-react"
+import { ArrowLeft, User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { useRouter } from "next/navigation"
 import { useProfile } from "@/lib/profile-context"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface AppHeaderProps {
   showBackButton?: boolean
@@ -56,22 +62,30 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
         </div>
       </div>
 
-      {/* Right section: Search and notifications */}
-      <div className="flex items-center gap-3">
-        {/* Search bar */}
-        <div className="relative hidden sm:block">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input type="search" placeholder="Search" className="w-40 pl-10 pr-4 h-9 bg-muted/50 md:w-64" />
-        </div>
-
-        {/* Notification bell */}
-        {/* <Button variant="ghost" size="icon" className="h-9 w-9 relative" onClick={handleNotificationClick}>
-          <Bell className="h-4 w-4 md:h-5 md:w-5" />
-          <span className="sr-only">Notifications</span> */}
-          {/* Conditional notification badge */}
-          {/* {hasUnreadNotifications && <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>} */}
-        {/* </Button> */}
-        
+      {/* Right section: Profile */}
+      <div className="flex items-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={profile?.avatar || ""} alt={profile?.name || "User"} />
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {profile?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48" align="end" forceMount>
+            <DropdownMenuItem onClick={() => router.push('/entrepreneur/profile')} className="cursor-pointer">
+              <User className="mr-2 h-4 w-4" />
+              <span>Edit Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/auth/signout')} className="cursor-pointer text-destructive focus:text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log Out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   )
