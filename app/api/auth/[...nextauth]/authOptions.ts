@@ -1,6 +1,7 @@
 import NextAuth, { SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
+import { access } from "fs";
 
 export interface User {
   id: string;
@@ -8,6 +9,21 @@ export interface User {
   email: string;
   image?: string | null;
   role: "investor" | "startup";
+  accessToken: string;
+}
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      image?: string | null;
+      role: "investor" | "startup";
+      accessToken: string;
+    };
+    accessToken: string;
+  }
 }
 
 export const authOptions = {
@@ -31,9 +47,33 @@ export const authOptions = {
           }
         );
 
+        if (!res.ok) {
+          console.error("Failed to authenticate:", res.statusText);
+          return null;
+        }
+
         const data = await res.json();
 
-        console.log("Response from login:", data);
+        console.log("Authentication response:", data);
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${data.token}`);
+
+        const userRes = await fetch("https://buildspace.onrender.com/user/me", {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        });
+
+        if (!userRes.ok) {
+          console.error("Failed to fetch user data:", userRes.statusText);
+          return null;
+        }
+
+        const userData = await userRes.json();
 
         if (res.ok && data?.token) {
           const payload = JSON.parse(
@@ -41,12 +81,11 @@ export const authOptions = {
           );
           console.log("Decoded JWT payload:", payload);
           return {
-            id: payload.email, // or payload.uid if available
-            name: credentials?.email,
+            id: userData.id, // or payload.uid if available
+            name: userData.first_name + " " + userData.last_name,
             email: payload.email,
             role: payload.role,
             accessToken: data.token,
-            firebaseToken: data.firebase_token,
           };
         }
         return null;
@@ -75,6 +114,7 @@ export const authOptions = {
         email: token.email,
         role: token.role,
         image: token.image || null,
+        accessToken: token.accessToken,
       };
       return session;
     },

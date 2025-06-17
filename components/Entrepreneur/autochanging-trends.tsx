@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { TRENDING_PROJECTS } from "@/constants";
+import { INDUSTRIES } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
+import { useTodaysPicksStore } from "@/store/dashboardStore";
+import { useSession } from "next-auth/react";
 
 type TodaysPick = {
   id: string;
@@ -28,8 +30,9 @@ type TodaysPick = {
 
 const AutoScrollingTrendingProjects = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [todaysPicks, setTodaysPicks] = useState<TodaysPick[]>([]);
+  const { todaysPicks, loading, fetchTodaysPicks } = useTodaysPicksStore();
   const [currentProject, setCurrentProject] = useState<TodaysPick | null>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (todaysPicks.length === 0) return;
@@ -40,12 +43,8 @@ const AutoScrollingTrendingProjects = () => {
   }, [todaysPicks.length]);
 
   useEffect(() => {
-    fetch("/api/todays-picks")
-      .then((res) => res.json())
-      .then((data) => {
-        setTodaysPicks(data.result);
-        setCurrentIndex(0);
-      });
+    const accessToken = session?.accessToken;
+    fetchTodaysPicks(accessToken);
   }, []);
 
   useEffect(() => {
@@ -120,7 +119,10 @@ const AutoScrollingTrendingProjects = () => {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Badge className="bg-blue-400 text-gray-200 border-blue-400 shadow-xs">
-                    {currentProject?.industry}
+                    {currentProject?.industry !== undefined &&
+                    INDUSTRIES[currentProject.industry]
+                      ? INDUSTRIES[currentProject.industry]
+                      : currentProject?.industry}
                   </Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-4">

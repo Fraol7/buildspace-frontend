@@ -1,47 +1,43 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { STARTUPS } from "@/constants";
+import { INDUSTRIES } from "@/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Startup } from "./project-grid";
+import { useDashboardStore } from "@/store/dashboardStore";
+import { useSession } from "next-auth/react";
 
 const StartupsSection = () => {
-  const [myStartups, setMyStartups] = useState<Startup[]>([]);
+  const { myStartups, fetchAll } = useDashboardStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 2;
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    // Replace with your actual accessToken logic
+    const accessToken = session?.accessToken;
+    fetchAll(accessToken);
+    console.log("this my startup", myStartups);
+  }, []);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + itemsPerPage >= STARTUPS.length ? 0 : prevIndex + itemsPerPage
+      prevIndex + itemsPerPage >= myStartups.length
+        ? 0
+        : prevIndex + itemsPerPage
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0
-        ? Math.max(0, STARTUPS.length - itemsPerPage)
+        ? Math.max(0, myStartups.length - itemsPerPage)
         : Math.max(0, prevIndex - itemsPerPage)
     );
   };
-
-  const visibleInvestments = STARTUPS.slice(
-    currentIndex,
-    currentIndex + itemsPerPage
-  );
-
-  useEffect(() => {
-    const fetchStartups = async () => {
-      const response = await fetch("/api/my-startups");
-      const data = await response.json();
-      console.log("Fetched my startups:", data);
-      setMyStartups(Array.isArray(data.result) ? data.result : []);
-    };
-
-    fetchStartups();
-  }, []);
 
   return (
     <Card className="shadow-lg">
@@ -95,7 +91,7 @@ const StartupsSection = () => {
                         variant="outline"
                         className="text-green-600 bg-white border-green-600"
                       >
-                        {startup.industry}
+                        {INDUSTRIES[startup.industry] || startup.industry}
                       </Badge>
                     </div>
                   </div>
