@@ -71,7 +71,7 @@ export function ChatInterface() {
     if (accessToken) {
       fetchConversations(accessToken);
     }
-  }, [fetchConversations]);
+  }, [fetchConversations, session?.accessToken]);
 
   useEffect(() => {
     const accessToken = session?.accessToken;

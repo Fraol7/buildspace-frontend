@@ -1,7 +1,6 @@
-import NextAuth, { SessionStrategy } from "next-auth";
+import { SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
-import { access } from "fs";
 
 export interface User {
   id: string;
@@ -94,18 +93,19 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: any }) {
+    async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.role = user.role; // <-- Add this line
+        token.role = user.role;
         token.image = user.image || null;
         token.accessToken = user.accessToken;
       }
       return token;
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: JWT }) {
       session.accessToken = token.accessToken;
       session.user = {

@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { useChatContext } from "./chat-context";
+// import { useChatContext } from "./chat-context";
 import { FileUpload } from "./file-upload";
 import Link from "next/link";
 import type { Contact } from "./chat-interface";
@@ -88,7 +88,7 @@ export function ChatArea({
 
   useEffect(() => {
     console.log("Session data in ChatArea:", session); // Debug log
-  }, []);
+  }, [session]);
   useEffect(() => {
     console.log("Current messages updated:", currentMessages); // Debug log
     scrollToBottom();
@@ -125,7 +125,15 @@ export function ChatArea({
     }
   };
 
-  const handleRetry = async (messageId: string) => {
+  const sendFile = async (file: File, userId: string) => {
+    // TODO: Implement file upload logic
+    console.log("Sending file:", file.name, "to user:", userId);
+    // Replace with actual file upload implementation
+    return new Promise((resolve) => setTimeout(resolve, 1000));
+  };
+
+  const handleRetry = async () => {
+    // messageId: string
     try {
       // await retryMessage(messageId);
       toast({

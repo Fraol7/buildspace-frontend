@@ -23,14 +23,14 @@ type TodaysPick = {
   business_model: string;
   revenue: number;
   location: string;
-  embedding: any;
+  embedding: number[];
   created_at: string;
   updated_at: string;
 };
 
 const AutoScrollingTrendingProjects = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { todaysPicks, loading, fetchTodaysPicks } = useTodaysPicksStore();
+  const { todaysPicks, fetchTodaysPicks } = useTodaysPicksStore();
   const [currentProject, setCurrentProject] = useState<TodaysPick | null>(null);
   const { data: session } = useSession();
 
@@ -44,8 +44,10 @@ const AutoScrollingTrendingProjects = () => {
 
   useEffect(() => {
     const accessToken = session?.accessToken;
-    fetchTodaysPicks(accessToken);
-  }, []);
+    if (accessToken) {
+      fetchTodaysPicks(accessToken);
+    }
+  }, [session?.accessToken, fetchTodaysPicks]);
 
   useEffect(() => {
     if (todaysPicks.length > 0) {

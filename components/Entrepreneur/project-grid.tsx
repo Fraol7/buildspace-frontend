@@ -1,12 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { PROJECTS_GRID } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import { useEffect } from "react";
-import { useState } from "react";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 
@@ -25,7 +22,7 @@ export type Startup = {
   business_model: string;
   revenue: number;
   location: string;
-  embedding: any; // or null, or a more specific type if known
+  embedding: number[]; // or null, or a more specific type if known
   created_at: string;
   updated_at: string;
   status: string;
@@ -33,7 +30,7 @@ export type Startup = {
 };
 
 const ProjectsGrid = () => {
-  const { recommendedStartups, fetchRecommendedStartups, loading } =
+  const { recommendedStartups, fetchRecommendedStartups } =
     useDashboardStore();
   const { data: session } = useSession();
 
@@ -42,7 +39,7 @@ const ProjectsGrid = () => {
     if (accessToken) {
       fetchRecommendedStartups(accessToken);
     }
-  }, [fetchRecommendedStartups]);
+  }, [fetchRecommendedStartups, session?.accessToken]);
   return (
     <Card className="shadow-lg">
       <CardHeader>

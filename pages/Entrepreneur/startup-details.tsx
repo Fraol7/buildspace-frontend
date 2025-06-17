@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,21 +20,22 @@ import { useRef } from "react";
 import {
   DEFAULT_LOCATIONS,
   INITIAL_FORM_DATA,
-  FUNDING_ROUNDS,
-  PRODUCT_STAGES,
+  // FUNDING_ROUNDS,
+  // PRODUCT_STAGES,
   FormData,
 } from "@/constants";
 import { useParams } from "next/navigation";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function StartupDetails() {
   const params = useParams();
   const startupID = params?.id as string;
 
-  const { fetchStartupById, startup, updateStartup, loading, error } =
-    useStartupStore();
+  const { fetchStartupById, startup, updateStartup } = useStartupStore();
   const { data: session } = useSession();
+  const { toast } = useToast();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
@@ -53,7 +53,7 @@ export default function StartupDetails() {
     }
 
     console.log("Fetching startup with ID:", startup);
-  }, [startupID, fetchStartupById]);
+  }, [startupID, fetchStartupById, session?.accessToken, startup]);
 
   useEffect(() => {
     console.log("Startup data fetched:", startup);
@@ -159,7 +159,13 @@ export default function StartupDetails() {
 
     const success = await updateStartup(payload, session?.accessToken || "");
     setIsSubmitting(false);
-    // You can add success notification here
+    if (success) {
+      toast({
+        title: "Success!",
+        description: "Startup details updated successfully.",
+        variant: "default",
+      });
+    }
   };
 
   const getStepTitle = () => {

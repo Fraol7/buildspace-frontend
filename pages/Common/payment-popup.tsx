@@ -41,21 +41,21 @@ function PaymentPopupComponent({
   }, [initialAmount]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handlePayWithChapa = () => {
-    if (!amount || Number.parseFloat(amount) <= 0) {
-      alert("Please enter a valid amount");
-      return;
-    }
+  // const handlePayWithChapa = () => {
+  //   if (!amount || Number.parseFloat(amount) <= 0) {
+  //     alert("Please enter a valid amount");
+  //     return;
+  //   }
 
-    // Here you would integrate with your existing Chapa payment logic
-    console.log(`Processing payment of ${amount} ETB with Chapa`);
+  //   // Here you would integrate with your existing Chapa payment logic
+  //   console.log(`Processing payment of ${amount} ETB with Chapa`);
 
-    // Close the popup after initiating payment
-    setIsOpen(false);
+  //   // Close the popup after initiating payment
+  //   setIsOpen(false);
 
-    // Your existing Chapa integration would go here
-    // For example: redirectToChapa(amount)
-  };
+  //   // Your existing Chapa integration would go here
+  //   // For example: redirectToChapa(amount)
+  // };
 
   // Don't render anything during SSR
   if (!isMounted) {

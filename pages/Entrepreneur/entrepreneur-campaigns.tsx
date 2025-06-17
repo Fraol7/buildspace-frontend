@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useCampaignStore } from "@/store/campaignStore";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
 const ITEMS_PER_PAGE = 6;
@@ -34,7 +34,7 @@ export default function EntrepreneurCampaigns() {
   const { data: session } = useSession();
   const { investedCampaigns, fetchMyInvestedCampaigns, loading, fundCampaign } =
     useCampaignStore();
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
 

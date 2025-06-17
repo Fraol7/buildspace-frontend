@@ -90,6 +90,7 @@ export default function AddStartupPage() {
         toast.error("An error happened while creating your startup.");
       }
     } catch (err) {
+      console.log(err);
       toast.error("An error happened while creating your startup.");
     }
   };

@@ -1,10 +1,9 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, DollarSign, Star, TrendingUp } from "lucide-react";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { STAT_DATA, StatCard } from "@/constants";
+import { DollarSign, Star, TrendingUp } from "lucide-react";
+import { useEffect } from "react";
+import { STAT_DATA } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 
@@ -46,12 +45,12 @@ export const StarRating = ({ rating }: { rating: number }) => {
   );
 };
 
-interface StatsCardsProps {
-  stats?: StatCard[];
-}
+// interface StatsCardsProps {
+//   stats?: StatCard[];
+// }
 
-const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
-  const { myStartups, earnings, userProfile, loading, fetchAll } =
+const StatsCards = () => {
+  const { loading, fetchAll } =
     useDashboardStore();
   const { data: session } = useSession();
 
@@ -60,40 +59,40 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
     if (accessToken) {
       fetchAll(accessToken);
     }
-  }, []);
+  }, [fetchAll, session?.accessToken]);
 
-  const totalStartups = Array.isArray(myStartups) ? myStartups.length : 0;
-  const totalEarnings =
-    (earnings?.total_investment || 0) + (earnings?.total_crowdfunding || 0);
-  const rating = userProfile?.rating || 0;
+  // const totalStartups = Array.isArray(myStartups) ? myStartups.length : 0;
+  // const totalEarnings =
+  //   (earnings?.total_investment || 0) + (earnings?.total_crowdfunding || 0);
+  // const rating = userProfile?.rating || 0;
 
-  const statsData: StatCard[] = [
-    {
-      id: "startups",
-      title: "Total Startups",
-      value: totalStartups,
-      icon: "dollar",
-      link: "/startups",
-    },
-    {
-      id: "earnings",
-      title: "Total Earnings",
-      value: `$${Number(totalEarnings).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`,
-      icon: "trending",
-      link: "/earnings",
-    },
-    {
-      id: "rating",
-      title: "Rating",
-      value: `${rating}`,
-      icon: "star",
-      link: "/ratings",
-      rating: rating,
-    },
-  ];
+  // const statsData: StatCard[] = [
+  //   {
+  //     id: "startups",
+  //     title: "Total Startups",
+  //     value: totalStartups,
+  //     icon: "dollar",
+  //     link: "/startups",
+  //   },
+  //   {
+  //     id: "earnings",
+  //     title: "Total Earnings",
+  //     value: `$${Number(totalEarnings).toLocaleString(undefined, {
+  //       minimumFractionDigits: 2,
+  //       maximumFractionDigits: 2,
+  //     })}`,
+  //     icon: "trending",
+  //     link: "/earnings",
+  //   },
+  //   {
+  //     id: "rating",
+  //     title: "Rating",
+  //     value: `${rating}`,
+  //     icon: "star",
+  //     link: "/ratings",
+  //     rating: rating,
+  //   },
+  // ];
 
   // Function to render the appropriate icon
   const renderIcon = (iconType: string) => {
@@ -132,8 +131,8 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
               </CardContent>
             </Card>
           ))
-        : statsData.map((stat) => (
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
+        : STAT_DATA.map((stat, index) => (
+            <Card key={`stat-${stat.title}-${index}`} className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>

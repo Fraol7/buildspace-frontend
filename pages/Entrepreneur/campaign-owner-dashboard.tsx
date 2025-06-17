@@ -68,7 +68,7 @@ export default function CampaignOwnerDashboard() {
       }
     };
     fetchCampaign();
-  }, [campaignId, session?.accessToken]);
+  }, [campaignId, session?.accessToken, getCampaignById]);
 
   useEffect(() => {
     const fetchEarnings = async () => {
@@ -80,10 +80,11 @@ export default function CampaignOwnerDashboard() {
         );
         setFundraisingHistory(earnings.slice(-7)); // Last 7 days
         setEarningsLoading(false);
+        console.log("earnings", earningsLoading);
       }
     };
     fetchEarnings();
-  }, [campaignData?.startup_id, session?.accessToken]);
+  }, [campaignData?.startup_id, session?.accessToken, campaignId, getStartupEarnings]);
 
   if (loading || !campaignData) {
     return (

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Startup } from "./project-grid";
+// import { Startup } from "./project-grid";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 
@@ -17,11 +17,12 @@ const StartupsSection = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    // Replace with your actual accessToken logic
     const accessToken = session?.accessToken;
-    fetchAll(accessToken);
-    console.log("this my startup", myStartups);
-  }, []);
+    if (accessToken) {
+      fetchAll(accessToken);
+      console.log("Fetched startups with token");
+    }
+  }, [fetchAll, session?.accessToken]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -37,6 +38,7 @@ const StartupsSection = () => {
         ? Math.max(0, myStartups.length - itemsPerPage)
         : Math.max(0, prevIndex - itemsPerPage)
     );
+    console.log("currentIndex", currentIndex);
   };
 
   return (
