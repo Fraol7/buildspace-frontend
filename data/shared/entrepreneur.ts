@@ -101,9 +101,9 @@ export const recommendedInvestors: RecommendedInvestor[] = [
     title: 'Partner',
     company: 'Venture Capital Partners',
     location: 'San Francisco, CA',
-    industries: ['AI', 'SaaS', 'Fintech'],
+    industries: ['Tech', 'AI', 'SaaS'],
     investmentFocus: ['Seed', 'Series A'],
-    checkSize: '$100K - $1M',
+    checkSize: '$50K - $500K',
     investments: 24,
     connected: true,
     lastActive: '2 days ago'
@@ -112,61 +112,14 @@ export const recommendedInvestors: RecommendedInvestor[] = [
     id: 'inv2',
     name: 'Sarah Williams',
     avatar: '/avatar-inv2.jpg',
-    title: 'Investment Director',
-    company: 'Future Fund',
+    title: 'Managing Director',
+    company: 'Angel Investors Network',
     location: 'New York, NY',
-    industries: ['Healthtech', 'Biotech'],
+    industries: ['FinTech', 'Blockchain'],
     investmentFocus: ['Pre-seed', 'Seed'],
-    checkSize: '$50K - $500K',
-    investments: 18,
+    checkSize: '$10K - $100K',
+    investments: 42,
     connected: false,
     lastActive: '1 week ago'
-  },
-  {
-    id: 'inv3',
-    name: 'Michael Chen',
-    avatar: '/avatar-inv3.jpg',
-    title: 'Managing Partner',
-    company: 'TechGrowth Ventures',
-    location: 'Austin, TX',
-    industries: ['AI', 'Blockchain', 'Web3'],
-    investmentFocus: ['Seed', 'Series A', 'Series B'],
-    checkSize: '$250K - $2M',
-    investments: 32,
-    connected: true,
-    lastActive: '3 days ago'
   }
-];
-
-export const ALL_PROJECTS: ProjectCard[] = [
-  {
-    id: '1',
-    name: 'Project 1',
-    category: 'Technology',
-    image: '/placeholder.jpg',
-    industries: ['AI', 'Machine Learning'],
-    funding: '$50,000 raised',
-    progress: 50,
-    daysLeft: 15,
-    status: 'Active',
-    avatar: '/avatar1.jpg',
-    founderName: 'Jane Smith',
-    rating: 4.5,
-    logo: '/logo1.png'
-  },
-  {
-    id: '2',
-    name: 'Project 2',
-    category: 'Healthcare',
-    image: '/placeholder.jpg',
-    industries: ['Biotech', 'Health'],
-    funding: '$75,000 raised',
-    progress: 75,
-    daysLeft: 30,
-    status: 'Active',
-    avatar: '/avatar2.jpg',
-    founderName: 'John Doe',
-    rating: 4.2,
-    logo: '/logo2.png'
-  },
 ];

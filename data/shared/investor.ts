@@ -99,14 +99,14 @@ export const ALL_PROJECTS: ProjectCard[] = [
     name: 'Project 2',
     category: 'Healthcare',
     image: '/placeholder.jpg',
-    industries: ['Biotech', 'Health'],
+    industries: ['HealthTech', 'Biotech'],
     funding: '$75,000 raised',
     progress: 75,
-    daysLeft: 30,
+    daysLeft: 7,
     status: 'Active',
     avatar: '/avatar2.jpg',
-    founderName: 'John Doe',
+    founderName: 'Mike Johnson',
     rating: 4.2,
     logo: '/logo2.png'
-  },
+  }
 ];

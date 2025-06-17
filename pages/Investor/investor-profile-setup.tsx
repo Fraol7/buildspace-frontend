@@ -26,8 +26,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { useRouter } from "next/navigation"
 
 export default function InvestorProfileSetup() {
+  const router = useRouter()
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [selectedInvestmentPreferences, setSelectedInvestmentPreferences] = useState<string[]>([])
@@ -120,19 +122,19 @@ export default function InvestorProfileSetup() {
     handleInputChange("locationPreferences", selectedLocationPreferences)
   }, [selectedLocationPreferences])
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | File | string[]) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }))
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      handleInputChange("profileImage", file)
-    }
-  }
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0]
+  //   if (file) {
+  //     handleInputChange("profileImage", file)
+  //   }
+  // }
 
   const handleMultiSelectToggle = (
     item: string,
@@ -163,9 +165,10 @@ export default function InvestorProfileSetup() {
     const newProfileId = `investor_${Date.now()}`
     setCreatedProfileId(newProfileId)
     setProfileCreated(true)
-
+    console.log("Profile created successfully!", profileCreated)
     setShowConfirmDialog(false)
     setShowSuccessModal(true)
+    router.push('/investor/dashboard')
   }
 
   const formatCurrency = (amount: string) => {
