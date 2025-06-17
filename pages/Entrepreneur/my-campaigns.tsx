@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Calendar,
   DollarSign,
@@ -15,18 +15,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { allCampaigns } from "@/constants";
-import Image from "next/image";
-
-const ITEMS_PER_PAGE = 6;
+import { useSession } from "next-auth/react";
+import { useCampaignStore } from "@/store/campaignStore";
 
 export default function MyCampaigns() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const { myCampaigns, loading, error, fetchMyCampaigns } = useCampaignStore();
+  const { data: session } = useSession();
 
-  const totalPages = Math.ceil(allCampaigns.length / ITEMS_PER_PAGE);
+  useEffect(() => {
+    const accessToken = session?.accessToken;
+    if (accessToken) fetchMyCampaigns(accessToken);
+  }, [session, fetchMyCampaigns]);
+
+  const ITEMS_PER_PAGE = 6;
+  const totalPages = Math.ceil(myCampaigns.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const campaigns = allCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const campaigns = myCampaigns.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -63,7 +69,7 @@ export default function MyCampaigns() {
     setCurrentPage(page);
   };
 
-  if (allCampaigns.length === 0) {
+  if (myCampaigns.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-8">
@@ -132,7 +138,7 @@ export default function MyCampaigns() {
                     Total Campaigns
                   </p>
                   <p className="text-3xl font-bold text-gray-700">
-                    {allCampaigns.length}
+                    {myCampaigns.length}
                   </p>
                 </div>
               </div>
@@ -151,7 +157,7 @@ export default function MyCampaigns() {
                   </p>
                   <p className="text-3xl font-bold text-black">
                     {formatCurrency(
-                      allCampaigns.reduce(
+                      myCampaigns.reduce(
                         (sum, campaign) => sum + campaign.amount_raised,
                         0
                       )
@@ -173,7 +179,7 @@ export default function MyCampaigns() {
                     Total Backers
                   </p>
                   <p className="text-3xl font-bold text-black">
-                    {allCampaigns.reduce(
+                    {myCampaigns.reduce(
                       (sum, campaign) => sum + campaign.total_funders,
                       0
                     )}
@@ -209,19 +215,10 @@ export default function MyCampaigns() {
                         campaign.is_active ? "Active" : "Inactive"
                       )} border font-medium px-3 py-1 rounded-full`}
                     >
-                      {campaign.status}
+                      {campaign.is_active ? "Active" : "Inactive"}
                     </Badge>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md flex-shrink-0 bg-white">
-                      <Image
-                        src={campaign.logo || "/placeholder.jpg"}
-                        alt={`${campaign.title} logo`}
-                        width={48} // set to container size or desired width
-                        height={48} // set to container size or desired height
-                        className="object-cover"
-                      />
-                    </div>
                     <div className="flex-1 pr-16">
                       <CardTitle className="text-xl font-bold text-gray-900 mb-2 leading-tight">
                         {campaign.title}
@@ -243,8 +240,8 @@ export default function MyCampaigns() {
                       <span className="text-sm font-bold text-blue-600">
                         {Math.round(
                           getProgressPercentage(
-                            campaign.amountRaised,
-                            campaign.targetAmount
+                            campaign.amount_raised,
+                            campaign.target_amount
                           )
                         )}
                         %
@@ -288,7 +285,8 @@ export default function MyCampaigns() {
                     <div className="flex items-center text-sm text-gray-700 bg-white rounded-lg p-3 col-span-2 shadow-sm">
                       <Users className="w-4 h-4 mr-2 text-blue-500" />
                       <span className="font-medium">
-                        {campaign.backers} backers supporting this campaign
+                        {campaign.total_funders} backers supporting this
+                        campaign
                       </span>
                     </div>
                   </div>

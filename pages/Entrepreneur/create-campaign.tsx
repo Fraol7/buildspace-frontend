@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { DollarSign, FileText, CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useEffect, useState } from "react";
+import { DollarSign, FileText, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -16,52 +22,112 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import Link from "next/link"
+} from "@/components/ui/dialog";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useStartupStore } from "@/store/startupStore";
+import { useCampaignStore } from "@/store/campaignStore";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CreateCampaign() {
-  const [currentStep, setCurrentStep] = useState(1)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const {
+    createCampaign,
+    loading: campignLoading,
+    error: campaignError,
+  } = useCampaignStore();
 
   // Form data
   const [formData, setFormData] = useState({
+    startupId: "",
     title: "",
     description: "",
     targetAmount: "",
     minimumFunding: "",
     duration: "",
-  })
+  });
 
-  const totalSteps = 3
+  const { data: session } = useSession();
+  const myStartups = useStartupStore((state) => state.myStartups);
+  const fetchMyStartups = useStartupStore((state) => state.fetchMyStartups);
+  const startupsLoading = useStartupStore((state) => state.loading);
 
+  useEffect(() => {
+    if (session?.accessToken) {
+      fetchMyStartups(session.accessToken);
+    }
+  }, [session?.accessToken, fetchMyStartups]);
+
+  const totalSteps = 3;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const nextStep = () => {
     if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
-  const handleSubmit = () => {
-    // In a real app, this would submit the campaign data
-    console.log("Creating campaign:", formData)
-    setShowSuccessModal(true)
-  }
+  const handleSubmit = async () => {
+    if (!session?.accessToken) return;
+
+    // Calculate start_date (today) and end_date (today + duration)
+    const today = new Date();
+    const startDate = today.toISOString();
+
+    // Calculate end date based on duration (in days)
+    let endDate = today;
+    if (formData.duration) {
+      endDate = new Date(
+        today.getTime() + Number(formData.duration) * 24 * 60 * 60 * 1000
+      );
+    }
+    const endDateISO = endDate.toISOString();
+
+    // Prepare payload for createCampaign
+    const payload = {
+      startup_id: formData.startupId,
+      title: formData.title,
+      description: formData.description,
+      target_amount: Number(formData.targetAmount),
+      minimum_investment: Number(formData.minimumFunding),
+      end_date: endDateISO,
+    };
+
+    const created = await createCampaign(payload, session.accessToken);
+
+    if (created) {
+      router.push("/entrepreneur/my-campaigns");
+    } else {
+      console.error("Error creating campaign:", campaignError);
+      toast({
+        title: "Error creating campaign",
+        description:
+          "There was an issue creating your campaign. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const formatCurrency = (amount: string) => {
-    const num = Number.parseFloat(amount)
+    const num = Number.parseFloat(amount);
     return isNaN(num)
       ? "$0"
       : new Intl.NumberFormat("en-US", {
@@ -69,34 +135,36 @@ export default function CreateCampaign() {
           currency: "USD",
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
-        }).format(num)
-  }
+        }).format(num);
+  };
 
   const getStepTitle = (step: number) => {
     switch (step) {
       case 1:
-        return "Basic Information"
+        return "Basic Information";
       case 2:
-        return "Funding Details"
+        return "Funding Details";
       case 3:
-        return "Review & Launch"
+        return "Review & Launch";
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.title && formData.description
+        return formData.title && formData.description;
       case 2:
-        return formData.targetAmount && formData.minimumFunding && formData.duration
+        return (
+          formData.targetAmount && formData.minimumFunding && formData.duration
+        );
       case 3:
-        return true
+        return true;
       default:
-        return false
+        return false;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -110,7 +178,8 @@ export default function CreateCampaign() {
                 Campaign Created Successfully!
               </DialogTitle>
               <DialogDescription>
-                Your campaign has been created successfully and is now live on the platform.
+                Your campaign has been created successfully and is now live on
+                the platform.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -129,16 +198,25 @@ export default function CreateCampaign() {
         {/* Progress Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-gray-900">Create New Campaign</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Create New Campaign
+            </h1>
             <div className="text-sm text-gray-500">
               Step {currentStep} of {totalSteps}
             </div>
           </div>
           <div className="flex items-center gap-4 mb-4">
-            <Progress value={(currentStep / totalSteps) * 100} className="flex-1 h-2" />
-            <span className="text-sm font-medium text-gray-700">{Math.round((currentStep / totalSteps) * 100)}%</span>
+            <Progress
+              value={(currentStep / totalSteps) * 100}
+              className="flex-1 h-2"
+            />
+            <span className="text-sm font-medium text-gray-700">
+              {Math.round((currentStep / totalSteps) * 100)}%
+            </span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-800">{getStepTitle(currentStep)}</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            {getStepTitle(currentStep)}
+          </h2>
         </div>
 
         {/* Form Content */}
@@ -155,12 +233,50 @@ export default function CreateCampaign() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  {/* Startup Selection */}
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Attach to Startup *
+                    </Label>
+                    <Select
+                      value={formData.startupId}
+                      onValueChange={(value) =>
+                        handleInputChange("startupId", value)
+                      }
+                      disabled={startupsLoading}
+                    >
+                      <SelectTrigger className="border-gray-300">
+                        <SelectValue
+                          placeholder={
+                            startupsLoading ? "Loading..." : "Select a startup"
+                          }
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {myStartups && myStartups.length > 0 ? (
+                          myStartups.map((startup: any) => (
+                            <SelectItem key={startup.id} value={startup.id}>
+                              {startup.startup_name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <div className="px-3 py-2 text-gray-500 text-sm">
+                            No startups found
+                          </div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   {/* Campaign Title */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Campaign Title *</Label>
+                    <Label className="text-sm font-medium text-gray-700">
+                      Campaign Title *
+                    </Label>
                     <Input
                       value={formData.title}
-                      onChange={(e) => handleInputChange("title", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("title", e.target.value)
+                      }
                       placeholder="Project title"
                       className="border-gray-300"
                     />
@@ -168,15 +284,21 @@ export default function CreateCampaign() {
 
                   {/* Campaign Description */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Campaign Description *</Label>
+                    <Label className="text-sm font-medium text-gray-700">
+                      Campaign Description *
+                    </Label>
                     <Textarea
                       value={formData.description}
-                      onChange={(e) => handleInputChange("description", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("description", e.target.value)
+                      }
                       placeholder="Describe your campaign, what you're building, and why people should invest..."
                       rows={6}
                       className="border-gray-300"
                     />
-                    <p className="text-xs text-gray-500">{formData.description.length}/500 characters</p>
+                    <p className="text-xs text-gray-500">
+                      {formData.description.length}/500 characters
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -194,34 +316,53 @@ export default function CreateCampaign() {
                 <CardContent className="space-y-6">
                   {/* Target Amount */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Funding Goal *</Label>
+                    <Label className="text-sm font-medium text-gray-700">
+                      Funding Goal *
+                    </Label>
                     <Input
                       type="number"
                       value={formData.targetAmount}
-                      onChange={(e) => handleInputChange("targetAmount", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("targetAmount", e.target.value)
+                      }
                       placeholder="25000"
                       className="border-gray-300"
                     />
-                    <p className="text-xs text-gray-500">Target: {formatCurrency(formData.targetAmount || "0")}</p>
+                    <p className="text-xs text-gray-500">
+                      Target: {formatCurrency(formData.targetAmount || "0")}
+                    </p>
                   </div>
 
                   {/* Minimum Investment */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Minimum Investment *</Label>
+                    <Label className="text-sm font-medium text-gray-700">
+                      Minimum Investment *
+                    </Label>
                     <Input
                       type="number"
                       value={formData.minimumFunding}
-                      onChange={(e) => handleInputChange("minimumFunding", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("minimumFunding", e.target.value)
+                      }
                       placeholder="50"
                       className="border-gray-300"
                     />
-                    <p className="text-xs text-gray-500">Minimum: {formatCurrency(formData.minimumFunding || "0")}</p>
+                    <p className="text-xs text-gray-500">
+                      Minimum: {formatCurrency(formData.minimumFunding || "0")}
+                    </p>
                   </div>
 
                   {/* Campaign Duration */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700">Campaign Duration *</Label>
-                    <Select value={formData.duration} onValueChange={(value) => handleInputChange("duration", value)}>
+                    <Label className="text-sm font-medium text-gray-700">
+                      Campaign Duration *
+                    </Label>
+                    <Select
+                      value={formData.duration}
+                      onValueChange={(value) =>
+                        handleInputChange("duration", value)
+                      }
+                    >
                       <SelectTrigger className="border-gray-300">
                         <SelectValue placeholder="Select campaign duration" />
                       </SelectTrigger>
@@ -236,20 +377,32 @@ export default function CreateCampaign() {
 
                   {/* Funding Summary */}
                   <div className="bg-blue-50 rounded-lg p-4">
-                    <h3 className="font-medium text-gray-900 mb-2">Funding Summary</h3>
+                    <h3 className="font-medium text-gray-900 mb-2">
+                      Funding Summary
+                    </h3>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Target Amount:</span>
-                        <span className="font-medium">{formatCurrency(formData.targetAmount || "0")}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Minimum Investment:</span>
-                        <span className="font-medium">{formatCurrency(formData.minimumFunding || "0")}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Campaign Duration:</span>
                         <span className="font-medium">
-                          {formData.duration ? `${formData.duration} days` : "Not set"}
+                          {formatCurrency(formData.targetAmount || "0")}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">
+                          Minimum Investment:
+                        </span>
+                        <span className="font-medium">
+                          {formatCurrency(formData.minimumFunding || "0")}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">
+                          Campaign Duration:
+                        </span>
+                        <span className="font-medium">
+                          {formData.duration
+                            ? `${formData.duration} days`
+                            : "Not set"}
                         </span>
                       </div>
                     </div>
@@ -271,8 +424,12 @@ export default function CreateCampaign() {
                   {/* Campaign Summary */}
                   <div className="bg-blue-50 rounded-lg p-6">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{formData.title}</h3>
-                      <p className="text-gray-700 mb-3">{formData.description}</p>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {formData.title}
+                      </h3>
+                      <p className="text-gray-700 mb-3">
+                        {formData.description}
+                      </p>
                     </div>
                   </div>
 
@@ -280,8 +437,12 @@ export default function CreateCampaign() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-gray-900">{formatCurrency(formData.targetAmount)}</div>
-                        <div className="text-sm text-gray-600">Funding Goal</div>
+                        <div className="text-2xl font-bold text-gray-900">
+                          {formatCurrency(formData.targetAmount)}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Funding Goal
+                        </div>
                       </div>
                     </div>
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
@@ -289,36 +450,54 @@ export default function CreateCampaign() {
                         <div className="text-2xl font-bold text-gray-900">
                           {formatCurrency(formData.minimumFunding)}
                         </div>
-                        <div className="text-sm text-gray-600">Minimum Investment</div>
+                        <div className="text-sm text-gray-600">
+                          Minimum Investment
+                        </div>
                       </div>
                     </div>
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-gray-900">{formData.duration}</div>
-                        <div className="text-sm text-gray-600">Days Duration</div>
+                        <div className="text-2xl font-bold text-gray-900">
+                          {formData.duration}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Days Duration
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Campaign Details */}
                   <div className="bg-white rounded-lg p-4 border border-gray-200">
-                    <h4 className="font-medium text-gray-900 mb-3">Campaign Details</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      Campaign Details
+                    </h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Campaign Title:</span>
-                        <span className="font-medium text-gray-900">{formData.title}</span>
+                        <span className="font-medium text-gray-900">
+                          {formData.title}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Target Amount:</span>
-                        <span className="font-medium text-gray-900">{formatCurrency(formData.targetAmount)}</span>
+                        <span className="font-medium text-gray-900">
+                          {formatCurrency(formData.targetAmount)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Minimum Investment:</span>
-                        <span className="font-medium text-gray-900">{formatCurrency(formData.minimumFunding)}</span>
+                        <span className="text-gray-600">
+                          Minimum Investment:
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {formatCurrency(formData.minimumFunding)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Duration:</span>
-                        <span className="font-medium text-gray-900">{formData.duration} days</span>
+                        <span className="font-medium text-gray-900">
+                          {formData.duration} days
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -332,7 +511,9 @@ export default function CreateCampaign() {
             {/* Progress Card */}
             <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-blue-100">
               <CardHeader>
-                <CardTitle className="text-lg text-black">Campaign Progress</CardTitle>
+                <CardTitle className="text-lg text-black">
+                  Campaign Progress
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -343,14 +524,22 @@ export default function CreateCampaign() {
                           step < currentStep
                             ? "bg-green-500 text-white"
                             : step === currentStep
-                              ? "bg-blue-500 text-white"
-                              : "bg-gray-200 text-gray-600"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200 text-gray-600"
                         }`}
                       >
-                        {step < currentStep ? <CheckCircle className="w-4 h-4" /> : step}
+                        {step < currentStep ? (
+                          <CheckCircle className="w-4 h-4" />
+                        ) : (
+                          step
+                        )}
                       </div>
                       <span
-                        className={`text-sm ${step <= currentStep ? "text-gray-900 font-medium" : "text-gray-500"}`}
+                        className={`text-sm ${
+                          step <= currentStep
+                            ? "text-gray-900 font-medium"
+                            : "text-gray-500"
+                        }`}
                       >
                         {getStepTitle(step)}
                       </span>
@@ -363,29 +552,47 @@ export default function CreateCampaign() {
             {/* Tips Card */}
             <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50/30">
               <CardHeader>
-                <CardTitle className="text-lg text-black">💡 Tips for Success</CardTitle>
+                <CardTitle className="text-lg text-black">
+                  💡 Tips for Success
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm text-gray-700">
                   {currentStep === 1 && (
                     <>
-                      <p>• Choose a clear, compelling title that explains what you&apos;re building</p>
-                      <p>• Write a description that tells your story and explains the problem you&apos;re solving</p>
+                      <p>
+                        • Choose a clear, compelling title that explains what
+                        you&apos;re building
+                      </p>
+                      <p>
+                        • Write a description that tells your story and explains
+                        the problem you&apos;re solving
+                      </p>
                       <p>• Keep your description concise but informative</p>
                     </>
                   )}
                   {currentStep === 2 && (
                     <>
-                      <p>• Set a realistic funding goal based on your actual needs</p>
-                      <p>• Keep minimum investment low to encourage more backers</p>
-                      <p>• 30-60 days is typically the optimal campaign duration</p>
+                      <p>
+                        • Set a realistic funding goal based on your actual
+                        needs
+                      </p>
+                      <p>
+                        • Keep minimum investment low to encourage more backers
+                      </p>
+                      <p>
+                        • 30-60 days is typically the optimal campaign duration
+                      </p>
                     </>
                   )}
                   {currentStep === 3 && (
                     <>
                       <p>• Review all details carefully before launching</p>
                       <p>• Make sure your campaign tells a complete story</p>
-                      <p>• Once launched, actively promote and engage with backers</p>
+                      <p>
+                        • Once launched, actively promote and engage with
+                        backers
+                      </p>
                     </>
                   )}
                 </div>
@@ -428,5 +635,5 @@ export default function CreateCampaign() {
         </div>
       </div>
     </div>
-  )
+  );
 }
