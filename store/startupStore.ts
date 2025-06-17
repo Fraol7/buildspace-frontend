@@ -6,7 +6,9 @@ type StartupStoreState = {
   loading: boolean;
   error: string | null;
   savedStartups: Startup[];
+  myStartups: Startup[];
   fetchStartupById: (id: string, accessToken: string) => Promise<void>;
+  fetchMyStartups: (accessToken: string) => Promise<void>;
   updateStartup: (
     payload: Partial<Startup>,
     accessToken: string
@@ -39,6 +41,7 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
   loading: false,
   error: null,
   savedStartups: [],
+  myStartups: [],
   fetchStartupById: async (id: string, accessToken: string) => {
     set({ loading: true, error: null });
     try {
@@ -60,6 +63,31 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
       set({
         error: e.message || "Unknown error",
         startup: null,
+        loading: false,
+      });
+    }
+  },
+  fetchMyStartups: async (accessToken: string) => {
+    set({ loading: true, error: null });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const res = await fetch("https://buildspace.onrender.com/my-startups", {
+        method: "GET",
+        headers: myHeaders,
+        credentials: "omit" as RequestCredentials,
+        redirect: "follow" as RequestRedirect,
+      });
+      if (!res.ok) throw new Error("Failed to fetch my startups");
+      const data = await res.json();
+      set({ myStartups: data ?? [], loading: false });
+    } catch (e: any) {
+      set({
+        error: e.message || "Unknown error",
+        myStartups: [],
         loading: false,
       });
     }
