@@ -39,7 +39,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
       const conversationsRes = await fetch(
-        "http://localhost:8080/chat/conversations",
+        "https://buildspace.onrender.com/chat/conversations",
         {
           method: "GET",
           headers: myHeaders,
@@ -58,8 +58,18 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
   fetchMessages: async (receiverId: string, accessToken: string) => {
     set({ loading: true, error: null });
     try {
+      const markRes = await fetch(
+        `https://buildspace.onrender.com/chat/mark-read/${receiverId}`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (!markRes.ok) console.error("Failed to mark messages as read");
+
       const res = await fetch(
-        `http://localhost:8080/chat/messages/${receiverId}`,
+        `https://buildspace.onrender.com/chat/messages/${receiverId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -119,8 +129,14 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
           JSON.stringify({
             to: receiverId,
             text: content,
+            files: [],
           })
         );
+        set((state) => ({
+          messages: state.messages.map((msg) =>
+            msg.id === newMessage.id ? { ...msg, status: "delivered" } : msg
+          ),
+        }));
       } else {
         // Fallback to HTTP POST
         console.log("WebSocket not connected, using HTTP POST");
@@ -139,7 +155,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
   connectSocket: (accessToken: string) => {
     if (get().socket) return; // Already connected
     const ws = new WebSocket(
-      `ws://localhost:8080/chat/ws?token=${accessToken}`
+      `wss://buildspace.onrender.com/chat/ws?token=${accessToken}`
     );
     ws.onopen = () => {
       // Send the token as an Authorization header via a custom protocol message
@@ -148,9 +164,17 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
     };
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
-      // Assume msg is in your Message format, otherwise map it
+      const mappedMsg: Message = {
+        id: Date.now().toString() + Math.random().toString(36).slice(2), // unique id
+        content: msg.text,
+        senderId: msg.from,
+        receiverId: msg.to,
+        timestamp: msg.created,
+        status: "delivered",
+        type: "text",
+      };
       set((state) => ({
-        messages: [...state.messages, msg],
+        messages: [...state.messages, mappedMsg],
       }));
     };
     ws.onclose = () => {
@@ -158,6 +182,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
       console.log("WebSocket disconnected");
     };
   },
+
   disconnectSocket: () => {
     get().socket?.close();
     set({ socket: null });
