@@ -132,7 +132,7 @@ export function ChatArea({
     return new Promise((resolve) => setTimeout(resolve, 1000));
   };
 
-  const handleRetry = async () => {
+  const handleRetry = async (id: string) => {
     // messageId: string
     try {
       // await retryMessage(messageId);
@@ -346,17 +346,18 @@ export function ChatArea({
         ) : (
           // Existing messages
           <div className="space-y-1">
-            {[...currentMessages]
+            {currentMessages
+              .slice() // Create a shallow copy of the array
               .sort(
                 (a, b) =>
                   new Date(a.timestamp).getTime() -
                   new Date(b.timestamp).getTime()
               )
-              .map((msg, index) => {
+              .map((msg, index, sortedMessages) => {
                 const messageDate = new Date(msg.timestamp);
                 const prevMessageDate =
                   index > 0
-                    ? new Date(currentMessages[index - 1].timestamp)
+                    ? new Date(sortedMessages[index - 1].timestamp)
                     : null;
                 const showDateSeparator =
                   !prevMessageDate ||
