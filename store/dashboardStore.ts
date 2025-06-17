@@ -1,6 +1,21 @@
 import { Startup } from "@/components/Entrepreneur/project-grid";
 import { create } from "zustand";
 
+interface UserData {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  rating: number;
+  // ... other user fields
+}
+
+interface InvestorStats {
+  total_startups_backed: number;
+  total_invested: number;
+  user: UserData;
+}
+
 type Earning = {
   total_crowdfunding: number;
   total_investment: number;
@@ -214,6 +229,64 @@ export const useTodaysPicksStore = create<TodaysPicksState>((set) => ({
       });
     } catch (e) {
       set({ todaysPicks: [], loading: false });
+    }
+  },
+}));
+
+interface InvestorDashboardState {
+  stats: InvestorStats | null;
+  user: UserData | null;
+  loading: boolean;
+  fetchInvestorStats: (accessToken: string) => Promise<void>;
+};
+
+export const useInvestorDashboardStore = create<InvestorDashboardState>((set) => ({
+  stats: null,
+  user: null,
+  loading: false,
+  fetchInvestorStats: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const [statsRes, userRes] = await Promise.all([
+        fetch("https://buildspace.onrender.com/investor/stats", {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }),
+        fetch("https://buildspace.onrender.com/user/me", {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        })
+      ]);
+
+      if (!statsRes.ok || !userRes.ok) {
+        throw new Error("Failed to fetch investor data");
+      }
+
+      const [statsData, userData] = await Promise.all([
+        statsRes.json(),
+        userRes.json()
+      ]);
+
+      set({
+        stats: {
+          total_startups_backed: statsData.total_startups_backed,
+          total_invested: statsData.total_invested,
+          user: userData
+        },
+        user: userData,
+        loading: false,
+      });
+    } catch (e) {
+      set({ stats: null, user: null, loading: false });
     }
   },
 }));

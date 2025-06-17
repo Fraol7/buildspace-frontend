@@ -44,8 +44,10 @@ const AutoScrollingTrendingProjects = () => {
 
   useEffect(() => {
     const accessToken = session?.accessToken;
-    fetchTodaysPicks(accessToken);
-  }, []);
+    if (accessToken) {
+      fetchTodaysPicks(accessToken);
+    }
+  }, [session?.accessToken]);
 
   useEffect(() => {
     if (todaysPicks.length > 0) {
