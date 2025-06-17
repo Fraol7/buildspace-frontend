@@ -66,7 +66,7 @@ export default function UserCard({ user }: UserCardProps) {
   const IconComponent = config.icon
 
   return (
-    <Link href={`/entrepreneur/profile/${user.id}`} className="block">
+    <Link href={`/profile/${user.id}`} className="block">
       <div
         className={`relative overflow-hidden rounded-xl border ${config.borderColor} bg-gradient-to-br ${config.bgGradient} p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.01] cursor-pointer`}
       >
