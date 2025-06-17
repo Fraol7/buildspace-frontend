@@ -3,7 +3,7 @@ import ExploreCampaigns from "@/pages/Common/explore-campaigns"
 
 const page = () => {
   return (
-    <ExploreCampaigns role='entrepreneur' />
+    <ExploreCampaigns />
   )
 }
 
