@@ -1,6 +1,6 @@
 "use client"
 
-import AutoScrollingTrendingProjects from "@/components/Entrepreneur/autochanging-trends"
+import AutoScrollingTrendingProjects from "@/components/Common/autochanging-trends"
 import ChartsSection from "@/components/Entrepreneur/chart-section"
 import StartupsSection from "@/components/Entrepreneur/startups-section"
 import ProjectsGrid from "@/components/Entrepreneur/project-grid"
