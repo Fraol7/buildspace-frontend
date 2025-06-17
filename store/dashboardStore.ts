@@ -233,17 +233,39 @@ export const useTodaysPicksStore = create<TodaysPicksState>((set) => ({
   },
 }));
 
+interface InvestmentByStage {
+  stage: string;
+  count: number;
+}
+
+interface SpendData {
+  month: string;
+  Spend: number;
+}
+
+interface InvestorSpendData {
+  total_investment: number;
+  total_crowdfunding: number;
+  spend_over_time: SpendData[];
+}
+
 interface InvestorDashboardState {
   stats: InvestorStats | null;
   user: UserData | null;
   loading: boolean;
+  investmentsByStage: InvestmentByStage[];
+  spendData: InvestorSpendData | null;
   fetchInvestorStats: (accessToken: string) => Promise<void>;
+  fetchInvestmentsByStage: (accessToken: string) => Promise<void>;
+  fetchInvestorChartData: (accessToken: string) => Promise<void>;
 };
 
 export const useInvestorDashboardStore = create<InvestorDashboardState>((set) => ({
   stats: null,
   user: null,
   loading: false,
+  investmentsByStage: [],
+  spendData: null,
   fetchInvestorStats: async (accessToken: string) => {
     set({ loading: true });
     try {
@@ -287,6 +309,95 @@ export const useInvestorDashboardStore = create<InvestorDashboardState>((set) =>
       });
     } catch (e) {
       set({ stats: null, user: null, loading: false });
+    }
+  },
+  fetchInvestmentsByStage: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch("https://buildspace.onrender.com/my-investments-by-stage", {
+        method: "GET",
+        headers: myHeaders,
+        credentials: "omit",
+        redirect: "follow",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch investments by stage");
+      }
+
+      const data = await response.json();
+      
+      // Format the data to match the expected format
+      const formattedData = Array.isArray(data) 
+        ? data.map(item => ({
+            stage: item.funding_stage
+              .split('-')
+              .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+            count: item.count
+          }))
+        : [];
+
+      set({ 
+        investmentsByStage: formattedData,
+        loading: false 
+      });
+    } catch (e) {
+      console.error('Error fetching investments by stage:', e);
+      set({ 
+        investmentsByStage: [], 
+        loading: false 
+      });
+    }
+  },
+  fetchInvestorChartData: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch("https://buildspace.onrender.com/investor/total-spend", {
+        method: "GET",
+        headers: myHeaders,
+        credentials: "omit",
+        redirect: "follow",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch investor chart data");
+      }
+
+      const data = await response.json();
+      
+      // Format month values to show full month names
+      const formattedSpendOverTime = Array.isArray(data.spend_over_time) 
+        ? data.spend_over_time.map((item: { month: string; Spend: number }) => ({
+            ...item,
+            month: new Date(item.month + '-01').toLocaleString('default', { month: 'short', year: 'numeric' })
+          }))
+        : [];
+      
+      set({ 
+        spendData: {
+          total_investment: data.total_investment || 0,
+          total_crowdfunding: data.total_crowdfunding || 0,
+          spend_over_time: formattedSpendOverTime
+        },
+        loading: false 
+      });
+    } catch (e) {
+      console.error('Error fetching investor chart data:', e);
+      set({ 
+        spendData: null, 
+        loading: false 
+      });
     }
   },
 }));
