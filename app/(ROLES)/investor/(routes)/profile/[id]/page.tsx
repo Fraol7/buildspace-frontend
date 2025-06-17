@@ -1,9 +1,9 @@
 import React from 'react'
-import ProfileForm from '@/components/Profile/ProfileForm'
+import InvestorProfile from '@/pages/Common/investor-profile'
 
 const page = () => {
   return (
-    <ProfileForm />
+    <InvestorProfile />
   )
 }
 
