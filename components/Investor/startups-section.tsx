@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { STARTUPS, sampleUsers } from "@/constants"
+import { STARTUPS } from "@/constants"
 import { ChevronLeft, ChevronRight, Star } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"

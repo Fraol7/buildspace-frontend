@@ -3,8 +3,8 @@
 import type React from "react"
 
 import { useState, useMemo } from "react"
-import Link from "next/link"
-import { Search, PlusCircle, Building2, DollarSign } from "lucide-react"
+// import Link from "next/link"
+import { Search, Building2, DollarSign } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -176,14 +177,18 @@ export default function Component() {
           <div className="absolute bottom-10 left-1/3 w-40 h-40 bg-blue-400/20 rounded-full blur-xl"></div>
         </div>
 
-        <div className="relative container mx-auto px-4 py-16 max-w-7xl">
+        <div className="relative container mx-auto px-4 py-16 max-w-7xl flex items-center justify-evenly">
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-200/80 text-blue-800 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-blue-300/50">
               <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
               Live Market Data
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Market Insights</h1>
+            <div className="flex items-center gap-4 mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Market Insights</h1>
+              <div className="relative w-12 h-12 md:w-16 md:h-16">
+              </div>
+            </div>
             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
               Real-time sentiment analysis across key industries
             </p>
@@ -203,6 +208,14 @@ export default function Component() {
               </div>
             </div>
           </div>
+          <Image 
+            src="/images/market-insight.png" 
+            alt="Market Insights" 
+            width={350}
+            height={350}
+            className="object-contain"
+            priority
+          />
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, BaggageClaim , Star, TrendingUp } from "lucide-react";
-import Link from "next/link";
+import { Star, TrendingUp } from "lucide-react";
 
 const StatsCards = () => {
   return (
@@ -17,7 +16,7 @@ const StatsCards = () => {
                 </p> */}
               </div>
               <div className="bg-blue-500 p-3 rounded-full">
-                <BaggageClaim  className="w-6 h-6 text-white" />
+                {/* <BaggageClaim  className="w-6 h-6 text-white" /> */}
               </div>
             </div>
           </CardContent>
