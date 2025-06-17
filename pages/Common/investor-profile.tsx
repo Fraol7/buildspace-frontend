@@ -8,7 +8,13 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
-// Mock data for investor
+
+// interface InvestorProfileProps {
+//   userId: string;
+// }
+
+// Mock data for investor - in a real app, this would be fetched using the userId
+// Example: const { data: investorData } = useQuery(['investor', userId], () => fetchInvestorData(userId));
 const investorData = {
   id: "1",
   name: "Michael Chen",
@@ -122,7 +128,7 @@ const supportedCampaigns = [
 
 const ITEMS_PER_PAGE = 3
 
-export default function InvestorProfile() {
+export default function InvestorProfile() { // use this { userId }: InvestorProfileProps
   const [projectsPage, setProjectsPage] = useState(1)
   const [campaignsPage, setCampaignsPage] = useState(1)
   const [userRating, setUserRating] = useState(0)

@@ -10,7 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-// Mock data for entrepreneur
+// Mock data for entrepreneur - in a real app, this would be fetched using the userId
+// Example: const { data: entrepreneurData } = useQuery(['entrepreneur', userId], () => fetchEntrepreneurData(userId));
 const entrepreneurData = {
   id: "1",
   name: "Sarah Johnson",
@@ -135,7 +136,11 @@ const campaigns = [
 
 const ITEMS_PER_PAGE = 3
 
-export default function EntrepreneurProfile() {
+// interface EntrepreneurProfileProps {
+//   userId: string;
+// }
+
+export default function EntrepreneurProfile() { //use this { userId }: EntrepreneurProfileProps
   const [startupsPage, setStartupsPage] = useState(1)
   const [campaignsPage, setCampaignsPage] = useState(1)
   const [userRating, setUserRating] = useState(0)
