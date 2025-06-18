@@ -382,7 +382,7 @@ export default function ExploreCampaigns() {
                   <TableBody>
                     {paginatedCampaigns.map((campaign) => (
                       <Link
-                        href={`/entrepreneur/campaigns/${campaign.id}`}
+                        href={`campaigns/${campaign.id}`}
                         key={campaign.id}
                         style={{ display: "contents" }}
                       >
