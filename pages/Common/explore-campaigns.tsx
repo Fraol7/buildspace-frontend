@@ -1,5 +1,105 @@
 "use client";
+"use client";
 
+import { useState, useEffect, useMemo } from "react";
+import Image from "next/image";
+import {
+  Search,
+  Filter,
+  ChevronDown,
+  Calendar,
+  Users,
+  TrendingUp,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { ExploreCampaign, useCampaignStore } from "@/store/campaignStore";
+
+const ITEMS_PER_PAGE = 6;
+
+export default function ExploreCampaigns() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [sortOption, setSortOption] = useState("Most Popular");
+  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+
+  const [lastPage, setLastPage] = useState(false);
+  const [previousCampaigns, setPreviousCampaigns] = useState<ExploreCampaign[]>(
+    []
+  );
+
+  const { data: session } = useSession();
+  const { allCampaigns, fetchAllCampaigns, loading, error } =
+    useCampaignStore();
+
+  useEffect(() => {
+    if (session?.accessToken) {
+      // For pagination, offset = (currentPage - 1) * ITEMS_PER_PAGE
+      fetchAllCampaigns(
+        session.accessToken,
+        ITEMS_PER_PAGE,
+        (currentPage - 1) * ITEMS_PER_PAGE
+      ).then(() => {
+        if (allCampaigns.length === 0 && currentPage > 1) {
+          setLastPage(true);
+          setCurrentPage((prev) => prev - 1);
+          useCampaignStore.setState({ allCampaigns: previousCampaigns });
+        } else {
+          setLastPage(false);
+          setPreviousCampaigns(allCampaigns);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.accessToken, currentPage]);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+      setLastPage(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log("All campaigns fetched:", allCampaigns);
+  }, [allCampaigns]);
+
+  // Filter and sort campaigns
+  const filteredCampaigns = useMemo(() => {
+    return allCampaigns.filter((campaign) => {
+      const matchesSearch = campaign.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      return matchesSearch;
+    });
+  }, [allCampaigns, searchQuery, selectedCategory]);
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import {
@@ -117,7 +217,29 @@ export default function ExploreCampaigns() {
       return 0;
     });
   }, [filteredCampaigns, sortOption]);
+  const sortedCampaigns = useMemo(() => {
+    return [...filteredCampaigns].sort((a, b) => {
+      if (sortOption === "Most Popular") {
+        return (b.total_funders || 0) - (a.total_funders || 0);
+      } else if (sortOption === "Ending Soon") {
+        return new Date(a.end_date).getTime() - new Date(b.end_date).getTime();
+      } else if (sortOption === "Most Funded") {
+        return (b.amount_raised || 0) - (a.amount_raised || 0);
+      } else if (sortOption === "Newest") {
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      }
+      return 0;
+    });
+  }, [filteredCampaigns, sortOption]);
 
+  const totalPages = Math.ceil(sortedCampaigns.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedCampaigns = sortedCampaigns.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
   const totalPages = Math.ceil(sortedCampaigns.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedCampaigns = sortedCampaigns.slice(
@@ -133,6 +255,8 @@ export default function ExploreCampaigns() {
       maximumFractionDigits: 0,
     }).format(amount);
   };
+    }).format(amount);
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -141,8 +265,12 @@ export default function ExploreCampaigns() {
       year: "numeric",
     });
   };
+    });
+  };
 
   const getProgressPercentage = (raised: number, target: number) => {
+    return Math.min((raised / target) * 100, 100);
+  };
     return Math.min((raised / target) * 100, 100);
   };
 
@@ -151,8 +279,13 @@ export default function ExploreCampaigns() {
       ? "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300"
       : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
   };
+      : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
+  };
 
   const renderStarRating = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
@@ -167,11 +300,19 @@ export default function ExploreCampaigns() {
               key={`full-${i}`}
               className="w-3 h-3 fill-yellow-400 text-yellow-400"
             />
+            <Star
+              key={`full-${i}`}
+              className="w-3 h-3 fill-yellow-400 text-yellow-400"
+            />
           ))}
           {/* Half star */}
           {hasHalfStar && (
             <div className="relative">
               <Star className="w-3 h-3 text-gray-300" />
+              <div
+                className="absolute inset-0 overflow-hidden"
+                style={{ width: "50%" }}
+              >
               <div
                 className="absolute inset-0 overflow-hidden"
                 style={{ width: "50%" }}
@@ -188,12 +329,19 @@ export default function ExploreCampaigns() {
       </div>
     );
   };
+    );
+  };
 
   const handleCampaignClick = (campaignId: string) => {
     console.log(`Navigating to campaign details: ${campaignId}`);
   };
+    console.log(`Navigating to campaign details: ${campaignId}`);
+  };
 
   const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -203,6 +351,12 @@ export default function ExploreCampaigns() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
+          <h1 className="text-4xl font-bold text-black mb-2">
+            Explore Campaigns
+          </h1>
+          <p className="text-gray-600">
+            Discover and support innovative startups and projects
+          </p>
           <h1 className="text-4xl font-bold text-black mb-2">
             Explore Campaigns
           </h1>
@@ -219,11 +373,17 @@ export default function ExploreCampaigns() {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 size={18}
               />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={18}
+              />
               <Input
                 type="text"
                 placeholder="Search campaigns..."
                 value={searchQuery}
                 onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1); // Reset to first page on search
                   setSearchQuery(e.target.value);
                   setCurrentPage(1); // Reset to first page on search
                 }}
@@ -242,13 +402,21 @@ export default function ExploreCampaigns() {
                 </Button>
               </DropdownMenuTrigger>
               {/* <DropdownMenuContent align="end" className="w-56">
+              {/* <DropdownMenuContent align="end" className="w-56">
                 {categories.map((category) => (
                   <DropdownMenuItem
                     key={category}
                     onClick={() => {
                       setSelectedCategory(category);
                       setCurrentPage(1);
+                      setSelectedCategory(category);
+                      setCurrentPage(1);
                     }}
+                    className={
+                      selectedCategory === category
+                        ? "bg-blue-50 text-blue-600"
+                        : ""
+                    }
                     className={
                       selectedCategory === category
                         ? "bg-blue-50 text-blue-600"
@@ -258,6 +426,7 @@ export default function ExploreCampaigns() {
                     {category}
                   </DropdownMenuItem>
                 ))}
+              </DropdownMenuContent> */}
               </DropdownMenuContent> */}
             </DropdownMenu>
             <DropdownMenu>
@@ -279,11 +448,21 @@ export default function ExploreCampaigns() {
                       ? "bg-blue-50 text-blue-600"
                       : ""
                   }
+                  className={
+                    sortOption === "Most Popular"
+                      ? "bg-blue-50 text-blue-600"
+                      : ""
+                  }
                 >
                   Most Popular
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setSortOption("Ending Soon")}
+                  className={
+                    sortOption === "Ending Soon"
+                      ? "bg-blue-50 text-blue-600"
+                      : ""
+                  }
                   className={
                     sortOption === "Ending Soon"
                       ? "bg-blue-50 text-blue-600"
@@ -299,11 +478,19 @@ export default function ExploreCampaigns() {
                       ? "bg-blue-50 text-blue-600"
                       : ""
                   }
+                  className={
+                    sortOption === "Most Funded"
+                      ? "bg-blue-50 text-blue-600"
+                      : ""
+                  }
                 >
                   Most Funded
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setSortOption("Newest")}
+                  className={
+                    sortOption === "Newest" ? "bg-blue-50 text-blue-600" : ""
+                  }
                   className={
                     sortOption === "Newest" ? "bg-blue-50 text-blue-600" : ""
                   }
@@ -321,6 +508,12 @@ export default function ExploreCampaigns() {
           </div>
         )}
 
+        {lastPage && (
+          <div className="text-center text-blue-600 font-semibold mb-4">
+            You have reached the last page.
+          </div>
+        )}
+
         {/* Campaigns Table */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
@@ -328,7 +521,12 @@ export default function ExploreCampaigns() {
               Active Campaigns
               {selectedCategory !== "All Categories" &&
                 ` in ${selectedCategory}`}
+              {selectedCategory !== "All Categories" &&
+                ` in ${selectedCategory}`}
             </h2>
+            <span className="text-gray-500 text-sm">
+              {filteredCampaigns.length} campaigns found
+            </span>
             <span className="text-gray-500 text-sm">
               {filteredCampaigns.length} campaigns found
             </span>
@@ -342,12 +540,19 @@ export default function ExploreCampaigns() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 No campaigns found
               </h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                No campaigns found
+              </h3>
               <p className="text-gray-600 mb-4">
+                We couldn&apos;t find any campaigns matching your search
+                criteria. Try adjusting your filters or search terms.
                 We couldn&apos;t find any campaigns matching your search
                 criteria. Try adjusting your filters or search terms.
               </p>
               <Button
                 onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All Categories");
                   setSearchQuery("");
                   setSelectedCategory("All Categories");
                 }}
@@ -362,6 +567,21 @@ export default function ExploreCampaigns() {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-blue-50 to-blue-100">
+                      <TableHead className="font-semibold text-gray-900">
+                        Campaign
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-900">
+                        Founder
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-900">
+                        Progress
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-900">
+                        Backers
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-900">
+                        End Date
+                      </TableHead>
                       <TableHead className="font-semibold text-gray-900">
                         Campaign
                       </TableHead>
@@ -393,13 +613,37 @@ export default function ExploreCampaigns() {
                               ? "bg-blue-100 shadow-lg scale-[1.02] border-blue-300"
                               : "bg-green-50 hover:bg-blue-50"
                           }`}
+                          className={`cursor-pointer transition-all duration-200 ${
+                            hoveredRow === campaign.id
+                              ? "bg-blue-100 shadow-lg scale-[1.02] border-blue-300"
+                              : "bg-green-50 hover:bg-blue-50"
+                          }`}
                           onMouseEnter={() => setHoveredRow(campaign.id)}
                           onMouseLeave={() => setHoveredRow(null)}
                           onClick={() => handleCampaignClick(campaign.id)}
                         >
                           <TableCell className="py-4 px-6">
+                          <TableCell className="py-4 px-6">
                             <div className="flex items-center gap-4">
                               <div className="min-w-0 flex-1">
+                                <h3 className="font-semibold text-gray-900 truncate mb-1">
+                                  {campaign.title}
+                                </h3>
+                                <p className="text-sm text-gray-600 line-clamp-1 mb-2">
+                                  {campaign.description}
+                                </p>
+                                {/* <div className="flex flex-wrap gap-1">
+                                  {campaign.categories.map(
+                                    (category, index) => (
+                                      <Badge
+                                        key={index}
+                                        className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs"
+                                      >
+                                        {category}
+                                      </Badge>
+                                    )
+                                  )}
+                                </div> */}
                                 <h3 className="font-semibold text-gray-900 truncate mb-1">
                                   {campaign.title}
                                 </h3>
@@ -430,8 +674,14 @@ export default function ExploreCampaigns() {
                                     "/placeholder.jpg"
                                   }
                                   alt={campaign.founder_name}
+                                  src={
+                                    campaign.founder_avatar ||
+                                    "/placeholder.jpg"
+                                  }
+                                  alt={campaign.founder_name}
                                 />
                                 <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 text-xs">
+                                  {campaign.founder_name
                                   {campaign.founder_name
                                     .split(" ")
                                     .map((n) => n[0])
@@ -439,6 +689,10 @@ export default function ExploreCampaigns() {
                                 </AvatarFallback>
                               </Avatar>
                               <div>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {campaign.founder_name}
+                                </p>
+                                {renderStarRating(campaign.founder_rating)}
                                 <p className="text-sm font-medium text-gray-900">
                                   {campaign.founder_name}
                                 </p>
@@ -460,6 +714,16 @@ export default function ExploreCampaigns() {
                                 </span>
                                 <span className="text-xs text-gray-600">
                                   {formatCurrency(campaign.amount_raised)}
+                                  {Math.round(
+                                    getProgressPercentage(
+                                      campaign.amount_raised,
+                                      campaign.target_amount
+                                    )
+                                  )}
+                                  %
+                                </span>
+                                <span className="text-xs text-gray-600">
+                                  {formatCurrency(campaign.amount_raised)}
                                 </span>
                               </div>
                               <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -470,9 +734,16 @@ export default function ExploreCampaigns() {
                                       campaign.amount_raised,
                                       campaign.target_amount
                                     )}%`,
+                                    width: `${getProgressPercentage(
+                                      campaign.amount_raised,
+                                      campaign.target_amount
+                                    )}%`,
                                   }}
                                 ></div>
                               </div>
+                              <p className="text-xs text-gray-500 mt-1">
+                                of {formatCurrency(campaign.target_amount)}
+                              </p>
                               <p className="text-xs text-gray-500 mt-1">
                                 of {formatCurrency(campaign.target_amount)}
                               </p>
@@ -482,11 +753,13 @@ export default function ExploreCampaigns() {
                             <div className="flex items-center text-sm text-gray-700">
                               <Users className="w-4 h-4 mr-1 text-blue-500" />
                               {campaign.total_funders}
+                              {campaign.total_funders}
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center text-sm text-gray-700">
                               <Calendar className="w-4 h-4 mr-1 text-blue-500" />
+                              {formatDate(campaign.end_date)}
                               {formatDate(campaign.end_date)}
                             </div>
                           </TableCell>
@@ -506,6 +779,7 @@ export default function ExploreCampaigns() {
             <Button
               variant="outline"
               size="sm"
+              onClick={handlePreviousPage}
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
               className="border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 disabled:opacity-50"
@@ -532,11 +806,30 @@ export default function ExploreCampaigns() {
                   </Button>
                 )
               )}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageChange(page)}
+                    className={
+                      currentPage === page
+                        ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+                        : "border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100"
+                    }
+                  >
+                    {page}
+                  </Button>
+                )
+              )}
             </div>
 
             <Button
               variant="outline"
               size="sm"
+              onClick={handleNextPage}
+              disabled={lastPage}
               onClick={handleNextPage}
               disabled={lastPage}
               className="border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 disabled:opacity-50"
@@ -548,5 +841,6 @@ export default function ExploreCampaigns() {
         )}
       </div>
     </div>
+  );
   );
 }

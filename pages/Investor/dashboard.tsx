@@ -1,4 +1,4 @@
- "use client"
+"use client"
 
 import AutoScrollingTrendingProjects from "@/components/Investor/autochanging-trends"
 import ChartsSection from "@/components/Investor/chart-section"

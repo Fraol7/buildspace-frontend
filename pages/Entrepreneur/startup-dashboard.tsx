@@ -212,7 +212,7 @@ export default function StartupDashboard() {
             </form>
 
             {/* Add Startup Button */}
-            <Link href="./add-startup">
+            <Link href="/entrepreneur/add-startup">
               <Button className="bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white shadow-md hover:shadow-lg transition-all duration-200 rounded-xl px-6 py-3">
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add a Startup

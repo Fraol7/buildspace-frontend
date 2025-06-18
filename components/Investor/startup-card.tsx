@@ -1,20 +1,18 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import Image from "next/image";
-import { Star, MapPin } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Startup } from "./project-grid";
-import { INDUSTRIES } from "@/constants";
+import Link from "next/link"
+import Image from "next/image"
+import { MapPin } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // import { Progress } from "@/components/ui/progress"
+import type { Startup } from "@/constants";
 
 interface StartupCardProps {
-  startup: Startup;
-  isSaved: boolean;
-  onSave: (id: string) => void;
+  startup: Startup
+  isSaved?: boolean
+  onSave?: (id: string) => void
 }
 
 // Custom Save Icon Component
@@ -68,24 +66,21 @@ export function StartupCard({ startup }: StartupCardProps) {
       )} */}
 
       <CardContent className="relative p-0">
-        <Link
-          href={`/entrepreneur/startup-details/${startup.id}`}
-          className="block"
-        >
+        <Link href={`/investor/startup-detail/${startup.id}`} className="block">
           {/* Header Section */}
           <div className="flex gap-6 p-6 pb-4">
             {/* Logo */}
             <div className="flex-shrink-0">
               <div className="relative">
                 <Image
-                  src={"/placeholder.svg"}
-                  alt={`${startup.startup_name} logo`}
+                  src={startup.logo || "/placeholder.svg"}
+                  alt={`${startup.title} logo`}
                   width={180}
                   height={180}
                   className="rounded-2xl object-cover shadow-xl border-4 border-white group-hover:shadow-2xl transition-shadow duration-300"
                 />
                 <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-sky-500 to-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                  {startup.funding_stage}
+                  {startup.stage}
                 </div>
               </div>
             </div>
@@ -94,27 +89,33 @@ export function StartupCard({ startup }: StartupCardProps) {
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="font-bold text-2xl text-gray-900 group-hover:text-sky-600 transition-colors duration-300 leading-tight">
-                  {startup.startup_name}
+                  {startup.title}
                 </h3>
               </div>
 
               <div className="flex items-center gap-2 mb-4">
                 <MapPin className="h-4 w-4 text-sky-500" />
-                <span className="text-sm font-medium text-gray-600">
-                  {startup.location}
-                </span>
+                <span className="text-sm font-medium text-gray-600">{startup.location}</span>
               </div>
 
-              <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed mb-4">
-                {startup.description}
-              </p>
+              <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed mb-4">{startup.description}</p>
 
               {/* Badges */}
               <div className="flex justify-between">
                 <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 border-sky-200 hover:from-sky-200 hover:to-blue-200 transition-all duration-200 text-xs font-medium">
-                    {INDUSTRIES[startup.industry]}
-                  </Badge>
+                  {startup.badges.slice(0, 3).map((badge) => (
+                    <Badge
+                      key={badge}
+                      className="bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 border-sky-200 hover:from-sky-200 hover:to-blue-200 transition-all duration-200 text-xs font-medium"
+                    >
+                      {badge}
+                    </Badge>
+                  ))}
+                  {startup.badges.length > 3 && (
+                    <Badge className="text-xs text-gray-500 border-gray-300">
+                      +{startup.badges.length - 3}
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -135,7 +136,7 @@ export function StartupCard({ startup }: StartupCardProps) {
                   <span className="text-lg font-bold text-sky-600">{Math.round(investmentProgress)}%</span>
                 </div> */}
 
-              {/* <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Progress value={investmentProgress} className="h-2 bg-sky-100/50 rounded-full overflow-hidden" />
                   <div className="flex justify-between text-xs">
                     <span className="font-semibold text-sky-700">{formatCurrency(startup.investedAmount)}</span>
@@ -148,5 +149,5 @@ export function StartupCard({ startup }: StartupCardProps) {
         </Link>
       </CardContent>
     </Card>
-  );
+  )
 }
