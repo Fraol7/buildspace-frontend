@@ -15,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { SavedCard } from "@/components/Entrepreneur/saved-startups";
+import { StartupCard } from "@/components/Entrepreneur/startup-card";
 // import { DUMMY_SAVED } from "@/constants";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
@@ -177,7 +177,7 @@ export default function SavedListing() {
               className="animate-in slide-in-from-bottom-4 duration-700"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <SavedCard
+              <StartupCard
                 startup={startup}
                 isSaved={savedStartups.has(startup.id)}
                 onSave={handleSave}

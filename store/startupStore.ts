@@ -1,12 +1,27 @@
 import { Startup } from "@/components/Entrepreneur/project-grid";
 import { create } from "zustand";
 
+export type User = {
+  id: string;
+  email: string;
+  password_hash: string;
+  auth_type: string;
+  role: "startup" | "investor";
+  first_name: string;
+  last_name: string;
+  profile_picture_url: string;
+  rating: number;
+  created_at: string;
+  updated_at: string;
+};
 type StartupStoreState = {
   startup: Startup | null;
   loading: boolean;
+  user: User | null;
   error: string | null;
   savedStartups: Startup[];
   myStartups: Startup[];
+  fetchUserById: (id: string, accessToken: string) => Promise<void>;
   fetchStartupById: (id: string, accessToken: string) => Promise<void>;
   fetchMyStartups: (accessToken: string) => Promise<void>;
   updateStartup: (
@@ -39,9 +54,38 @@ type StartupProfilePayload = {
 export const useStartupStore = create<StartupStoreState>((set) => ({
   startup: null,
   loading: false,
+  user: null,
   error: null,
   savedStartups: [],
   myStartups: [],
+  fetchUserById: async (id: string, accessToken: string) => {
+    set({ loading: true, error: null });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const res = await fetch(
+        `https://buildspace.onrender.com/userByID/${id}`,
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch user");
+      const data = await res.json();
+      set({ user: data, loading: false });
+    } catch (e: any) {
+      set({
+        error: e.message || "Unknown error",
+        startup: null,
+        loading: false,
+      });
+    }
+  },
   fetchStartupById: async (id: string, accessToken: string) => {
     set({ loading: true, error: null });
     try {
