@@ -11,6 +11,10 @@ export interface Campaign {
   start_date: string;
   end_date: string;
   is_active: boolean;
+  founder_name: string;
+  founder_avatar: string;
+  founder_rating: number;
+  backer_count: number;
   total_funders: number;
   created_at: string;
   updated_at: string;
@@ -27,6 +31,7 @@ export interface ExploreCampaign extends Campaign {
   founder_name: string;
   founder_avatar: string;
   founder_rating: number;
+  backer_count: number;
 }
 
 interface FundCampaignPayload {
