@@ -93,13 +93,6 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48" align="end" forceMount>
             <DropdownMenuItem
-              onClick={() => router.push("/entrepreneur/profile")}
-              className="cursor-pointer"
-            >
-              <User className="mr-2 h-4 w-4" />
-              <span>Edit Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
               onClick={() => signOut({ callbackUrl: "/" })}
               className="cursor-pointer text-destructive focus:text-destructive"
             >

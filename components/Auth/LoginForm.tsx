@@ -33,9 +33,9 @@ export default function LoginForm() {
       const role = (session?.user as { role?: string })?.role;
 
       if (role === "startup") {
-        router.push("/entrepreneur");
+        window.location.href = "/entrepreneur";
       } else if (role === "investor") {
-        router.push("/investor");
+        window.location.href = "/investor";
       }
     } else {
       toast({
@@ -94,7 +94,10 @@ export default function LoginForm() {
               <Label htmlFor="remember-me">Remember Me</Label>
               <Switch id="remember-me" />
             </div>
-            <Link href="/forgot-password" className="text-blue-600 hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-blue-600 hover:underline"
+            >
               Forgot Password?
             </Link>
           </div>

@@ -1,5 +1,6 @@
 import { Startup } from "@/components/Entrepreneur/project-grid";
 import { create } from "zustand";
+import { User } from "./startupStore";
 
 type Earning = {
   total_crowdfunding: number;
@@ -12,6 +13,24 @@ type UserProfile = {
   // add more fields as needed
 };
 
+type RecommendedInvestor = {
+  id: string;
+  user_id: string;
+  investment_preferences: string[];
+  minimum_ticket_size: number;
+  maximum_ticket_size: number;
+  preferred_stages: string[];
+  location_preferences: string[];
+  risk_tolerance: string;
+  portfolio_Value: number;
+  created_at: string;
+  updated_at: string;
+};
+
+type RecommendedInvestorWithUser = RecommendedInvestor & {
+  user: User | null;
+};
+
 type DashboardState = {
   myStartups: Startup[] | [];
   earnings: Earning | null;
@@ -20,14 +39,64 @@ type DashboardState = {
   recommendedStartups: Startup[];
   fetchAll: (accessToken: string) => Promise<void>;
   fetchRecommendedStartups: (accessToken: string) => Promise<void>;
+  recommendedInvestors: RecommendedInvestorWithUser[];
+  fetchRecommendedInvestors: (
+    accessToken: string,
+    startupId: string
+  ) => Promise<void>;
+  fetchUserById: (id: string, accessToken: string) => Promise<User | null>;
+  user: User | null;
 };
 
-export const useDashboardStore = create<DashboardState>((set) => ({
+export const useDashboardStore = create<DashboardState>((set, get) => ({
   myStartups: [],
   earnings: null,
   userProfile: null,
   loading: false,
   recommendedStartups: [],
+  recommendedInvestors: [],
+  fetchRecommendedInvestors: async (accessToken: string, startupId: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch(
+        `https://buildspace.onrender.com/startups/investors/${startupId}`,
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+      if (!response.ok)
+        throw new Error("Failed to fetch recommended investors");
+      const data: RecommendedInvestor[] = await response.json();
+
+      const investorsWithUser: RecommendedInvestorWithUser[] =
+        await Promise.all(
+          data.map(async (inv) => {
+            let user: User | null = null;
+            try {
+              user = await get().fetchUserById(inv.user_id, accessToken);
+            } catch {
+              user = null;
+            }
+            return { ...inv, user };
+          })
+        );
+
+      set({
+        recommendedInvestors: investorsWithUser,
+        loading: false,
+      });
+    } catch (e) {
+      set({ recommendedInvestors: [], loading: false });
+    }
+  },
   fetchAll: async (accessToken: string) => {
     console.log("Access token:", accessToken);
     set({ loading: true });
@@ -154,6 +223,33 @@ export const useDashboardStore = create<DashboardState>((set) => ({
       set({ recommendedStartups: [], loading: false });
     }
   },
+  fetchUserById: async (
+    id: string,
+    accessToken: string
+  ): Promise<User | null> => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const res = await fetch(
+        `https://buildspace.onrender.com/userByID/${id}`,
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch user");
+      const data = await res.json();
+      return data;
+    } catch (e: any) {
+      return null;
+    }
+  },
+  user: null,
 }));
 
 type TodaysPick = {

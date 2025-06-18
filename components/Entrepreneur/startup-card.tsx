@@ -69,7 +69,7 @@ export function StartupCard({ startup }: StartupCardProps) {
 
       <CardContent className="relative p-0">
         <Link
-          href={`/entrepreneur/startup-details/${startup.id}`}
+          href={`/entrepreneur/startup-detail/${startup.id}`}
           className="block"
         >
           {/* Header Section */}
@@ -78,7 +78,7 @@ export function StartupCard({ startup }: StartupCardProps) {
             <div className="flex-shrink-0">
               <div className="relative">
                 <Image
-                  src={"/placeholder.svg"}
+                  src={startup.logo_url}
                   alt={`${startup.startup_name} logo`}
                   width={180}
                   height={180}

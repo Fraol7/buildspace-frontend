@@ -15,11 +15,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { SavedCard } from "@/components/Entrepreneur/saved-startups";
 // import { DUMMY_SAVED } from "@/constants";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
 import { INDUSTRIES } from "@/constants";
+import { SavedCard } from "@/components/Common/saved-startups";
 
 const ITEMS_PER_PAGE = 5;
 

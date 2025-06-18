@@ -62,7 +62,7 @@ const ProjectsGrid = () => {
                 {/* Project Header */}
                 <div className="flex items-center space-x-3 mb-3">
                   <Image
-                    src={"/placeholder.jpg"}
+                    src={project.logo_url}
                     alt={project.startup_name}
                     width={40}
                     height={40}

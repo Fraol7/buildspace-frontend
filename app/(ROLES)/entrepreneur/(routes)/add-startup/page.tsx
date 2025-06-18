@@ -30,10 +30,32 @@ import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useChatStore } from "@/store/chatStore";
 
 export default function AddStartupPage() {
   const router = useRouter();
   const { createStartup, loading } = useStartupStore();
+  const { uploadFiles } = useChatStore();
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!session?.accessToken) {
+      toast.error("You must be logged in to upload a logo.");
+      return;
+    }
+    try {
+      const urls = await uploadFiles([file], session.accessToken);
+      if (urls.length > 0) {
+        setFormData((prev) => ({ ...prev, logo_url: urls[0] }));
+        toast.success("Logo uploaded!");
+      } else {
+        toast.error("Failed to upload logo.");
+      }
+    } catch {
+      toast.error("Failed to upload logo.");
+    }
+  };
 
   const [formData, setFormData] = useState({
     title: "",
@@ -114,6 +136,54 @@ export default function AddStartupPage() {
 
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-6">
+              {/* --- Improved Logo Upload Section --- */}
+              <div className="flex flex-col items-start space-y-2">
+                <Label className="mb-1">Profile Picture</Label>
+                <div className="flex items-center space-x-4">
+                  <label
+                    htmlFor="logo-upload"
+                    className="cursor-pointer group relative"
+                    title="Upload logo"
+                  >
+                    <span className="sr-only">Upload logo</span>
+                    <div className="w-20 h-20 rounded-full border-2 border-sky-200 group-hover:border-sky-400 flex items-center justify-center overflow-hidden bg-sky-50 transition-all">
+                      {formData.logo_url ? (
+                        <img
+                          src={formData.logo_url}
+                          alt="Startup Logo"
+                          className="object-cover w-full h-full"
+                        />
+                      ) : (
+                        <span className="text-sky-400 text-4xl font-bold">
+                          +
+                        </span>
+                      )}
+                    </div>
+                    <input
+                      id="logo-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="hidden"
+                    />
+                  </label>
+                  <div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        document.getElementById("logo-upload")?.click()
+                      }
+                      className="ml-2"
+                    >
+                      {formData.logo_url ? "Change" : "Upload"}
+                    </Button>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      PNG, JPG, or GIF. Max 2MB.
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="title">Startup Name</Label>
                 <Input
@@ -139,18 +209,18 @@ export default function AddStartupPage() {
                 />
               </div>
 
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div className="space-y-2">
-//                   <Label htmlFor="location">Location</Label>
-//                   <Input
-//                     id="location"
-//                     name="location"
-//                     placeholder="e.g., San Francisco, CA"
-//                     value={formData.location}
-//                     onChange={handleChange}
-//                     required
-//                   />
-//                 </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    name="location"
+                    placeholder="e.g., San Francisco, CA"
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="stage">Funding Stage</Label>
@@ -176,30 +246,30 @@ export default function AddStartupPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="badges">Tags Line</Label>
+                <Label htmlFor="badges">Tag Line</Label>
                 <Input
                   id="badges"
                   name="badges"
-                  placeholder="e.g., AI, FinTech, SaaS"
+                  placeholder="e.g., Innovating the Future"
                   value={formData.badges}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div className="space-y-2">
-//                   <Label htmlFor="investedAmount">Current Investment ($)</Label>
-//                   <Input
-//                     id="investedAmount"
-//                     name="investedAmount"
-//                     type="number"
-//                     placeholder="e.g., 500000"
-//                     value={formData.investedAmount}
-//                     onChange={handleChange}
-//                     required
-//                   />
-//                 </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="investedAmount">Current Investment ($)</Label>
+                  <Input
+                    id="investedAmount"
+                    name="investedAmount"
+                    type="number"
+                    placeholder="e.g., 500000"
+                    value={formData.investedAmount}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="requiredInvestment">
@@ -217,7 +287,7 @@ export default function AddStartupPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid  gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="website">Website</Label>
                   <Input
@@ -225,16 +295,6 @@ export default function AddStartupPage() {
                     name="website"
                     placeholder="e.g., https://yourstartup.com"
                     value={formData.website}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="logo_url">Logo URL</Label>
-                  <Input
-                    id="logo_url"
-                    name="logo_url"
-                    placeholder="e.g., https://yourstartup.com/logo.png"
-                    value={formData.logo_url}
                     onChange={handleChange}
                   />
                 </div>
