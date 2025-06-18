@@ -5,7 +5,6 @@ import Image from "next/image"
 import { MapPin } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // import { Progress } from "@/components/ui/progress"
 import type { Startup } from "@/constants";
@@ -17,23 +16,23 @@ interface StartupCardProps {
 }
 
 // Custom Save Icon Component
-const SaveIcon = ({ filled = false, className = "" }: { filled?: boolean; className?: string }) => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    className={className}
-    fill={filled ? "currentColor" : "none"}
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-  </svg>
-)
+// const SaveIcon = ({ filled = false, className = "" }: { filled?: boolean; className?: string }) => (
+//   <svg
+//     width="18"
+//     height="18"
+//     viewBox="0 0 24 24"
+//     className={className}
+//     fill={filled ? "currentColor" : "none"}
+//     stroke="currentColor"
+//     strokeWidth="2"
+//     strokeLinecap="round"
+//     strokeLinejoin="round"
+//   >
+//     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+//   </svg>
+// )
 
-export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
+export function StartupCard({ startup }: StartupCardProps) {
   // const investmentProgress = (startup.investedAmount / startup.requiredInvestment) * 100
 
   // const formatCurrency = (amount: number) => {
