@@ -113,7 +113,7 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Accept", "application/json");
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
-      const url = new URL("http://localhost:8080/get-campaigns");
+      const url = new URL("https://buildspace.onrender.com/get-campaigns");
       url.searchParams.append("limit", limit.toString());
       url.searchParams.append("offset", offset.toString());
 
@@ -171,7 +171,7 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
       myHeaders.append("Accept", "application/json");
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const res = await fetch("http://localhost:8080/get-invested-campaigns", {
+      const res = await fetch("https://buildspace.onrender.com/get-invested-campaigns", {
         method: "GET",
         headers: myHeaders,
         credentials: "omit" as RequestCredentials,
@@ -199,7 +199,7 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
       const res = await fetch(
-        "http://localhost:8080/crowdfunding/make-payment",
+        "https://buildspace.onrender.com/crowdfunding/make-payment",
         {
           method: "POST",
           headers: myHeaders,
@@ -349,7 +349,7 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
         is_active: true,
       };
 
-      const res = await fetch("http://localhost:8080/create-campaign", {
+      const res = await fetch("https://buildspace.onrender.com/create-campaign", {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify(body),

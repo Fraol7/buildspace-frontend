@@ -51,7 +51,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const response = await fetch("http://localhost:8080/chat/upload", {
+      const response = await fetch("https://buildspace.onrender.com/chat/upload", {
         method: "POST",
         headers: myHeaders,
         body: formData,
@@ -77,7 +77,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
       const conversationsRes = await fetch(
-        "http://localhost:8080/chat/conversations",
+        "https://buildspace.onrender.com/chat/conversations",
         {
           method: "GET",
           headers: myHeaders,
@@ -95,7 +95,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
   },
   markMessagesAsRead: async (receiverId: string, accessToken: string) => {
     const markRes = await fetch(
-      `http://localhost:8080/chat/mark-read/${receiverId}`,
+      `https://buildspace.onrender.com/chat/mark-read/${receiverId}`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -115,7 +115,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
     try {
       await get().markMessagesAsRead(receiverId, accessToken);
       const res = await fetch(
-        `http://localhost:8080/chat/messages/${receiverId}`,
+        `https://buildspace.onrender.com/chat/messages/${receiverId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -221,7 +221,7 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
   connectSocket: (accessToken: string) => {
     if (get().socket) return; // Already connected
     const ws = new WebSocket(
-      `ws://localhost:8080/chat/ws?token=${accessToken}`
+      `wss://buildspace.onrender.com/chat/ws?token=${accessToken}`
     );
     ws.onopen = () => {
       // Send the token as an Authorization header via a custom protocol message
