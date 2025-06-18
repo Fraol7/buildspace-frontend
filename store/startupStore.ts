@@ -50,12 +50,15 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
       myHeaders.append("Accept", "application/json");
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const res = await fetch(`http://localhost:8080/startupsByID/${id}`, {
-        method: "GET",
-        headers: myHeaders,
-        credentials: "omit" as RequestCredentials,
-        redirect: "follow" as RequestRedirect,
-      });
+      const res = await fetch(
+        `https://buildspace.onrender.com/startupsByID/${id}`,
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
       if (!res.ok) throw new Error("Failed to fetch startup");
       const data = await res.json();
       set({ startup: data, loading: false });
@@ -99,7 +102,7 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Authorization", `Bearer ${accessToken}`);
     try {
-      const res = await fetch("http://localhost:8080/startup", {
+      const res = await fetch("https://buildspace.onrender.com/startup", {
         method: "PUT",
         headers: myHeaders,
         body: JSON.stringify(payload),
@@ -149,7 +152,7 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
     myHeaders.append("Authorization", `Bearer ${accessToken}`);
     try {
       const res = await fetch(
-        `http://localhost:8080/save-startup/${startupId}`,
+        `https://buildspace.onrender.com/save-startup/${startupId}`,
         {
           method: "POST",
           headers: myHeaders,
@@ -172,7 +175,7 @@ export const useStartupStore = create<StartupStoreState>((set) => ({
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Authorization", `Bearer ${accessToken}`);
     try {
-      const res = await fetch("http://localhost:8080/saved-startup", {
+      const res = await fetch("https://buildspace.onrender.com/saved-startup", {
         method: "GET",
         headers: myHeaders,
         credentials: "omit" as RequestCredentials,

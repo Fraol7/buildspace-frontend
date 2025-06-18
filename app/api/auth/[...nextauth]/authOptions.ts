@@ -36,7 +36,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         const res = await fetch(
-          "http://buildspace.onrender.com/auth/email/login",
+          "https://buildspace.onrender.com/auth/email/login",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

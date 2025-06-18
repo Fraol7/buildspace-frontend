@@ -11,6 +11,50 @@ import {
   ChartCandlestick,
   Telescope,
   MessagesSquare,
+  TrendingDown,
+  Building2,
+  Car,
+  Smartphone,
+  Banknote,
+  ShoppingCart,
+  Factory,
+  Plane,
+  BarChart3,
+  Activity,
+  Check,
+  ChevronsUpDown,
+  Search,
+  Sparkles,
+  Megaphone,
+  Dna,
+  Leaf,
+  Palette,
+  GraduationCap,
+  Shirt,
+  Gamepad2,
+  Landmark,
+  Cpu,
+  Heart,
+  Hotel,
+  Scale,
+  MapPin,
+  Cross,
+  Music,
+  Atom,
+  Server,
+  Newspaper,
+  HandHeart,
+  HelpCircle,
+  Dog,
+  Camera,
+  Home,
+  Shield,
+  PinIcon as Chip,
+  Users2,
+  Code,
+  Trophy,
+  Truck,
+  Globe,
 } from "lucide-react";
 
 export const DEFAULT_SKILLS = [
@@ -1914,7 +1958,8 @@ export const projectData = {
   id: "1",
   name: "EcoFarm",
   tagline: "Sustainable farming for a better tomorrow",
-  description: "EcoFarm is revolutionizing agriculture with sustainable farming practices that increase yield while reducing environmental impact. Our innovative vertical farming technology uses 95% less water than traditional farming methods.",
+  description:
+    "EcoFarm is revolutionizing agriculture with sustainable farming practices that increase yield while reducing environmental impact. Our innovative vertical farming technology uses 95% less water than traditional farming methods.",
   logo: "/placeholder.svg",
   industry: ["Agriculture", "Sustainability", "Technology"],
   location: "San Francisco, CA",
@@ -1929,8 +1974,8 @@ export const projectData = {
     name: "Alex Johnson",
     avatar: "/placeholder.svg",
     bio: "Alex is a serial entrepreneur with a passion for sustainable agriculture. With over 10 years of experience in the tech industry, Alex is now focused on solving food security challenges through technology.",
-    rating: 4.8
-  }
+    rating: 4.8,
+  },
 };
 
 export const recommendedInvestors = [
@@ -1942,7 +1987,7 @@ export const recommendedInvestors = [
     bio: "Early-stage investor focused on sustainable technologies and impact startups.",
     address: "New York, NY",
     rating: 4.5,
-    totalInvestment: "$2.5M"
+    totalInvestment: "$2.5M",
   },
   {
     id: "inv2",
@@ -1952,7 +1997,7 @@ export const recommendedInvestors = [
     bio: "Angel investor with a background in agricultural technology and supply chain management.",
     address: "Austin, TX",
     rating: 4.7,
-    totalInvestment: "$1.8M"
+    totalInvestment: "$1.8M",
   },
   {
     id: "inv3",
@@ -1962,8 +2007,8 @@ export const recommendedInvestors = [
     bio: "Venture capital firm investing in sustainable and environmentally friendly startups.",
     address: "San Francisco, CA",
     rating: 4.9,
-    totalInvestment: "$15M"
-  }
+    totalInvestment: "$15M",
+  },
 ];
 
 export const ALL_PROJECTS = [
@@ -1978,7 +2023,7 @@ export const ALL_PROJECTS = [
     progress: 45,
     avatar: "/placeholder.svg",
     founderName: "Jamie Smith",
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: "3",
@@ -1991,7 +2036,7 @@ export const ALL_PROJECTS = [
     progress: 64,
     avatar: "/placeholder.svg",
     founderName: "Priya Patel",
-    rating: 4.8
+    rating: 4.8,
   },
   {
     id: "4",
@@ -2004,10 +2049,9 @@ export const ALL_PROJECTS = [
     progress: 100,
     avatar: "/placeholder.svg",
     founderName: "Carlos Mendez",
-    rating: 4.7
-  }
+    rating: 4.7,
+  },
 ];
-
 
 export const CROWDFUNDING_TOTAL = "12,345.78"; // Dummy data for Crowdfunding
 export const INVEST_TOTAL = "2,050.50"; // Dummy data for Invest
@@ -2069,4 +2113,49 @@ export const FUNDING_STAGE_OPTIONS = [
   "series-b",
   "series-c+",
   "venture",
+];
+
+export const industriesWithIcons = [
+  { id: "advertising", name: "Advertising", icon: Megaphone },
+  { id: "analytics", name: "Analytics", icon: BarChart3 },
+  { id: "automotive", name: "Automotive", icon: Car },
+  { id: "biotech", name: "Biotechnology", icon: Dna },
+  { id: "cleantech", name: "Clean Technology", icon: Leaf },
+  { id: "consulting", name: "Consulting", icon: Users },
+  { id: "design", name: "Design", icon: Palette },
+  { id: "ecommerce", name: "E-commerce", icon: ShoppingCart },
+  { id: "education", name: "Education", icon: GraduationCap },
+  { id: "enterprise", name: "Enterprise", icon: Building2 },
+  { id: "fashion", name: "Fashion", icon: Shirt },
+  { id: "finance", name: "Finance", icon: Banknote },
+  { id: "games_video", name: "Games & Video", icon: Gamepad2 },
+  { id: "government", name: "Government", icon: Landmark },
+  { id: "hardware", name: "Hardware", icon: Cpu },
+  { id: "health", name: "Health", icon: Heart },
+  { id: "hospitality", name: "Hospitality", icon: Hotel },
+  { id: "legal", name: "Legal", icon: Scale },
+  { id: "local", name: "Local Services", icon: MapPin },
+  { id: "manufacturing", name: "Manufacturing", icon: Factory },
+  { id: "medical", name: "Medical", icon: Cross },
+  { id: "messaging", name: "Messaging", icon: MessageSquare },
+  { id: "mobile", name: "Mobile", icon: Smartphone },
+  { id: "music", name: "Music", icon: Music },
+  { id: "nanotech", name: "Nanotechnology", icon: Atom },
+  { id: "network_hosting", name: "Network & Hosting", icon: Server },
+  { id: "news", name: "News & Media", icon: Newspaper },
+  { id: "nonprofit", name: "Non-profit", icon: HandHeart },
+  { id: "other", name: "Other", icon: HelpCircle },
+  { id: "pets", name: "Pets & Animals", icon: Dog },
+  { id: "photo_video", name: "Photo & Video", icon: Camera },
+  { id: "public_relations", name: "Public Relations", icon: Megaphone },
+  { id: "real_estate", name: "Real Estate", icon: Home },
+  { id: "search", name: "Search", icon: Search },
+  { id: "security", name: "Security", icon: Shield },
+  { id: "semiconductor", name: "Semiconductor", icon: Chip },
+  { id: "social", name: "Social Media", icon: Users2 },
+  { id: "software", name: "Software", icon: Code },
+  { id: "sports", name: "Sports", icon: Trophy },
+  { id: "transportation", name: "Transportation", icon: Truck },
+  { id: "travel", name: "Travel", icon: Plane },
+  { id: "web", name: "Web Services", icon: Globe },
 ];
