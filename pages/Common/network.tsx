@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import UserCardGroup from "@/components/Entrepreneur/user-card-group"
+import UserCardGroup from "@/components/Common/user-card-group"
 import { sampleUsers } from "@/constants"
 
 export default function Network() {

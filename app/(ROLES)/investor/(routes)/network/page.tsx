@@ -1,5 +1,5 @@
 import React from 'react'
-import Network from '@/pages/Investor/network'
+import Network from '@/pages/Common/network'
 
 const page = () => {
   return (

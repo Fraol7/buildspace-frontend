@@ -15,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { SavedCard } from "@/components/Entrepreneur/saved-startups"
+import { SavedCard } from "@/components/Common/saved-startups"
 import { DUMMY_SAVED } from "@/constants"
 
 const ITEMS_PER_PAGE = 5
