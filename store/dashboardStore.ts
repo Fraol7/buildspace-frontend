@@ -32,9 +32,12 @@ type DashboardState = {
   earnings: Earning | null;
   userProfile: UserProfile | null;
   loading: boolean;
+  error: string | null;
   recommendedStartups: Startup[];
+  investorStartups: Startup[];
   fetchAll: (accessToken: string) => Promise<void>;
   fetchRecommendedStartups: (accessToken: string) => Promise<void>;
+  fetchInvestorStartups: (accessToken: string) => Promise<void>;
 };
 
 export const useDashboardStore = create<DashboardState>((set) => ({
@@ -42,7 +45,9 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   earnings: null,
   userProfile: null,
   loading: false,
+  error: null,
   recommendedStartups: [],
+  investorStartups: [],
   fetchAll: async (accessToken: string) => {
     console.log("Access token:", accessToken);
     set({ loading: true });
@@ -167,6 +172,52 @@ export const useDashboardStore = create<DashboardState>((set) => ({
       }
     } catch (e) {
       set({ recommendedStartups: [], loading: false });
+    }
+  },
+  fetchInvestorStartups: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch(
+        "https://buildspace.onrender.com/investor/startup",
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch investor startups");
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        set({
+          investorStartups: data.map((item: any) => ({
+            ...item,
+            status:
+              item.amount_raised === 0
+                ? "New"
+                : item.amount_raised < item.funding_goal
+                ? "In Progress"
+                : "Completed",
+            progress:
+              item.funding_goal > 0
+                ? Math.round((item.amount_raised / item.funding_goal) * 100)
+                : 0,
+          })),
+          loading: false,
+        });
+      } else {
+        set({ investorStartups: [], loading: false });
+      }
+    } catch (e) {
+      console.error("Error fetching investor startups:", e);
+      set({ investorStartups: [], loading: false });
     }
   },
 }));

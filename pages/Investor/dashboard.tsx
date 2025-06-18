@@ -3,7 +3,7 @@
 import AutoScrollingTrendingProjects from "@/components/Common/autochanging-trends"
 import ChartsSection from "@/components/Investor/chart-section"
 import InvestmentsSection from "@/components/Investor/startups-section"
-import ProjectsGrid from "@/components/Common/project-grid"
+import ProjectsGrid from "@/components/Investor/project-grid"
 import StatsCards from "@/components/Investor/stats-card"
 
 export default function Dashboard() {
