@@ -387,6 +387,7 @@ export const InvestorNavMain = [
 
 export const TRENDING_PROJECTS = [
   {
+    id: "1",
     image: "/images/eco.jpg",
     title: "AI-Powered Investment Insights",
     tagline: "Revolutionizing investment strategies through AI.",
@@ -398,6 +399,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "2",
     image: "/images/ai-health.jpg",
     title: "AI-Driven Healthcare Solutions",
     tagline: "Transforming patient care with predictive analytics.",
@@ -409,6 +411,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "3",
     image: "/images/renew.jpg",
     title: "Retail AI Optimization",
     tagline: "Enhancing customer experiences through AI.",
@@ -420,6 +423,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "4",
     image: "/images/eco.jpg",
     title: "Smart Energy Management",
     tagline: "Optimizing energy consumption with AI technologies.",
@@ -431,6 +435,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "5",
     image: "/images/ai-health.jpg",
     title: "AI in Education",
     tagline: "Personalizing learning experiences for students worldwide.",
@@ -442,6 +447,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "6",
     image: "/images/eco.jpg",
     title: "Financial Fraud Detection",
     tagline: "Securing financial systems through advanced AI detection.",
@@ -453,6 +459,7 @@ export const TRENDING_PROJECTS = [
     link: "#",
   },
   {
+    id: "7",
     image: "/images/renew.jpg",
     title: "Autonomous Logistics Optimization",
     tagline: "Streamlining supply chains with AI automation.",

@@ -53,7 +53,7 @@ const StartupsSection = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {visibleInvestments.map((startup) => (
-              <Link href="/" key={startup.id} className="block">
+              <Link href={`/entrepreneur/startup-detail/${startup.id}`} key={startup.id} className="block">
                 <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center space-x-3 mb-3">
                     <Image
