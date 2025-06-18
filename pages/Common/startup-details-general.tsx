@@ -33,7 +33,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 // Shared components and data
-import { projectData, recommendedInvestors, ALL_PROJECTS } from "@/pages/Common/shared-data"
+import { projectData, ALL_PROJECTS } from "@/constants"
 
 // StatsCards Component
 const StatsCards = () => {
@@ -109,7 +109,7 @@ const StatsCards = () => {
     )
   }
 
-  const renderChangeIndicator = (change: any, isRating: boolean) => {
+  const renderChangeIndicator = (change: { trend: string; value: string; text: string }, isRating: boolean) => {
     if (isRating) return null
 
     return (
@@ -374,11 +374,16 @@ export default function StartupDetailsGeneral() {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 flex-1">
               <div className="flex-shrink-0 self-center sm:self-start">
-                <img
-                  src={projectData.logo || "/placeholder.svg"}
-                  alt={projectData.name}
-                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl shadow-md object-cover border-4 border-white mx-auto sm:mx-0"
-                />
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-2xl shadow-md overflow-hidden border-4 border-white mx-auto sm:mx-0">
+                  <Image
+                    src={projectData.logo || "/placeholder.svg"}
+                    alt={projectData.name}
+                    fill
+                    sizes="(max-width: 640px) 96px, 128px"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
               </div>
 
               <div className="flex-1 space-y-3 text-center sm:text-left">

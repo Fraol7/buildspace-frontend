@@ -35,7 +35,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 // Shared components and data
-import { projectData, ALL_PROJECTS, type Project } from "@/pages/Common/shared-data"
+import { projectData, ALL_PROJECTS, type Project } from "@/constants"
 
 // StatsCards Component
 const StatsCards = () => {
@@ -111,7 +111,7 @@ const StatsCards = () => {
     )
   }
 
-  const renderChangeIndicator = (change: any, isRating: boolean) => {
+  const renderChangeIndicator = (change: { trend: string; value: string; text: string }, isRating: boolean) => {
     if (isRating) return null
 
     return (
@@ -378,9 +378,11 @@ export default function StartupDetailsInvestor() {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 flex-1">
               <div className="flex-shrink-0 self-center sm:self-start">
-                <img
+                <Image
                   src={projectData.logo || "/placeholder.svg"}
                   alt={projectData.name}
+                  width={100}
+                  height={100}
                   className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl shadow-md object-cover border-4 border-white mx-auto sm:mx-0"
                 />
               </div>
@@ -619,7 +621,7 @@ export default function StartupDetailsInvestor() {
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Invest in {projectData.name}</DialogTitle>
-              <DialogDescription>Enter the amount you'd like to invest in this startup.</DialogDescription>
+              <DialogDescription>Enter the amount you&apos;d like to invest in this startup.</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>

@@ -43,7 +43,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 // Shared components and data
-import { projectData, recommendedInvestors, ALL_PROJECTS, type Project, type Investor } from "@/pages/Common/shared-data"
+import { projectData, recommendedInvestors, ALL_PROJECTS, type Project, type Investor } from "@/constants"
 
 // StatsCards Component
 const StatsCards = () => {
@@ -119,7 +119,7 @@ const StatsCards = () => {
     )
   }
 
-  const renderChangeIndicator = (change: any, isRating: boolean) => {
+  const renderChangeIndicator = (change: { trend: string; value: string; text: string }, isRating: boolean) => {
     if (isRating) return null
 
     return (
@@ -333,7 +333,20 @@ const ProjectsGrid = () => {
 }
 
 // InvestorCard Component
-const InvestorCard = ({ user }: { user: any }) => {
+interface InvestorCardProps {
+  user: {
+    id: string;
+    name: string;
+    photo?: string;
+    role: string;
+    bio: string;
+    address: string;
+    rating: number;
+    totalInvestment?: string;
+  };
+}
+
+const InvestorCard = ({ user }: InvestorCardProps) => {
   const userTypeConfig = {
     Investor: {
       bgGradient: "from-teal-50 to-cyan-50",
@@ -523,9 +536,11 @@ export default function StartupDetailsOwner() {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 flex-1">
               <div className="flex-shrink-0 self-center sm:self-start">
-                <img
+                <Image
                   src={projectData.logo || "/placeholder.svg"}
                   alt={projectData.name}
+                  width={100}
+                  height={100}
                   className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl shadow-md object-cover border-4 border-white mx-auto sm:mx-0"
                 />
               </div>
