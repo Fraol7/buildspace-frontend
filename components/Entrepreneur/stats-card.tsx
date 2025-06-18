@@ -1,7 +1,13 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, DollarSign, Star, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  BaggageClaim,
+  DollarSign,
+  Star,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { STAT_DATA, StatCard } from "@/constants";
@@ -99,7 +105,7 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
   const renderIcon = (iconType: string) => {
     switch (iconType) {
       case "dollar":
-        return <DollarSign className="w-6 h-6 text-white" />;
+        return <BaggageClaim className="w-6 h-6 text-white" />;
       case "trending":
         return <TrendingUp className="w-6 h-6 text-white" />;
       case "star":

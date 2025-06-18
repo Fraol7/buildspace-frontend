@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { PROJECTS_GRID } from "@/constants";
+import { INDUSTRIES, PROJECTS_GRID } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";
@@ -69,7 +69,12 @@ const ProjectsGrid = () => {
                       {project.startup_name}
                     </h4>
                     <p className="text-xs text-gray-600 group-hover:text-blue-600">
-                      {project.industry}
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-white/50 text-blue-700 border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300"
+                      >
+                        {INDUSTRIES[project.industry]}
+                      </Badge>
                     </p>
                   </div>
                 </div>
