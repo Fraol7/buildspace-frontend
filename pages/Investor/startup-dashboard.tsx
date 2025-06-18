@@ -16,7 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { StartupCard } from "@/components/Entrepreneur/startup-card"
+import { StartupCard } from "@/components/Investor/startup-card"
 import { DUMMY_STARTUPS } from "@/constants"
 
 const ITEMS_PER_PAGE = 5
