@@ -27,6 +27,22 @@ type UserProfile = {
   // add more fields as needed
 };
 
+type Investment = {
+  id: string;
+  startup_id: {
+    id: string;
+    startup_name: string;
+    logo_url: string;
+    industry: number;
+    funding_goal: number;
+    amount_raised: number;
+    location: string;
+  };
+  amount: number;
+  invested_at: string;
+  status: string;
+};
+
 type DashboardState = {
   myStartups: Startup[] | [];
   earnings: Earning | null;
@@ -35,9 +51,11 @@ type DashboardState = {
   error: string | null;
   recommendedStartups: Startup[];
   investorStartups: Startup[];
+  investments: Investment[];
   fetchAll: (accessToken: string) => Promise<void>;
   fetchRecommendedStartups: (accessToken: string) => Promise<void>;
   fetchInvestorStartups: (accessToken: string) => Promise<void>;
+  fetchInvestments: (accessToken: string) => Promise<void>;
 };
 
 export const useDashboardStore = create<DashboardState>((set) => ({
@@ -48,6 +66,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   error: null,
   recommendedStartups: [],
   investorStartups: [],
+  investments: [],
   fetchAll: async (accessToken: string) => {
     console.log("Access token:", accessToken);
     set({ loading: true });
@@ -192,7 +211,11 @@ export const useDashboardStore = create<DashboardState>((set) => ({
         }
       );
 
-      if (!response.ok) throw new Error("Failed to fetch investor startups");
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
+        throw new Error("Failed to fetch investor startups");
+      }
       const data = await response.json();
 
       if (Array.isArray(data)) {
@@ -218,6 +241,44 @@ export const useDashboardStore = create<DashboardState>((set) => ({
     } catch (e) {
       console.error("Error fetching investor startups:", e);
       set({ investorStartups: [], loading: false });
+    }
+  },
+  fetchInvestments: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch(
+        "https://buildspace.onrender.com/my-investments",
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
+        throw new Error("Failed to fetch investments");
+      }
+      const data = await response.json();
+
+      set({ 
+        investments: Array.isArray(data) ? data : [],
+        loading: false 
+      });
+    } catch (e) {
+      console.error("Error fetching investments:", e);
+      set({ 
+        investments: [], 
+        loading: false,
+        error: "Failed to load investments"
+      });
     }
   },
 }));
@@ -270,6 +331,8 @@ export const useTodaysPicksStore = create<TodaysPicksState>((set) => ({
         requestOptions
       );
       if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
         throw new Error("Failed to fetch today's picks");
       }
       const data = await response.json();
@@ -378,6 +441,8 @@ export const useInvestorDashboardStore = create<InvestorDashboardState>((set) =>
       });
 
       if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
         throw new Error("Failed to fetch investments by stage");
       }
 
@@ -422,6 +487,8 @@ export const useInvestorDashboardStore = create<InvestorDashboardState>((set) =>
       });
 
       if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
         throw new Error("Failed to fetch investor chart data");
       }
 

@@ -52,14 +52,14 @@ const ProjectsGrid = () => {
   }, [session?.accessToken, fetchInvestorStartups]);
   if (loading) {
     return (
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Recommended Startups</CardTitle>
+      <Card className="shadow-sm border border-gray-100">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-medium text-gray-700">Recommended Startups</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <div className="flex flex-col items-center space-y-2">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-            <p className="text-gray-600">Loading startups...</p>
+          <div className="flex flex-col items-center space-y-3">
+            <div className="w-7 h-7 border-3 border-gray-200 border-t-gray-400 rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-500">Finding great opportunities for you...</p>
           </div>
         </CardContent>
       </Card>
@@ -68,20 +68,29 @@ const ProjectsGrid = () => {
 
   if (error) {
     return (
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Recommended Startups</CardTitle>
+      <Card className="shadow-sm border border-gray-100">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-medium text-gray-700">Recommended Startups</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-64">
-          <div className="flex flex-col items-center space-y-2 text-red-600">
-            <AlertCircle className="h-8 w-8" />
-            <p>{error}</p>
-            <button 
-              onClick={() => window.location.reload()}
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        <CardContent className="flex flex-col items-center justify-center h-64 text-center px-4">
+          <div className="flex flex-col items-center space-y-3">
+            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
+              <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Couldn't load recommendations</p>
+              <p className="text-xs text-gray-400 mt-1">We're having trouble loading startup recommendations</p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3"
+              onClick={() => session?.accessToken && fetchInvestorStartups(session.accessToken)}
             >
-              Retry
-            </button>
+              Try again
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -90,12 +99,22 @@ const ProjectsGrid = () => {
 
   if (!investorStartups || investorStartups.length === 0) {
     return (
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Recommended Startups</CardTitle>
+      <Card className="shadow-sm border border-gray-100">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-medium text-gray-700">Recommended Startups</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-64">
-          <p className="text-gray-600">No investment opportunities found</p>
+        <CardContent className="flex flex-col items-center justify-center h-64 text-center px-4">
+          <div className="flex flex-col items-center space-y-3">
+            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
+              <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">No recommendations yet</p>
+              <p className="text-xs text-gray-400 mt-1">Check back later for new opportunities</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
@@ -103,9 +122,9 @@ const ProjectsGrid = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Recommended Startups</CardTitle>
+      <Card className="shadow-sm border border-gray-100">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-medium text-gray-700">Recommended Startups</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
