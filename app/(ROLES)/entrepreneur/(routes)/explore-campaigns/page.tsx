@@ -1,5 +1,5 @@
 import React from 'react'
-import ExploreCampaigns from '@/pages/Entrepreneur/explore-campaigns';
+import ExploreCampaigns from '@/pages/Common/explore-campaigns';
 
 const Page = () => {
   return <ExploreCampaigns />;

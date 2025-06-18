@@ -365,7 +365,7 @@ export default function ExploreCampaigns() {
               .sort((a, b) => b.backers - a.backers)
               .slice(0, 3)
               .map((campaign) => (
-                <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id} className="h-full">
+                <Link href={`campaigns/${campaign.id}`} key={campaign.id} className="h-full">
                   <Card
                     key={campaign.id}
                     className="h-full flex flex-col bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer hover:scale-[1.02]"
@@ -586,7 +586,7 @@ export default function ExploreCampaigns() {
                   </TableHeader>
                   <TableBody>
                     {paginatedCampaigns.map((campaign) => (
-                      <Link href={`/entrepreneur/campaigns/${campaign.id}`} key={campaign.id} style={{ display: 'contents' }}>
+                      <Link href={`campaigns/${campaign.id}`} key={campaign.id} style={{ display: 'contents' }}>
                         <TableRow
                           key={campaign.id}
                           className={`cursor-pointer transition-all duration-200 ${hoveredRow === campaign.id

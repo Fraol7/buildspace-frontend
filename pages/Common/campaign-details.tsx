@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import PaymentPopup from "../Common/payment-popup"
+import PaymentPopup from "./payment-popup"
 
 type InvestmentTier = {
   amount: number;
@@ -156,7 +156,7 @@ const CampaignDetailsComponent = () => {
       </div>
     );
   }
-  
+
   // Use the campaign data from state
   // Use campaign with sampleCampaignData as fallback
   const currentCampaign = campaign || sampleCampaignData;
@@ -267,7 +267,7 @@ const CampaignDetailsComponent = () => {
                 height={500} // Provide an appropriate height
                 placeholder="blur" // Optional: Adds a placeholder for lazy-loaded images
                 blurDataURL="/placeholder.jpg" // Optional: Base64-encoded placeholder
-              />  
+              />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-sky-500/10 via-transparent to-sky-500/20"></div>
           </div>
@@ -392,13 +392,15 @@ const CampaignDetailsComponent = () => {
                     </div>
                     <p className="text-gray-700 mb-4 leading-relaxed">{campaignData.founderBio}</p>
                     <div className="flex gap-3">
-                      <Button
-                        variant="outline"
-                        className="flex items-center gap-2 border-blue-200 text-blue-600 hover:bg-blue-50"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        View Profile
-                      </Button>
+                      <Link href={`profile/${campaignData.founderName}`}>
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2 border-blue-200 text-blue-600 hover:bg-blue-50"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          View Profile
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -428,13 +430,13 @@ const CampaignDetailsComponent = () => {
 
                 <div className="flex flex-col gap-3">
                   {campaignData?.title && typeof campaignData?.minimumFunding === 'number' && (
-                    <PaymentPopup 
+                    <PaymentPopup
                       campaignTitle={campaignData.title}
                       amount={campaignData.minimumFunding}
                       buttonLabel="Contribute Now"
                     />
                   )}
-                  
+
                   {/* Keep the existing dialog for reference, but it's now replaced by PaymentPopup */}
                   <Dialog open={showInvestModal} onOpenChange={setShowInvestModal}>
                     <DialogTrigger asChild>
@@ -468,9 +470,8 @@ const CampaignDetailsComponent = () => {
                             {campaignData.investmentTiers.map((tier: InvestmentTier, index: number) => (
                               <div
                                 key={index}
-                                className={`border rounded-lg p-3 cursor-pointer transition-all ${
-                                  investmentAmount >= tier.amount ? "border-blue-300 bg-blue-50" : "border-gray-200"
-                                }`}
+                                className={`border rounded-lg p-3 cursor-pointer transition-all ${investmentAmount >= tier.amount ? "border-blue-300 bg-blue-50" : "border-gray-200"
+                                  }`}
                                 onClick={() => setInvestmentAmount(tier.amount)}
                               >
                                 <div className="flex justify-between items-center">
@@ -536,7 +537,7 @@ const CampaignDetailsComponent = () => {
                   </div>
                 </div>
 
-                <Link href={`/entrepreneur/startup-detail/${campaignData.startup_id}`}>
+                <Link href={`startup-detail/${campaignData.startup_id}`}>
                   <Button variant="link" className="w-full text-blue-600 flex items-center justify-center">
                     <ExternalLink className="w-4 h-4 mr-2" />
                     View Startup Details

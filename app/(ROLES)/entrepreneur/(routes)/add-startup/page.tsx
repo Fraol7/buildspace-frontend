@@ -4,6 +4,7 @@ const Page = () => {
     return (
         <div>
             <h1>Add Startup</h1>
+            <p>uncomment on app\(ROLES)\entrepreneur\(routes)\add-startup\page.tsx</p>
         </div>
     );
 };
