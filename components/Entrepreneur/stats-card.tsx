@@ -61,7 +61,6 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
       fetchAll(accessToken);
     }
   }, []);
-  
 
   const totalStartups = Array.isArray(myStartups) ? myStartups.length : 0;
   const totalEarnings =
