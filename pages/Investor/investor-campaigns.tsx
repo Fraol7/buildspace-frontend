@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Calendar,
   DollarSign,

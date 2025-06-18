@@ -69,7 +69,7 @@ export function StartupCard({ startup }: StartupCardProps) {
 
       <CardContent className="relative p-0">
         <Link
-          href={`/entrepreneur/startup-details/${startup.id}`}
+          href={`startup-details/${startup.id}`}
           className="block"
         >
           {/* Header Section */}
