@@ -139,18 +139,18 @@ export default function AddStartupPage() {
                 />
               </div>
 
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div className="space-y-2">
-//                   <Label htmlFor="location">Location</Label>
-//                   <Input
-//                     id="location"
-//                     name="location"
-//                     placeholder="e.g., San Francisco, CA"
-//                     value={formData.location}
-//                     onChange={handleChange}
-//                     required
-//                   />
-//                 </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    name="location"
+                    placeholder="e.g., San Francisco, CA"
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="stage">Funding Stage</Label>
@@ -187,19 +187,19 @@ export default function AddStartupPage() {
                 />
               </div>
 
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div className="space-y-2">
-//                   <Label htmlFor="investedAmount">Current Investment ($)</Label>
-//                   <Input
-//                     id="investedAmount"
-//                     name="investedAmount"
-//                     type="number"
-//                     placeholder="e.g., 500000"
-//                     value={formData.investedAmount}
-//                     onChange={handleChange}
-//                     required
-//                   />
-//                 </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="investedAmount">Current Investment ($)</Label>
+                  <Input
+                    id="investedAmount"
+                    name="investedAmount"
+                    type="number"
+                    placeholder="e.g., 500000"
+                    value={formData.investedAmount}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="requiredInvestment">

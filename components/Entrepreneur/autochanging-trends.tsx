@@ -56,15 +56,15 @@ const AutoScrollingTrendingProjects = () => {
     }
   }, [todaysPicks, currentIndex]);
 
+  if (!currentProject) {
+    return <div className="h-[400px] flex items-center justify-center">No trending projects available</div>;
+  }
+
   return (
-<<<<<<< HEAD
-    <Link href={currentProject?.id || "/"} className="block">
-=======
     <Link
       href={`/entrepreneur/startup-detail/${currentProject.id}`}
       className="block"
     >
->>>>>>> 64a761c56e12aa072357e62f0487e8050e34d5e8
       <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-xl p-12 text-gray-800 relative overflow-hidden hover:shadow-xl transition-shadow h-full md:h-[400px]">
         {/* Background Illustrations */}
         <div className="absolute inset-0">
