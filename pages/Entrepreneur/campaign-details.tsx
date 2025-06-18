@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import dynamic from 'next/dynamic';
 import PaymentPopup from "../Common/payment-popup"
 
 type InvestmentTier = {
