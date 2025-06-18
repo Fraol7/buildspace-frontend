@@ -1,14 +1,8 @@
 import React from 'react'
-import dynamic from 'next/dynamic';
-
-// Dynamically import the component with no SSR
-const ExploreCampaigns = dynamic(
-  () => import('@/pages/Entrepreneur/explore-campaigns'),
-  { ssr: false }
-);
+import ExploreCampaigns from '@/pages/Entrepreneur/explore-campaigns';
 
 const Page = () => {
-  return <ExploreCampaigns role='entrepreneur' />;
+  return <ExploreCampaigns />;
 };
 
 export default Page;
