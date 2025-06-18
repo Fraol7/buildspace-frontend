@@ -34,7 +34,7 @@ function ProfileSetupContent(): JSX.Element {
       if (role === 'entrepreneur') {
         router.push('/project-setup');
       } else if (role === 'investor') {
-        router.push('/profile');
+        router.push('/preference-setup');
       } else {
         toast.error('Invalid role');
         router.push('/');
