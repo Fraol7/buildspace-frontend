@@ -37,7 +37,7 @@ export interface Message {
   timestamp: string;
   status: "sending" | "sent" | "delivered" | "read" | "failed";
   type: "text" | "file";
-  fileData?: {
+  files?: {
     name: string;
     size: number;
     type: string;
@@ -50,6 +50,7 @@ export function ChatInterface() {
     contacts,
     fetchConversations,
     fetchMessages,
+    markMessagesAsRead,
     connectSocket,
     disconnectSocket,
   } = useChatStore();
@@ -76,6 +77,7 @@ export function ChatInterface() {
   useEffect(() => {
     const accessToken = session?.accessToken;
     if (selectedContact && accessToken) {
+      markMessagesAsRead(selectedContact.user_id, accessToken);
       fetchMessages(selectedContact.user_id, accessToken);
     }
   }, [selectedContact, fetchMessages, session?.accessToken]);

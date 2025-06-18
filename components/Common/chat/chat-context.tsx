@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { createContext, useContext, useState, useCallback } from "react"
-import type { Message } from "./chat-interface"
+import { createContext, useContext, useState, useCallback } from "react";
+import type { Message } from "./chat-interface";
 
 interface ChatContextType {
-  messages: Message[]
-  sendMessage: (content: string, receiverId: string) => Promise<void>
-  sendFile: (file: File, receiverId: string) => Promise<void>
-  retryMessage: (messageId: string) => Promise<void>
-  deleteChat: (contactId: string) => void
+  messages: Message[];
+  sendMessage: (content: string, receiverId: string) => Promise<void>;
+  sendFile: (file: File, receiverId: string) => Promise<void>;
+  retryMessage: (messageId: string) => Promise<void>;
+  deleteChat: (contactId: string) => void;
 }
 
-const ChatContext = createContext<ChatContextType | undefined>(undefined)
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function useChatContext() {
-  const context = useContext(ChatContext)
+  const context = useContext(ChatContext);
   if (!context) {
-    throw new Error("useChatContext must be used within a ChatProvider")
+    throw new Error("useChatContext must be used within a ChatProvider");
   }
-  return context
+  return context;
 }
 
 const mockMessages: Message[] = [
@@ -39,7 +39,9 @@ const mockMessages: Message[] = [
     content: "It's going well! Just finished the user interface mockups.",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 300000).toISOString(), // 3 days ago + 5 min
+    timestamp: new Date(
+      Date.now() - 3 * 24 * 60 * 60 * 1000 + 300000
+    ).toISOString(), // 3 days ago + 5 min
     status: "read",
     type: "text",
   },
@@ -48,7 +50,9 @@ const mockMessages: Message[] = [
     content: "That's awesome! Can you share them?",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 600000).toISOString(), // 3 days ago + 10 min
+    timestamp: new Date(
+      Date.now() - 3 * 24 * 60 * 60 * 1000 + 600000
+    ).toISOString(), // 3 days ago + 10 min
     status: "read",
     type: "text",
   },
@@ -57,7 +61,9 @@ const mockMessages: Message[] = [
     content: "Just sent them over. Let me know what you think!",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 900000).toISOString(), // 3 days ago + 15 min
+    timestamp: new Date(
+      Date.now() - 3 * 24 * 60 * 60 * 1000 + 900000
+    ).toISOString(), // 3 days ago + 15 min
     status: "read",
     type: "text",
   },
@@ -66,7 +72,9 @@ const mockMessages: Message[] = [
     content: "They look great! Maybe adjust the button colors?",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 1200000).toISOString(), // 3 days ago + 20 min
+    timestamp: new Date(
+      Date.now() - 3 * 24 * 60 * 60 * 1000 + 1200000
+    ).toISOString(), // 3 days ago + 20 min
     status: "read",
     type: "text",
   },
@@ -85,7 +93,9 @@ const mockMessages: Message[] = [
     content: "API's progressing, but hit a bug with auth. Suggestions?",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 300000).toISOString(), // 2 days ago + 5 min
+    timestamp: new Date(
+      Date.now() - 2 * 24 * 60 * 60 * 1000 + 300000
+    ).toISOString(), // 2 days ago + 5 min
     status: "read",
     type: "text",
   },
@@ -94,7 +104,9 @@ const mockMessages: Message[] = [
     content: "Check the token expiration logic. I'll review it too.",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 600000).toISOString(), // 2 days ago + 10 min
+    timestamp: new Date(
+      Date.now() - 2 * 24 * 60 * 60 * 1000 + 600000
+    ).toISOString(), // 2 days ago + 10 min
     status: "read",
     type: "text",
   },
@@ -103,7 +115,9 @@ const mockMessages: Message[] = [
     content: "Fixed the token issue! Testing now.",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 900000).toISOString(), // 2 days ago + 15 min
+    timestamp: new Date(
+      Date.now() - 2 * 24 * 60 * 60 * 1000 + 900000
+    ).toISOString(), // 2 days ago + 15 min
     status: "read",
     type: "text",
   },
@@ -112,7 +126,9 @@ const mockMessages: Message[] = [
     content: "Nice! Let me know how the tests go.",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 1200000).toISOString(), // 2 days ago + 20 min
+    timestamp: new Date(
+      Date.now() - 2 * 24 * 60 * 60 * 1000 + 1200000
+    ).toISOString(), // 2 days ago + 20 min
     status: "read",
     type: "text",
   },
@@ -131,7 +147,9 @@ const mockMessages: Message[] = [
     content: "Looks good, fixed a typo in the params section.",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 300000).toISOString(), // Yesterday + 5 min
+    timestamp: new Date(
+      Date.now() - 1 * 24 * 60 * 60 * 1000 + 300000
+    ).toISOString(), // Yesterday + 5 min
     status: "read",
     type: "text",
   },
@@ -140,7 +158,9 @@ const mockMessages: Message[] = [
     content: "Thanks! Can we discuss the database schema?",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 600000).toISOString(), // Yesterday + 10 min
+    timestamp: new Date(
+      Date.now() - 1 * 24 * 60 * 60 * 1000 + 600000
+    ).toISOString(), // Yesterday + 10 min
     status: "read",
     type: "text",
   },
@@ -149,7 +169,9 @@ const mockMessages: Message[] = [
     content: "Sure, I'll prep notes. 2 PM work for you?",
     senderId: "current-user",
     receiverId: "1",
-    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 900000).toISOString(), // Yesterday + 15 min
+    timestamp: new Date(
+      Date.now() - 1 * 24 * 60 * 60 * 1000 + 900000
+    ).toISOString(), // Yesterday + 15 min
     status: "read",
     type: "text",
   },
@@ -158,7 +180,9 @@ const mockMessages: Message[] = [
     content: "2 PM's perfect. I'll set up the call.",
     senderId: "1",
     receiverId: "current-user",
-    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 1200000).toISOString(), // Yesterday + 20 min
+    timestamp: new Date(
+      Date.now() - 1 * 24 * 60 * 60 * 1000 + 1200000
+    ).toISOString(), // Yesterday + 20 min
     status: "read",
     type: "text",
   },
@@ -208,124 +232,168 @@ const mockMessages: Message[] = [
     status: "read",
     type: "text",
   },
-]
+];
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
-  const [messages, setMessages] = useState<Message[]>(mockMessages)
+  const [messages, setMessages] = useState<Message[]>(mockMessages);
 
-  const sendMessage = useCallback(async (content: string, receiverId: string): Promise<void> => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      content,
-      senderId: "current-user",
-      receiverId,
-      timestamp: new Date().toISOString(),
-      status: "sending",
-      type: "text",
-    }
+  const sendMessage = useCallback(
+    async (content: string, receiverId: string): Promise<void> => {
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        content,
+        senderId: "current-user",
+        receiverId,
+        timestamp: new Date().toISOString(),
+        status: "sending",
+        type: "text",
+      };
 
-    setMessages((prev) => [...prev, newMessage])
+      setMessages((prev) => [...prev, newMessage]);
 
-    // Simulate API call
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Simulate API call
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Simulate random failure for demonstration
-      if (Math.random() < 0.1) {
-        throw new Error("Network error")
-      }
-
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: "delivered" as const } : msg)),
-      )
-
-      // Simulate receiving a response after a delay
-      setTimeout(() => {
-        const responseMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content: `Thanks for your message: "${content}"`,
-          senderId: receiverId,
-          receiverId: "current-user",
-          timestamp: new Date().toISOString(),
-          status: "sent",
-          type: "text",
+        // Simulate random failure for demonstration
+        if (Math.random() < 0.1) {
+          throw new Error("Network error");
         }
-        setMessages((prev) => [...prev, responseMessage])
-      }, 2000)
-    } catch (error) {
-      setMessages((prev) => prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: "failed" as const } : msg)))
-      throw error
-    }
-  }, [])
 
-  const sendFile = useCallback(async (file: File, receiverId: string): Promise<void> => {
-    // Create a blob URL for the file (in a real app, you'd upload to your server)
-    const fileUrl = URL.createObjectURL(file)
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === newMessage.id
+              ? { ...msg, status: "delivered" as const }
+              : msg
+          )
+        );
 
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      content: `Shared a file: ${file.name}`,
-      senderId: "current-user",
-      receiverId,
-      timestamp: new Date().toISOString(),
-      status: "sending",
-      type: "file",
-      fileData: {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        url: fileUrl,
-      },
-    }
-
-    setMessages((prev) => [...prev, newMessage])
-
-    // Simulate API call for file upload
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Simulate random failure for demonstration
-      if (Math.random() < 0.1) {
-        throw new Error("Upload failed")
+        // Simulate receiving a response after a delay
+        setTimeout(() => {
+          const responseMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            content: `Thanks for your message: "${content}"`,
+            senderId: receiverId,
+            receiverId: "current-user",
+            timestamp: new Date().toISOString(),
+            status: "sent",
+            type: "text",
+          };
+          setMessages((prev) => [...prev, responseMessage]);
+        }, 2000);
+      } catch (error) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === newMessage.id
+              ? { ...msg, status: "failed" as const }
+              : msg
+          )
+        );
+        throw error;
       }
+    },
+    []
+  );
 
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: "delivered" as const } : msg)),
-      )
-    } catch (error) {
-      setMessages((prev) => prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: "failed" as const } : msg)))
-      throw error
-    }
-  }, [])
+  const sendFile = useCallback(
+    async (file: File, receiverId: string): Promise<void> => {
+      // Create a blob URL for the file (in a real app, you'd upload to your server)
+      const fileUrl = URL.createObjectURL(file);
+
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        content: `Shared a file: ${file.name}`,
+        senderId: "current-user",
+        receiverId,
+        timestamp: new Date().toISOString(),
+        status: "sending",
+        type: "file",
+        files: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          url: fileUrl,
+        },
+      };
+
+      setMessages((prev) => [...prev, newMessage]);
+
+      // Simulate API call for file upload
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        // Simulate random failure for demonstration
+        if (Math.random() < 0.1) {
+          throw new Error("Upload failed");
+        }
+
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === newMessage.id
+              ? { ...msg, status: "delivered" as const }
+              : msg
+          )
+        );
+      } catch (error) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === newMessage.id
+              ? { ...msg, status: "failed" as const }
+              : msg
+          )
+        );
+        throw error;
+      }
+    },
+    []
+  );
 
   const retryMessage = useCallback(
     async (messageId: string): Promise<void> => {
-      const message = messages.find((m) => m.id === messageId)
-      if (!message) return
+      const message = messages.find((m) => m.id === messageId);
+      if (!message) return;
 
-      setMessages((prev) => prev.map((msg) => (msg.id === messageId ? { ...msg, status: "sending" as const } : msg)))
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === messageId ? { ...msg, status: "sending" as const } : msg
+        )
+      );
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         setMessages((prev) =>
-          prev.map((msg) => (msg.id === messageId ? { ...msg, status: "delivered" as const } : msg)),
-        )
+          prev.map((msg) =>
+            msg.id === messageId
+              ? { ...msg, status: "delivered" as const }
+              : msg
+          )
+        );
       } catch (error) {
-        setMessages((prev) => prev.map((msg) => (msg.id === messageId ? { ...msg, status: "failed" as const } : msg)))
-        throw error
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === messageId ? { ...msg, status: "failed" as const } : msg
+          )
+        );
+        throw error;
       }
     },
-    [messages],
-  )
+    [messages]
+  );
 
   const deleteChat = useCallback((contactId: string) => {
-    setMessages((prev) => prev.filter((msg) => !(msg.senderId === contactId || msg.receiverId === contactId)))
-  }, [])
+    setMessages((prev) =>
+      prev.filter(
+        (msg) => !(msg.senderId === contactId || msg.receiverId === contactId)
+      )
+    );
+  }, []);
 
   return (
-    <ChatContext.Provider value={{ messages, sendMessage, sendFile, retryMessage, deleteChat }}>
+    <ChatContext.Provider
+      value={{ messages, sendMessage, sendFile, retryMessage, deleteChat }}
+    >
       {children}
     </ChatContext.Provider>
-  )
+  );
 }

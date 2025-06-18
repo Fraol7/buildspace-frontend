@@ -33,6 +33,7 @@ import { EmojiPickerComponent } from "./emoji-picker";
 import Image from "next/image";
 import { useChatStore } from "@/store/chatStore";
 import { useSession } from "next-auth/react";
+import { X } from "lucide-react";
 
 interface ChatAreaProps {
   selectedContact: Contact | null;
@@ -77,10 +78,25 @@ export function ChatArea({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const { messages, sendMessage } = useChatStore();
+  const { messages, sendMessage, setActiveContact } = useChatStore();
   const { data: session } = useSession();
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const currentMessages = messages;
+  const currentMessages = useMemo(() => {
+    if (!selectedContact || !session?.user?.id) return [];
+    return messages.filter(
+      (msg) =>
+        (msg.senderId === session.user.id &&
+          msg.receiverId === selectedContact.user_id) ||
+        (msg.senderId === selectedContact.user_id &&
+          msg.receiverId === session.user.id)
+    );
+  }, [messages, selectedContact, session?.user?.id]);
+
+  useEffect(() => {
+    setActiveContact(selectedContact?.user_id || null);
+    return () => setActiveContact(null); // Clear on unmount
+  }, [selectedContact, setActiveContact]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -106,13 +122,17 @@ export function ChatArea({
         });
         return;
       }
-      await sendMessage({
-        content: message,
-        senderId: session.user.id,
-        receiverId: selectedContact.email,
-        accessToken: session?.accessToken,
-      });
+      if (message.trim()) {
+        await sendMessage({
+          content: message,
+          senderId: session.user.id,
+          receiverId: selectedContact.user_id,
+          accessToken: session?.accessToken,
+          files: selectedFiles,
+        });
+      }
       setMessage("");
+      setSelectedFiles([]);
       // Focus back to input after sending
       inputRef.current?.focus();
     } catch (error) {
@@ -143,22 +163,11 @@ export function ChatArea({
   };
 
   const handleFileSelect = async (file: File) => {
-    if (!selectedContact) return;
+    setSelectedFiles((prev) => [...prev, file]);
+  };
 
-    try {
-      await sendFile(file, selectedContact.user_id);
-      toast({
-        title: "File sent",
-        description: `${file.name} has been shared.`,
-      });
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast({
-        title: "Failed to send file",
-        description: "Please check your connection and try again.",
-        variant: "destructive",
-      });
-    }
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleEmojiSelect = useCallback(
@@ -380,32 +389,27 @@ export function ChatArea({
                             : "bg-gray-100 text-gray-900"
                         } ${isMobile ? "max-w-[280px]" : ""}`}
                       >
-                        {msg.type === "file" && msg.fileData ? (
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              {msg.fileData.type.startsWith("image/") ? (
-                                <ImageIcon className="h-4 w-4" />
-                              ) : (
-                                <FileText className="h-4 w-4" />
-                              )}
-                              <span className="text-sm font-medium">
-                                {msg.fileData.name}
-                              </span>
-                            </div>
-                            {msg.fileData.type.startsWith("image/") ? (
-                              <Image
-                                src={msg.fileData.url || "/placeholder.jpg"}
-                                alt={msg.fileData.name}
-                                className="max-w-full h-auto rounded"
-                                width={300}
-                                height={200}
-                              />
-                            ) : (
-                              <div className="flex items-center justify-between">
-                                <span className="text-xs opacity-75">
-                                  {(msg.fileData.size / 1024 / 1024).toFixed(2)}{" "}
-                                  MB
-                                </span>
+                        {/* --- FILES LIST (above text) --- */}
+                        {Array.isArray(msg.files) && msg.files.length > 0 && (
+                          <div className="space-y-2 mb-2">
+                            {msg.files.map((file, fileIdx) => (
+                              <div
+                                key={fileIdx}
+                                className="flex items-center gap-2"
+                              >
+                                {file.type && file.type.startsWith("image/") ? (
+                                  <ImageIcon className="h-4 w-4" />
+                                ) : (
+                                  <FileText className="h-4 w-4" />
+                                )}
+                                <a
+                                  href={file.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline text-xs break-all"
+                                >
+                                  {file.name || file.url.split("/").pop()}
+                                </a>
                                 <Button
                                   variant="ghost"
                                   size="sm"
@@ -415,19 +419,49 @@ export function ChatArea({
                                       : "text-gray-600 hover:text-gray-900"
                                   }`}
                                   onClick={() =>
-                                    window.open(msg.fileData!.url, "_blank")
+                                    window.open(file.url, "_blank")
                                   }
                                 >
                                   <Download className="h-3 w-3" />
                                 </Button>
                               </div>
-                            )}
+                            ))}
                           </div>
-                        ) : (
+                        )}
+
+                        {/* --- IMAGE PREVIEW (optional, if you want to show images inline) --- */}
+                        {Array.isArray(msg.files) &&
+                          msg.files.some(
+                            (file) =>
+                              file.type && file.type.startsWith("image/")
+                          ) && (
+                            <div className="space-y-2 mb-2">
+                              {msg.files
+                                .filter(
+                                  (file) =>
+                                    file.type && file.type.startsWith("image/")
+                                )
+                                .map((file, idx) => (
+                                  <Image
+                                    key={idx}
+                                    src={file.url}
+                                    alt={file.name || "image"}
+                                    className="max-w-full h-auto rounded"
+                                    width={300}
+                                    height={200}
+                                  />
+                                ))}
+                            </div>
+                          )}
+
+                        {/* --- TEXT --- */}
+                        {msg.content && (
                           <p className="text-sm whitespace-pre-wrap">
                             {msg.content}
                           </p>
                         )}
+
+                        {/* ...existing status/timestamp code... */}
                         <div
                           className={`flex items-center justify-between mt-1 ${
                             msg.senderId === session?.user?.id
@@ -479,6 +513,27 @@ export function ChatArea({
           isMobile ? "p-3" : "p-4"
         }`}
       >
+        {selectedFiles.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-2">
+            {selectedFiles.map((file, idx) => (
+              <div
+                key={idx}
+                className="flex items-center bg-gray-100 rounded px-2 py-1 text-xs"
+              >
+                <span className="mr-2">{file.name}</span>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="p-1"
+                  onClick={() => handleRemoveFile(idx)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex items-center gap-2">
           <FileUpload onFileSelect={handleFileSelect} />
           <EmojiPickerComponent onEmojiSelect={handleEmojiSelect} />
