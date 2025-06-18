@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import dynamic from 'next/dynamic';
-import PaymentPopup from "./payment-popup"
+import PaymentPopup from "../Common/payment-popup"
 
 type InvestmentTier = {
   amount: number;
@@ -12,6 +11,7 @@ type InvestmentTier = {
 
 type CampaignData = {
   id: string;
+  startup_id: string;
   title: string;
   logo: string;
   coverImage: string;
@@ -60,6 +60,7 @@ import {
 import { Progress } from "@/components/ui/progress"
 import React from "react"
 import Image from "next/image"
+import Link from "next/link";
 
 // First, define the component
 const CampaignDetailsComponent = () => {
@@ -73,6 +74,7 @@ const CampaignDetailsComponent = () => {
   // Sample campaign data with appropriate logos
   const sampleCampaignData = useMemo<CampaignData>(() => ({
     id: "CAMP002",
+    startup_id: "START002",
     title: "AI-Powered Learning Platform",
     logo: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=120&h=120&fit=crop&crop=center",
     coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop&crop=center",
@@ -258,14 +260,14 @@ const CampaignDetailsComponent = () => {
             {/* Logo as background */}
             <div className="absolute inset-0 opacity-10 flex items-center justify-center">
               <Image
-                src={campaignData.logo || "/placeholder.svg"}
+                src={campaignData.logo || "/placeholder.jpg"}
                 alt=""
                 className="w-full h-full object-cover object-center scale-150 blur-sm"
                 width={500} // Provide an appropriate width
                 height={500} // Provide an appropriate height
                 placeholder="blur" // Optional: Adds a placeholder for lazy-loaded images
-                blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder
-              />
+                blurDataURL="/placeholder.jpg" // Optional: Base64-encoded placeholder
+              />  
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-sky-500/10 via-transparent to-sky-500/20"></div>
           </div>
@@ -289,7 +291,7 @@ const CampaignDetailsComponent = () => {
                   height={500} // Adjust height as per requirement
                   priority // Optional: Ensures critical images load faster
                   placeholder="blur" // Optional: Adds a low-quality blur placeholder
-                  blurDataURL="/placeholder.svg" // Optional: Base64-encoded placeholder
+                  blurDataURL="/placeholder.jpg" // Optional: Base64-encoded placeholder
                 />
               </div>
               <div>
@@ -534,10 +536,12 @@ const CampaignDetailsComponent = () => {
                   </div>
                 </div>
 
-                <Button variant="link" className="w-full text-blue-600 flex items-center justify-center">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Project Details
-                </Button>
+                <Link href={`/entrepreneur/startup-detail/${campaignData.startup_id}`}>
+                  <Button variant="link" className="w-full text-blue-600 flex items-center justify-center">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    View Startup Details
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>
@@ -547,14 +551,4 @@ const CampaignDetailsComponent = () => {
   )
 }
 
-// Export a dynamic component that only renders on the client side
-const CampaignDetails = dynamic(() => Promise.resolve(CampaignDetailsComponent), {
-  ssr: false,
-  loading: () => (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-  ),
-});
-
-export default CampaignDetails;
+export default CampaignDetailsComponent;

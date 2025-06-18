@@ -1,10 +1,8 @@
 import React from 'react'
-import ExploreCampaigns from "@/pages/Common/explore-campaigns"
+import ExploreCampaigns from '@/pages/Entrepreneur/explore-campaigns';
 
-const page = () => {
-  return (
-    <ExploreCampaigns role='entrepreneur' />
-  )
-}
+const Page = () => {
+  return <ExploreCampaigns />;
+};
 
-export default page;
+export default Page;

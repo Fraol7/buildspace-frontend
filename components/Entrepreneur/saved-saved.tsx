@@ -2,11 +2,11 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin } from "lucide-react"
+import { Star, MapPin } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // import { Progress } from "@/components/ui/progress"
 import type { Startup } from "@/constants";
 
@@ -33,7 +33,7 @@ const SaveIcon = ({ filled = false, className = "" }: { filled?: boolean; classN
   </svg>
 )
 
-export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
+export function SavedCard({ startup, isSaved, onSave }: StartupCardProps) {
   // const investmentProgress = (startup.investedAmount / startup.requiredInvestment) * 100
 
   // const formatCurrency = (amount: number) => {
@@ -117,6 +117,28 @@ export function StartupCard({ startup, isSaved, onSave }: StartupCardProps) {
                       +{startup.badges.length - 3}
                     </Badge>
                   )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10 border-2 border-white shadow-md">
+                    <AvatarImage
+                      src={startup.entrepreneur.avatar || "/placeholder.svg"}
+                      alt={startup.entrepreneur.name}
+                    />
+                    <AvatarFallback className="bg-gradient-to-r from-sky-500 to-blue-500 text-white font-semibold text-sm">
+                      {startup.entrepreneur.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{startup.entrepreneur.name}</p>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs font-medium text-gray-600">{startup.entrepreneur.rating}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

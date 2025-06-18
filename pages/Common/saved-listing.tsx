@@ -15,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { StartupCard } from "@/components/Entrepreneur/startup-card"
+import { SavedCard } from "@/components/Entrepreneur/saved-saved"
 import { DUMMY_SAVED } from "@/constants"
 
 const ITEMS_PER_PAGE = 5
@@ -148,7 +148,7 @@ export default function SavedListing() {
               className="animate-in slide-in-from-bottom-4 duration-700"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <StartupCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
+              <SavedCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
             </div>
           ))
         ) : (

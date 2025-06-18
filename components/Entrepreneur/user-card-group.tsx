@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { User } from "@/types/user"
 import UserCard from "./user-card"
-import Pagination from "./pagination"
+import Pagination from "../Common/pagination"
 
 interface UserCardGroupProps {
   users: User[]
