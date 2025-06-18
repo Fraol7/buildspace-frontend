@@ -171,12 +171,15 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
       myHeaders.append("Accept", "application/json");
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const res = await fetch("https://buildspace.onrender.com/get-invested-campaigns", {
-        method: "GET",
-        headers: myHeaders,
-        credentials: "omit" as RequestCredentials,
-        redirect: "follow" as RequestRedirect,
-      });
+      const res = await fetch(
+        "https://buildspace.onrender.com/get-invested-campaigns",
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
       if (!res.ok) throw new Error("Failed to fetch invested campaigns");
       const data = await res.json();
       console.log("Fetched invested campaigns:", data);
@@ -349,13 +352,16 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
         is_active: true,
       };
 
-      const res = await fetch("https://buildspace.onrender.com/create-campaign", {
-        method: "POST",
-        headers: myHeaders,
-        body: JSON.stringify(body),
-        credentials: "omit" as RequestCredentials,
-        redirect: "follow" as RequestRedirect,
-      });
+      const res = await fetch(
+        "https://buildspace.onrender.com/create-campaign",
+        {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify(body),
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
       if (!res.ok) throw new Error("Failed to create campaign");
       const data = await res.json();
       set({ loading: false });

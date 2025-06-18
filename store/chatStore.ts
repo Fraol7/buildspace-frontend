@@ -51,13 +51,16 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const response = await fetch("https://buildspace.onrender.com/chat/upload", {
-        method: "POST",
-        headers: myHeaders,
-        body: formData,
-        credentials: "omit" as RequestCredentials,
-        redirect: "follow" as RequestRedirect,
-      });
+      const response = await fetch(
+        "https://buildspace.onrender.com/chat/upload",
+        {
+          method: "POST",
+          headers: myHeaders,
+          body: formData,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to upload files");
       const data = await response.json();

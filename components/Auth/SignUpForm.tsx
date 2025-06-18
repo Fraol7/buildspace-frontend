@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import RoleSelector from "./RoleSelector";
 import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 interface SignUpFormData {
   firstName: string;
@@ -27,14 +28,16 @@ export default function SignUpForm() {
     confirmPassword: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -46,29 +49,53 @@ export default function SignUpForm() {
     }
 
     setIsLoading(true);
-    
+
     try {
-      // TODO: Replace with your actual signup API call
-      // const response = await fetch('/api/auth/signup', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
-      // const data = await response.json();
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Redirect based on role
-      if (formData.role === 'investor') {
-        // For investors, first go to profile setup
-        router.push('/profile-setup?role=investor');
+      const myHeaders = new Headers();
+      const signupRes = await fetch(
+        "https://buildspace.onrender.com/auth/email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            profile_picture_url: "",
+            role: formData.role === "entrepreneur" ? "startup" : formData.role,
+          }),
+        }
+      );
+
+      if (!signupRes.ok) {
+        const errorData = await signupRes.json();
+        toast.error(errorData.message || "Signup failed. Please try again.");
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Sign in with NextAuth
+      const signInRes = await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (signInRes?.error) {
+        toast.error(signInRes.error || "Login failed after signup.");
+        setIsLoading(false);
+        return;
+      }
+
+      // 3. Redirect based on role
+      if (formData.role === "investor") {
+        router.push("/profile-setup?role=investor");
       } else {
-        // For entrepreneurs, go directly to dashboard after signup
-        router.push('/profile-setup?role=entrepreneur');
+        router.push("/profile-setup?role=entrepreneur");
       }
     } catch (error) {
-      console.error('Signup failed:', error);
+      console.error("Signup failed:", error);
       toast.error("Signup failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -78,12 +105,17 @@ export default function SignUpForm() {
   return (
     <div className="flex items-center justify-center md:justify-end p-4 w-full md:w-[50%]">
       <div className="rounded-lg p-4 w-[70%]">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Sign Up
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-2">
           {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 First Name
               </label>
               <input
@@ -98,7 +130,10 @@ export default function SignUpForm() {
               />
             </div>
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Last Name
               </label>
               <input
@@ -116,7 +151,10 @@ export default function SignUpForm() {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -133,18 +171,26 @@ export default function SignUpForm() {
 
           {/* Role */}
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-gray-700"
+            >
               Role
             </label>
-            <RoleSelector 
+            <RoleSelector
               value={formData.role}
-              onChange={(value) => setFormData(prev => ({ ...prev, role: value }))}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, role: value }))
+              }
             />
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -161,7 +207,10 @@ export default function SignUpForm() {
 
           {/* Confirm Password */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700"
+            >
               Confirm Password
             </label>
             <input
@@ -182,10 +231,10 @@ export default function SignUpForm() {
               type="submit"
               disabled={isLoading}
               className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
-                isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+                isLoading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
             >
-              {isLoading ? 'Signing up...' : 'Sign up'}
+              {isLoading ? "Signing up..." : "Sign up"}
             </button>
             <button
               type="button"
