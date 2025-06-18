@@ -21,7 +21,6 @@ import { INDUSTRIES } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 import { useStartupStore } from "@/store/startupStore";
-import { toast } from "sonner";
 import { useToast } from "@/hooks/use-toast";
 
 const ITEMS_PER_PAGE = 5;

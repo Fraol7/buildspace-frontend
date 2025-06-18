@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   Select,
   SelectContent,
@@ -6,11 +6,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface RoleSelectorProps {
-  value: string
-  onChange: (value: string) => void
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export default function RoleSelector({ value, onChange }: RoleSelectorProps) {
@@ -21,10 +21,10 @@ export default function RoleSelector({ value, onChange }: RoleSelectorProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="entrepreneur">Entrepreneur</SelectItem>
-          <SelectItem value="investor">Investor</SelectItem>
+          <SelectItem value="entrepreneur">startup</SelectItem>
+          <SelectItem value="investor">investor</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }
