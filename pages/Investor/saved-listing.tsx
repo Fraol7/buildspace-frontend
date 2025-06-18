@@ -3,8 +3,7 @@
 import type React from "react"
 
 import { useState, useMemo } from "react"
-import Link from "next/link"
-import { Search, PlusCircle, Building2, DollarSign } from "lucide-react"
+import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -16,12 +15,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { StartupCard } from "@/components/Entrepreneur/startup-card"
-import { DUMMY_STARTUPS } from "@/constants"
+import { SavedCard } from "@/components/Investor/saved-startups"
+import { DUMMY_SAVED } from "@/constants"
 
 const ITEMS_PER_PAGE = 5
 
-export default function StartupDashboard() {
+export default function SavedListing() {
   const [currentPage, setCurrentPage] = useState(1)
   const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState("")
@@ -29,11 +28,11 @@ export default function StartupDashboard() {
   // Filter startups based on search query
   const filteredStartups = useMemo(() => {
     if (!searchQuery.trim()) {
-      return DUMMY_STARTUPS
+      return DUMMY_SAVED
     }
 
     const query = searchQuery.toLowerCase().trim()
-    return DUMMY_STARTUPS.filter((startup) => {
+    return DUMMY_SAVED.filter((startup) => {
       return (
         startup.title.toLowerCase().includes(query) ||
         startup.description.toLowerCase().includes(query) ||
@@ -56,19 +55,6 @@ export default function StartupDashboard() {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
   const currentStartups = filteredStartups.slice(startIndex, endIndex)
-
-  // Calculate metrics based on filtered results
-  const totalRaised = filteredStartups.reduce((sum, startup) => sum + startup.investedAmount, 0)
-
-  const formatCurrency = (amount: number) => {
-    if (amount >= 1000000) {
-      return `$${(amount / 1000000).toFixed(1)}M`
-    }
-    if (amount >= 1000) {
-      return `$${(amount / 1000).toFixed(0)}K`
-    }
-    return `$${amount}`
-  }
 
   const handleSave = (startupId: string) => {
     setSavedStartups((prev) => {
@@ -94,39 +80,6 @@ export default function StartupDashboard() {
 
   return (
     <div className="space-y-8 p-6">
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="bg-gradient-to-br from-sky-50 to-sky-100 border-sky-200 hover:shadow-lg transition-shadow duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-sky-600 mb-1">{searchQuery ? "Filtered" : "Total"} Startups</p>
-                <p className="text-3xl font-bold text-gray-900">{filteredStartups.length}</p>
-                {searchQuery && <p className="text-xs text-sky-500 mt-1">of {DUMMY_STARTUPS.length} total</p>}
-              </div>
-              <Building2 className="h-8 w-8 text-sky-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 hover:shadow-lg transition-shadow duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-emerald-600 mb-1">{searchQuery ? "Filtered" : "Total"} Raised</p>
-                <p className="text-3xl font-bold text-gray-900">{formatCurrency(totalRaised)}</p>
-                {searchQuery && (
-                  <p className="text-xs text-emerald-500 mt-1">
-                    from {filteredStartups.length} startup{filteredStartups.length !== 1 ? "s" : ""}
-                  </p>
-                )}
-              </div>
-              <DollarSign className="h-8 w-8 text-emerald-500" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Search and Add Button */}
       <Card className="shadow-none border-0">
         <CardContent className="p-6">
@@ -153,14 +106,6 @@ export default function StartupDashboard() {
                 )}
               </div>
             </form>
-
-            {/* Add Startup Button */}
-            <Link href="/entrepreneur/add-startup">
-              <Button className="bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white shadow-md hover:shadow-lg transition-all duration-200 rounded-xl px-6 py-3">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add a Startup
-              </Button>
-            </Link>
           </div>
 
           {/* Results Info */}
@@ -203,7 +148,7 @@ export default function StartupDashboard() {
               className="animate-in slide-in-from-bottom-4 duration-700"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <StartupCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
+              <SavedCard startup={startup} isSaved={savedStartups.has(startup.id)} onSave={handleSave} />
             </div>
           ))
         ) : (

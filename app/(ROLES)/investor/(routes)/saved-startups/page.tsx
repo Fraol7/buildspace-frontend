@@ -1,5 +1,5 @@
 import React from 'react'
-import SavedListing from "@/pages/Common/saved-listing"
+import SavedListing from "@/pages/Investor/saved-listing"
 
 const page = () => {
   return (
