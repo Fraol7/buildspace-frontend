@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 // Define interfaces
@@ -47,7 +47,7 @@ const StartupDetailGeneral = dynamic<StartupDetailProps>(
 );
 
 const ProjectDetailPage = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const params = useParams();
   const id = params?.id as string; // Extract startup ID from the URL
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
