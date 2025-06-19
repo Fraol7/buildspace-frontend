@@ -56,11 +56,11 @@ import { useSentimentStore } from "@/store/sentimentStore";
 
 const getSentimentBg = (rating: string) => {
   switch (rating) {
-    case "Good":
+    case "positive":
       return "bg-green-500 text-white";
-    case "Neutral":
+    case "neutral":
       return "bg-yellow-400 text-gray-900";
-    case "Bad":
+    case "negative":
       return "bg-red-500 text-white";
     default:
       return "bg-gray-500 text-white";
@@ -69,11 +69,11 @@ const getSentimentBg = (rating: string) => {
 
 const getSentimentEmoji = (rating: string) => {
   switch (rating) {
-    case "Good":
+    case "positive":
       return "😊";
-    case "Neutral":
+    case "neutral":
       return "😐";
-    case "Bad":
+    case "negative":
       return "😟";
     default:
       return "🤔";
@@ -83,9 +83,11 @@ const getSentimentEmoji = (rating: string) => {
 const CircularProgress = ({
   value,
   size = 120,
+  rating,
 }: {
   value: number;
   size?: number;
+  rating: "positive" | "neutral" | "negative";
 }) => {
   const radius = (size - 8) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -93,9 +95,16 @@ const CircularProgress = ({
   const strokeDashoffset = circumference - (value / 100) * circumference;
 
   const getColor = () => {
-    if (value >= 60) return "#4CAF50";
-    if (value >= 40) return "#FFC107";
-    return "#F44336";
+    switch (rating) {
+      case "positive":
+        return "#4CAF50"; // green
+      case "neutral":
+        return "#FFC107"; // yellow
+      case "negative":
+        return "#F44336"; // red
+      default:
+        return "#9CA3AF"; // gray
+    }
   };
 
   return (
@@ -149,7 +158,7 @@ export default function Component() {
   const handleGenerateInsights = async () => {
     if (!selectedIndustry) return;
     setShowInsights(true);
-    await fetchSentiment("Artificial Intelligence");
+    await fetchSentiment(selectedIndustry.name);
   };
 
   const handleSelectIndustry = (industry: (typeof industries)[0]) => {
@@ -314,7 +323,6 @@ export default function Component() {
         {error && showInsights && (
           <div className="max-w-2xl mx-auto mb-8">
             <div className="bg-red-100 border border-red-300 text-red-800 px-6 py-4 rounded-lg text-center flex items-center gap-2 justify-center">
-              <Loader2 className="w-5 h-5 text-red-400 animate-spin" />
               {error}
             </div>
           </div>
@@ -345,6 +353,7 @@ export default function Component() {
                       <CircularProgress
                         value={Math.round(sentiment.score * 100)}
                         size={150}
+                        rating={sentiment.overall}
                       />
                       <p className="text-lg font-medium text-gray-700 mt-4">
                         Overall Sentiment

@@ -20,6 +20,7 @@ import { StartupCard } from "@/components/Entrepreneur/startup-card";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
 import { INDUSTRIES } from "@/constants";
+import { SavedCard } from "@/components/Common/saved-startups";
 
 const ITEMS_PER_PAGE = 5;
 

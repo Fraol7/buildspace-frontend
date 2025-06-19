@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Contact, Message } from "@/components/Common/chat/chat-interface";
+import { User } from "./startupStore";
 
 interface ChatStoreState {
   contacts: Contact[];
@@ -15,6 +16,7 @@ interface ChatStoreState {
     receiverId: string,
     accessToken: string
   ) => Promise<void>;
+  fetchUserById: (id: string, accessToken: string) => Promise<User | null>;
   fetchMessages: (receiverId: string, accessToken: string) => Promise<void>;
   sendMessage: ({
     content,
@@ -112,6 +114,34 @@ export const useChatStore = create<ChatStoreState>((set, get) => ({
     });
 
     if (!markRes.ok) console.error("Failed to mark messages as read");
+  },
+  fetchUserById: async (id: string, accessToken: string) => {
+    set({ loading: true, error: null });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const res = await fetch(
+        `https://buildspace.onrender.com/userByID/${id}`,
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch user");
+      const data = await res.json();
+      return data as User;
+    } catch (e: any) {
+      set({
+        error: e.message || "Unknown error",
+        loading: false,
+      });
+      return null;
+    }
   },
   fetchMessages: async (receiverId: string, accessToken: string) => {
     set({ loading: true, error: null });

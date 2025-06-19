@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { useChatStore } from "@/store/chatStore";
 import { useSession } from "next-auth/react";
+import { useStartupStore } from "@/store/startupStore";
 
 export interface Contact {
   user_id: string;
@@ -45,7 +46,11 @@ export interface Message {
   };
 }
 
-export function ChatInterface() {
+export function ChatInterface({
+  initialContactId,
+}: {
+  initialContactId?: string;
+}) {
   const {
     contacts,
     fetchConversations,
@@ -53,9 +58,11 @@ export function ChatInterface() {
     markMessagesAsRead,
     connectSocket,
     disconnectSocket,
+    fetchUserById,
   } = useChatStore();
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [newContact, setNewContact] = useState<Contact | null>(null);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -66,6 +73,40 @@ export function ChatInterface() {
       disconnectSocket();
     };
   }, [session?.accessToken, connectSocket, disconnectSocket]);
+
+  useEffect(() => {
+    if (initialContactId && contacts.length > 0) {
+      const found = contacts.find((c) => c.user_id === initialContactId);
+      if (found) {
+        setSelectedContact(found);
+        setNewContact(null);
+      } else {
+        if (!session?.accessToken) {
+          console.error("No access token available to fetch contact");
+          return;
+        }
+        fetchUserById(initialContactId, session?.accessToken).then((user) => {
+          if (user) {
+            const contact: Contact = {
+              user_id: user.id || user.id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              profile_picture_url: user.profile_picture_url,
+              last_message: "",
+              last_message_time: "",
+              is_online: false,
+              unread_count: 0,
+            };
+            setSelectedContact(contact);
+            setNewContact(contact);
+          } else {
+            console.error("Contact not found:", initialContactId);
+          }
+        });
+      }
+    }
+  }, [initialContactId, contacts]);
 
   useEffect(() => {
     const accessToken = session?.accessToken;

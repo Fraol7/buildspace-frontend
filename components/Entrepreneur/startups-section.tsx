@@ -16,9 +16,19 @@ const StartupsSection = () => {
   const itemsPerPage = 2;
   const { data: session } = useSession();
 
+  let role = session?.user?.role || "entrepreneur";
+  if (role === "startup") {
+    role = "entrepreneur";
+  } else {
+    role = "investor";
+  }
+
   useEffect(() => {
     // Replace with your actual accessToken logic
     const accessToken = session?.accessToken;
+    if (!accessToken) {
+      return;
+    }
     fetchAll(accessToken);
     console.log("this my startup", myStartups);
   }, []);
@@ -71,11 +81,15 @@ const StartupsSection = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {myStartups.map((startup) => (
-            <Link href="/" key={startup.id} className="block">
+            <Link
+              href={`/${role}/startup-detail/${startup.id}`}
+              key={startup.id}
+              className="block"
+            >
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center space-x-3 mb-3">
                   <Image
-                    src={"/placeholder.jpg"}
+                    src={startup.logo_url}
                     alt={startup.startup_name}
                     width={72}
                     height={72}

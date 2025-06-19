@@ -22,7 +22,7 @@ interface SentimentStoreState {
   reset: () => void;
 }
 
-export const useSentimentStore = create<SentimentStoreState>((set) => ({
+export const useSentimentStore = create<SentimentStoreState>((set, get) => ({
   loading: false,
   error: null,
   report: null,
@@ -51,12 +51,14 @@ export const useSentimentStore = create<SentimentStoreState>((set) => ({
         throw new Error("Failed to fetch sentiment analysis");
       }
       const data = await res.json();
+      console.log(data);
       set({
         report: data.report,
         sentiment: data.sentiment,
         sources: data.sources,
         loading: false,
       });
+      console.log("Sentiment data:", get().sentiment);
     } catch (error: any) {
       set({
         error: error.message || "Unknown error",

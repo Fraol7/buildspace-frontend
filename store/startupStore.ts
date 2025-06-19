@@ -24,6 +24,11 @@ type StartupStoreState = {
   fetchUserById: (id: string, accessToken: string) => Promise<void>;
   fetchStartupById: (id: string, accessToken: string) => Promise<void>;
   fetchMyStartups: (accessToken: string) => Promise<void>;
+  rateUser: (
+    ratee_id: string,
+    rating: number,
+    accessToken: string
+  ) => Promise<boolean>;
   updateStartup: (
     payload: Partial<Startup>,
     accessToken: string
@@ -51,13 +56,60 @@ type StartupProfilePayload = {
   location: string;
 };
 
-export const useStartupStore = create<StartupStoreState>((set) => ({
+export const useStartupStore = create<StartupStoreState>((set, get) => ({
   startup: null,
   loading: false,
   user: null,
   error: null,
   savedStartups: [],
   myStartups: [],
+  rateUser: async (ratee_id: string, rating: number, accessToken: string) => {
+    set({ loading: true, error: null });
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${accessToken}`);
+    try {
+      const res = await fetch("https://buildspace.onrender.com/rate-user", {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({ ratee_id, rating }),
+        credentials: "omit" as RequestCredentials,
+        redirect: "follow" as RequestRedirect,
+      });
+      if (!res.ok) {
+        const errorData = await res.text();
+        console.error("Error response:", errorData);
+        throw new Error("Failed to rate user");
+      }
+      if (ratee_id == get().user?.id) {
+        // If the rated user is the current user, update the user state
+        const currentUser = get().user;
+        if (currentUser) {
+          const updatedUser: User = {
+            ...currentUser,
+            rating: rating,
+            id: currentUser.id,
+            email: currentUser.email,
+            password_hash: currentUser.password_hash,
+            auth_type: currentUser.auth_type,
+            role: currentUser.role,
+            first_name: currentUser.first_name,
+            last_name: currentUser.last_name,
+            profile_picture_url: currentUser.profile_picture_url,
+            created_at: currentUser.created_at,
+            updated_at: currentUser.updated_at,
+          };
+          set({ user: updatedUser });
+        }
+      }
+      set({ loading: false });
+      return true;
+    } catch (e: any) {
+      set({ error: e.message || "Unknown error", loading: false });
+      return false;
+    }
+  },
   fetchUserById: async (id: string, accessToken: string) => {
     set({ loading: true, error: null });
     try {
