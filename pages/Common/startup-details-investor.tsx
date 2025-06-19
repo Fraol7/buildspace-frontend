@@ -17,10 +17,9 @@ import {
   DollarSign,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-const PaymentPopup = dynamic(
-  () => import("@/pages/Common/payment-popup"),
-  { ssr: false }
-);
+const PaymentPopup = dynamic(() => import("@/pages/Common/payment-popup"), {
+  ssr: false,
+});
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -613,9 +612,9 @@ export default function StartupDetailsGeneral({
   };
 
   const pathname = usePathname();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  const {investInStartup} = useCampaignStore()
+  const { investInStartup } = useCampaignStore();
 
   const handleInvestNow = async (amount: number) => {
     if (!session?.accessToken) {
@@ -625,18 +624,22 @@ export default function StartupDetailsGeneral({
       });
       return;
     }
-    
+
+    console.log("Investing in startup:", startupId, "with amount:", amount);
+
     try {
-      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
       const redirect_url = `${baseUrl}${pathname}`;
-      
+
       const result = await investInStartup(
         startupId,
         amount.toString(),
         redirect_url,
         session.accessToken
       );
-      
+      console.log("Investment result:", result);
+
       if (result.payment_url) {
         window.location.href = result.payment_url;
       } else {
@@ -744,13 +747,11 @@ export default function StartupDetailsGeneral({
                       <BarChart3 className="w-3 h-3 mr-1" />
                       Sentiment Analysis
                     </Button>
-                    <PaymentPopup 
+                    <PaymentPopup
                       campaignTitle={startup.startup_name}
                       amount={0}
                       onPaymentSuccess={handleInvestNow}
-                      buttonLabel={
-                        "Invest Now"
-                      }
+                      buttonLabel={"Invest Now"}
                     />
                   </div>
                 </div>
@@ -901,14 +902,16 @@ export default function StartupDetailsGeneral({
                             if (ok) {
                               toast?.({
                                 title: "Success",
-                                description: `Rated ${user?.first_name} ${rate} star${rate > 1 ? "s" : ""}!`,
-                                variant: "default" // or "success" if you have that variant defined
+                                description: `Rated ${
+                                  user?.first_name
+                                } ${rate} star${rate > 1 ? "s" : ""}!`,
+                                variant: "default", // or "success" if you have that variant defined
                               });
                             } else {
                               toast?.({
                                 title: "Error",
                                 description: "Failed to submit rating.",
-                                variant: "destructive"
+                                variant: "destructive",
                               });
                             }
                           }}
