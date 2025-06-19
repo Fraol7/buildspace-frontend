@@ -139,7 +139,10 @@ const StatsCards = () => {
             </Card>
           ))
         : statsData.map((stat) => (
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card 
+              key={stat.id}
+              className="bg-gradient-to-br from-blue-50 to-blue-100 border-0 shadow-lg hover:shadow-xl transition-shadow"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
