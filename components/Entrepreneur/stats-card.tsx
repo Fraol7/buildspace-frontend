@@ -2,14 +2,14 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  ArrowUpRight,
+  // ArrowUpRight,
   BaggageClaim,
   DollarSign,
   Star,
   TrendingUp,
 } from "lucide-react";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+// import Link from "next/link";
+import { useEffect } from "react";
 import { STAT_DATA, StatCard } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
@@ -52,11 +52,11 @@ export const StarRating = ({ rating }: { rating: number }) => {
   );
 };
 
-interface StatsCardsProps {
-  stats?: StatCard[];
-}
+// interface StatsCardsProps {
+//   stats?: StatCard[];
+// }
 
-const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
+const StatsCards = () => {
   const { myStartups, earnings, userProfile, loading, fetchAll } =
     useDashboardStore();
   const { data: session } = useSession();
@@ -66,7 +66,7 @@ const StatsCards = ({ stats = STAT_DATA }: StatsCardsProps) => {
     if (accessToken) {
       fetchAll(accessToken);
     }
-  }, []);
+  }, [fetchAll, session?.accessToken]);
 
   const totalStartups = Array.isArray(myStartups) ? myStartups.length : 0;
   const totalEarnings =

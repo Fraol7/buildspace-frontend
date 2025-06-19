@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { INDUSTRIES } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDashboardStore } from "@/store/dashboardStore";
@@ -25,6 +24,7 @@ export type Startup = {
   business_model: string;
   revenue: number;
   location: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   embedding: any; // or null, or a more specific type if known
   created_at: string;
   updated_at: string;
@@ -35,7 +35,7 @@ export type Startup = {
 const ITEMS_PER_PAGE = 6;
 
 const ProjectsGrid = () => {
-  const { recommendedStartups, fetchRecommendedStartups, loading } =
+  const { recommendedStartups, fetchRecommendedStartups } =
     useDashboardStore();
   const { data: session } = useSession();
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,7 +50,7 @@ const ProjectsGrid = () => {
     if (accessToken) {
       fetchRecommendedStartups(accessToken);
     }
-  }, [fetchRecommendedStartups]);
+  }, [fetchRecommendedStartups, session?.accessToken]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

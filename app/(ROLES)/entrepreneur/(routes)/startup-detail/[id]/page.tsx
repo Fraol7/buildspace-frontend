@@ -113,3 +113,7 @@ const ProjectDetailPage = () => {
 };
 
 export default ProjectDetailPage;
+function fetchUserById() {
+  throw new Error("Function not implemented.");
+}
+

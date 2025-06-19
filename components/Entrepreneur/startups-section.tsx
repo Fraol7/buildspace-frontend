@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { INDUSTRIES } from "@/constants";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Startup } from "./project-grid";
+// import { Startup } from "./project-grid";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 

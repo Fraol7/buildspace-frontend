@@ -82,8 +82,8 @@ const StartupsSection = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Couldn't load investments</p>
-              <p className="text-xs text-gray-400 mt-1">We're having trouble loading your investments</p>
+              <p className="text-sm text-gray-600">Couldn&apos;t load investments</p>
+              <p className="text-xs text-gray-400 mt-1">We&apos;re having trouble loading your investments</p>
             </div>
             <Button 
               variant="ghost" 
@@ -156,6 +156,7 @@ const StartupsSection = () => {
           {visibleInvestments.map((investment: Investment) => (
               <Link
                 href={`startup-detail/${investment.startup_id.id}`}
+                key={investment.startup_id.id}
                 className="block"
               >
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow h-full flex flex-col">

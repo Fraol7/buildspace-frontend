@@ -204,9 +204,9 @@ const StatsCards = ({ startup }: { startup: any }) => {
 
 // ProjectsGrid Component
 const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 3;
-  const totalPages = Math.ceil(ALL_PROJECTS.length / projectsPerPage);
+  // const totalPages = Math.ceil(ALL_PROJECTS.length / projectsPerPage);
   const { data: session } = useSession();
   let role = session?.user?.role || "entrepreneur";
   if (role === "startup") {
@@ -472,12 +472,12 @@ const RecommendedInvestorsGrid = () => {
 };
 
 export default function StartupDetailsOwner({
-  startupId,
-}: {
-  startupId: string;
+//   startupId,
+// }: {
+//   startupId: string;
 }) {
   const { data: session } = useSession();
-  const { startup, loading, user } = useStartupStore();
+  const { startup, loading } = useStartupStore();
   const { earnings, fetchAll, fetchRecommendedStartups, recommendedStartups } =
     useDashboardStore();
 
@@ -489,43 +489,43 @@ export default function StartupDetailsOwner({
 
   const [showSentimentDialog, setShowSentimentDialog] = useState(false);
   const [sentimentLoading, setSentimentLoading] = useState(false);
-  const [sentimentResult, setSentimentResult] = useState<{
-    overall: string;
-    score: number;
-  } | null>(null);
+  // const [sentimentResult, setSentimentResult] = useState<{
+  //   overall: string;
+  //   score: number;
+  // } | null>(null);
 
-  const handleSentimentClick = async () => {
-    setShowSentimentDialog(true);
-    setSentimentLoading(true);
-    setSentimentResult(null);
-    try {
-      const res = await fetch(
-        "https://sentiment-api-x718.onrender.com/sentiment",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: "Artificial Intelligence" }),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to fetch sentiment");
-      const data = await res.json();
-      setSentimentResult({
-        overall: data.sentiments.overall,
-        score: data.sentiments.score,
-      });
-    } catch (e) {
-      setSentimentResult(null);
-    } finally {
-      setSentimentLoading(false);
-    }
-  };
+  // const handleSentimentClick = async () => {
+  //   setShowSentimentDialog(true);
+  //   setSentimentLoading(true);
+  //   // setSentimentResult(null);
+  //   try {
+  //     const res = await fetch(
+  //       "https://sentiment-api-x718.onrender.com/sentiment",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ text: "Artificial Intelligence" }),
+  //       }
+  //     );
+  //     if (!res.ok) throw new Error("Failed to fetch sentiment");
+  //     const data = await res.json();
+  //     // setSentimentResult({
+  //     //   overall: data.sentiments.overall,
+  //     //   score: data.sentiments.score,
+  //     // });
+  //   } catch (e) {
+  //     // setSentimentResult(null);
+  //   } finally {
+  //     setSentimentLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (session?.accessToken) {
       fetchAll(session.accessToken);
       fetchRecommendedStartups(session.accessToken);
     }
-  }, [session?.accessToken]);
+  }, [session?.accessToken, fetchAll, fetchRecommendedStartups]);
 
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;

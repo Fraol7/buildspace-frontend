@@ -1,10 +1,10 @@
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Loader2, AlertCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { PROJECTS_GRID, INDUSTRIES } from "@/constants";
@@ -81,8 +81,8 @@ const ProjectsGrid = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Couldn't load recommendations</p>
-              <p className="text-xs text-gray-400 mt-1">We're having trouble loading startup recommendations</p>
+              <p className="text-sm text-gray-600">Couldn&apos;t load recommendations</p>
+              <p className="text-xs text-gray-400 mt-1">We&apos;re having trouble loading startup recommendations</p>
             </div>
             <Button 
               variant="ghost" 
@@ -131,11 +131,12 @@ const ProjectsGrid = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentItems.map((project) => {
               const progress = Math.min(Math.round((project.amount_raised / project.funding_goal) * 100), 100);
-              const staticData = PROJECTS_GRID.find(p => p.id === project.id) || {};
+              // const staticData = PROJECTS_GRID.find(p => p.id === project.id) || {};
               
               return (
                 <Link
                 href={`startup-detail/${project.id}`}
+                key={project.id}
                 className="block"
               >
                  <div className="bg-gradient-to-br from-blue-200 to-gray-50 rounded-lg p-4 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-100 group">

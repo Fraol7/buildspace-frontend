@@ -23,6 +23,7 @@ type TodaysPick = {
   business_model: string;
   revenue: number;
   location: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   embedding: any;
   created_at: string;
   updated_at: string;
@@ -47,7 +48,7 @@ const AutoScrollingTrendingProjects = () => {
     if (session?.accessToken) {
       fetchTodaysPicks(session.accessToken);
     }
-  }, [session]);
+  }, [session, fetchTodaysPicks]);
 
   useEffect(() => {
     if (todaysPicks.length > 0) {

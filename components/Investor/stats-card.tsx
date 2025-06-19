@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, DollarSign, BarChart2, Star } from "lucide-react";
+import { DollarSign, BarChart2, Star } from "lucide-react";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useInvestorDashboardStore } from "@/store/dashboardStore";

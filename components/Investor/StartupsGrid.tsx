@@ -1,12 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { AlertCircle, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react"
 import { useState, useEffect } from "react"
-import { useAllStartupsStore, type Startup } from "@/store/allStartupsStore"
-import { useSession } from "next-auth/react"
+import { type Startup } from "@/store/allStartupsStore"
+// import { useSession } from "next-auth/react"
 import { INDUSTRIES } from "@/constants"
 
 interface StartupsGridProps {

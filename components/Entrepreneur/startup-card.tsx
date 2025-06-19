@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Star, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Button } from "@/components/ui/button";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Startup } from "./project-grid";
 import { INDUSTRIES } from "@/constants";
 // import { Progress } from "@/components/ui/progress"

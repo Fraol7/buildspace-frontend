@@ -31,7 +31,7 @@ export default function StartupDetails() {
   const params = useParams();
   const startupID = params?.id as string;
 
-  const { fetchStartupById, startup, updateStartup, loading, error } =
+  const { fetchStartupById, startup } =
     useStartupStore();
   const { data: session } = useSession();
 
@@ -51,7 +51,7 @@ export default function StartupDetails() {
     }
 
     console.log("Fetching startup with ID:", startup);
-  }, [startupID, fetchStartupById]);
+  }, [startupID, fetchStartupById, session?.accessToken, startup]);
 
   useEffect(() => {
     console.log("Startup data fetched:", startup);

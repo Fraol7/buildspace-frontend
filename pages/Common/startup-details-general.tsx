@@ -186,9 +186,9 @@ const StatsCards = ({ startup }: { startup: any }) => {
 
 // ProjectsGrid Component
 const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const projectsPerPage = 3;
-  const totalPages = Math.ceil(startups.length / projectsPerPage);
+  // const totalPages = Math.ceil(startups.length / projectsPerPage);
   const { data: session } = useSession();
   let role = session?.user?.role || "entrepreneur";
   if (role === "startup") {
@@ -521,7 +521,7 @@ const SentimentDialog = ({
 
 export default function StartupDetailsGeneral({
   // startupId,
-}: {
+// }: {
   // startupId: string;
 }) {
   const { data: session } = useSession();
