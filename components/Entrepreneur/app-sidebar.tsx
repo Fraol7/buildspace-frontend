@@ -44,14 +44,14 @@ import Logo from "@/components/Common/Logo";
 import { useSession } from "next-auth/react";
 
 // Define the ProfileData type
-type ProfileData = {
-  fullName?: string;
-  bio?: string;
-  skills?: string[];
-  address?: string;
-  avatar?: string;
-  email?: string;
-};
+// type ProfileData = {
+//   fullName?: string;
+//   bio?: string;
+//   skills?: string[];
+//   address?: string;
+//   avatar?: string;
+//   email?: string;
+// };
 
 // Provide a default profile as a fallback
 // const defaultProfile: ProfileData = {
