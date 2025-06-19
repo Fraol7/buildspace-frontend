@@ -17,10 +17,9 @@ import {
   DollarSign,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-const PaymentPopup = dynamic(
-  () => import("@/pages/Common/payment-popup"),
-  { ssr: false }
-);
+const PaymentPopup = dynamic(() => import("@/pages/Common/payment-popup"), {
+  ssr: false,
+});
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -55,9 +54,11 @@ import { INDUSTRIES } from "@/constants";
 import { usePathname } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useCampaignStore } from "@/store/campaignStore";
+import { useInvestmentStore } from "@/store/investmentStore";
 
 // StatsCards Component
 const StatsCards = ({ startup }: { startup: any }) => {
+  const { investments } = useInvestmentStore();
   const { earnings } = useDashboardStore();
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -68,15 +69,17 @@ const StatsCards = ({ startup }: { startup: any }) => {
     }).format(amount);
   };
 
+  const myInvestment = investments.find(
+    (inv) => inv.startup_id.id === startup.id
+  );
+
   const statsData = [
     {
-      id: "funding",
-      title: "Total Raised",
-      value: formatCurrency(
-        (earnings?.total_crowdfunding ?? 0) + (earnings?.total_investment ?? 0)
-      ),
+      id: "my-investment",
+      title: "My Investment",
+      value: formatCurrency(myInvestment?.amount ?? 0),
       icon: "dollar",
-      change: { trend: "up" as const, value: "+12%", text: "from last month" },
+      change: { trend: "neutral" as const, value: "", text: "" },
     },
     {
       id: "rating",
@@ -545,8 +548,13 @@ export default function StartupDetailsGeneral({
   const { startup, loading } = useStartupStore();
   const user = useStartupStore((state) => state.user);
   const rateUser = useStartupStore((state) => state.rateUser);
-  const { earnings, fetchAll, fetchRecommendedStartups, recommendedStartups } =
-    useDashboardStore();
+  const {
+    earnings,
+    fetchAll,
+    fetchRecommendedStartupsForInvestor,
+    recommendedStartups,
+    recommendedStartupsForInvestor,
+  } = useDashboardStore();
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [sentimentScore, setSentimentScore] = useState<{
@@ -590,9 +598,13 @@ export default function StartupDetailsGeneral({
   };
 
   useEffect(() => {
+    console.log("earnings", earnings);
+  }, [earnings]);
+
+  useEffect(() => {
     if (session?.accessToken) {
       fetchAll(session.accessToken);
-      fetchRecommendedStartups(session.accessToken);
+      fetchRecommendedStartupsForInvestor(session.accessToken);
     }
   }, [session?.accessToken]);
 
@@ -613,9 +625,9 @@ export default function StartupDetailsGeneral({
   };
 
   const pathname = usePathname();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  const {investInStartup} = useCampaignStore()
+  const { investInStartup } = useCampaignStore();
 
   const handleInvestNow = async (amount: number) => {
     if (!session?.accessToken) {
@@ -625,18 +637,22 @@ export default function StartupDetailsGeneral({
       });
       return;
     }
-    
+
+    console.log("Investing in startup:", startupId, "with amount:", amount);
+
     try {
-      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
       const redirect_url = `${baseUrl}${pathname}`;
-      
+
       const result = await investInStartup(
         startupId,
         amount.toString(),
         redirect_url,
         session.accessToken
       );
-      
+      console.log("Investment result:", result);
+
       if (result.payment_url) {
         window.location.href = result.payment_url;
       } else {
@@ -744,13 +760,11 @@ export default function StartupDetailsGeneral({
                       <BarChart3 className="w-3 h-3 mr-1" />
                       Sentiment Analysis
                     </Button>
-                    <PaymentPopup 
+                    <PaymentPopup
                       campaignTitle={startup.startup_name}
                       amount={0}
                       onPaymentSuccess={handleInvestNow}
-                      buttonLabel={
-                        "Invest Now"
-                      }
+                      buttonLabel={"Invest Now"}
                     />
                   </div>
                 </div>
@@ -901,14 +915,16 @@ export default function StartupDetailsGeneral({
                             if (ok) {
                               toast?.({
                                 title: "Success",
-                                description: `Rated ${user?.first_name} ${rate} star${rate > 1 ? "s" : ""}!`,
-                                variant: "default" // or "success" if you have that variant defined
+                                description: `Rated ${
+                                  user?.first_name
+                                } ${rate} star${rate > 1 ? "s" : ""}!`,
+                                variant: "default", // or "success" if you have that variant defined
                               });
                             } else {
                               toast?.({
                                 title: "Error",
                                 description: "Failed to submit rating.",
-                                variant: "destructive"
+                                variant: "destructive",
                               });
                             }
                           }}
@@ -923,42 +939,8 @@ export default function StartupDetailsGeneral({
             </Card>
           </div>
 
-          {/* Analytics Section */}
-          <Card className="shadow-lg bg-white">
-            <CardHeader>
-              <CardTitle className="text-xl text-gray-900">
-                Investment Analytics
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <p className="text-xl md:text-2xl font-bold text-blue-600">
-                    {formatCurrency(earnings?.total_investment || 0)}
-                  </p>
-                  <p className="text-sm text-gray-600">Total Investments</p>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <p className="text-xl md:text-2xl font-bold text-green-600">
-                    {formatCurrency(earnings?.total_crowdfunding || 0)}
-                  </p>
-                  <p className="text-sm text-gray-600">Crowdfunds Raised</p>
-                </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <p className="text-xl md:text-2xl font-bold text-blue-600">
-                    {formatCurrency(
-                      (earnings?.total_crowdfunding ?? 0) +
-                        (earnings?.total_investment ?? 0)
-                    )}
-                  </p>
-                  <p className="text-sm text-gray-600">Private Investments</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Similar Projects */}
-          <ProjectsGrid startups={recommendedStartups.slice(0, 3)} />
+          <ProjectsGrid startups={recommendedStartupsForInvestor.slice(0, 3)} />
 
           {/* Recommended Investors */}
           <RecommendedInvestorsGrid />

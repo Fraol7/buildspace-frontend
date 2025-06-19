@@ -71,6 +71,8 @@ type DashboardState = {
   recommendedStartups: Startup[];
   investorStartups: Startup[];
   investments: Investment[];
+  recommendedStartupsForInvestor: Startup[];
+  fetchRecommendedStartupsForInvestor: (accessToken: string) => Promise<void>;
   fetchAll: (accessToken: string) => Promise<void>;
   fetchRecommendedStartups: (accessToken: string) => Promise<void>;
   recommendedInvestors: RecommendedInvestorWithUser[];
@@ -92,6 +94,35 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   error: null,
   recommendedStartups: [],
   recommendedInvestors: [],
+  recommendedStartupsForInvestor: [],
+  fetchRecommendedStartupsForInvestor: async (accessToken: string) => {
+    set({ loading: true });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const response = await fetch(
+        "https://buildspace.onrender.com/investor/startup",
+        {
+          method: "GET",
+          headers: myHeaders,
+          credentials: "omit" as RequestCredentials,
+          redirect: "follow" as RequestRedirect,
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch recommended startups");
+      const data = await response.json();
+
+      set({
+        recommendedStartupsForInvestor: data || [],
+        loading: false,
+      });
+    } catch (e) {
+      set({ recommendedStartupsForInvestor: [], loading: false });
+    }
+  },
   fetchRecommendedInvestors: async (accessToken: string, startupId: string) => {
     set({ loading: true });
     try {
@@ -364,16 +395,16 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       }
       const data = await response.json();
 
-      set({ 
+      set({
         investments: Array.isArray(data) ? data : [],
-        loading: false 
+        loading: false,
       });
     } catch (e) {
       console.error("Error fetching investments:", e);
-      set({ 
-        investments: [], 
+      set({
+        investments: [],
         loading: false,
-        error: "Failed to load investments"
+        error: "Failed to load investments",
       });
     }
   },
@@ -468,150 +499,165 @@ interface InvestorDashboardState {
   fetchInvestorStats: (accessToken: string) => Promise<void>;
   fetchInvestmentsByStage: (accessToken: string) => Promise<void>;
   fetchInvestorChartData: (accessToken: string) => Promise<void>;
-};
+}
 
-export const useInvestorDashboardStore = create<InvestorDashboardState>((set) => ({
-  stats: null,
-  user: null,
-  loading: false,
-  investmentsByStage: [],
-  spendData: null,
-  fetchInvestorStats: async (accessToken: string) => {
-    set({ loading: true });
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Accept", "application/json");
-      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+export const useInvestorDashboardStore = create<InvestorDashboardState>(
+  (set) => ({
+    stats: null,
+    user: null,
+    loading: false,
+    investmentsByStage: [],
+    spendData: null,
+    fetchInvestorStats: async (accessToken: string) => {
+      set({ loading: true });
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const [statsRes, userRes] = await Promise.all([
-        fetch("https://buildspace.onrender.com/investor/stats", {
-          method: "GET",
-          headers: myHeaders,
-          credentials: "omit" as RequestCredentials,
-          redirect: "follow" as RequestRedirect,
-        }),
-        fetch("https://buildspace.onrender.com/user/me", {
-          method: "GET",
-          headers: myHeaders,
-          credentials: "omit" as RequestCredentials,
-          redirect: "follow" as RequestRedirect,
-        })
-      ]);
+        const [statsRes, userRes] = await Promise.all([
+          fetch("https://buildspace.onrender.com/investor/stats", {
+            method: "GET",
+            headers: myHeaders,
+            credentials: "omit" as RequestCredentials,
+            redirect: "follow" as RequestRedirect,
+          }),
+          fetch("https://buildspace.onrender.com/user/me", {
+            method: "GET",
+            headers: myHeaders,
+            credentials: "omit" as RequestCredentials,
+            redirect: "follow" as RequestRedirect,
+          }),
+        ]);
 
-      if (!statsRes.ok || !userRes.ok) {
-        throw new Error("Failed to fetch investor data");
+        if (!statsRes.ok || !userRes.ok) {
+          throw new Error("Failed to fetch investor data");
+        }
+
+        const [statsData, userData] = await Promise.all([
+          statsRes.json(),
+          userRes.json(),
+        ]);
+
+        set({
+          stats: {
+            total_startups_backed: statsData.total_startups_backed,
+            total_invested: statsData.total_invested,
+            user: userData,
+          },
+          user: userData,
+          loading: false,
+        });
+      } catch (e) {
+        set({ stats: null, user: null, loading: false });
       }
+    },
+    fetchInvestmentsByStage: async (accessToken: string) => {
+      set({ loading: true });
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const [statsData, userData] = await Promise.all([
-        statsRes.json(),
-        userRes.json()
-      ]);
+        const response = await fetch(
+          "https://buildspace.onrender.com/my-investments-by-stage",
+          {
+            method: "GET",
+            headers: myHeaders,
+            credentials: "omit",
+            redirect: "follow",
+          }
+        );
 
-      set({
-        stats: {
-          total_startups_backed: statsData.total_startups_backed,
-          total_invested: statsData.total_invested,
-          user: userData
-        },
-        user: userData,
-        loading: false,
-      });
-    } catch (e) {
-      set({ stats: null, user: null, loading: false });
-    }
-  },
-  fetchInvestmentsByStage: async (accessToken: string) => {
-    set({ loading: true });
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Accept", "application/json");
-      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          console.error(errorMessage);
+          throw new Error("Failed to fetch investments by stage");
+        }
 
-      const response = await fetch("https://buildspace.onrender.com/my-investments-by-stage", {
-        method: "GET",
-        headers: myHeaders,
-        credentials: "omit",
-        redirect: "follow",
-      });
+        const data = await response.json();
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error(errorMessage);
-        throw new Error("Failed to fetch investments by stage");
+        // Format the data to match the expected format
+        const formattedData = Array.isArray(data)
+          ? data.map((item) => ({
+              stage: item.funding_stage
+                .split("-")
+                .map(
+                  (word: string) => word.charAt(0).toUpperCase() + word.slice(1)
+                )
+                .join(" "),
+              count: item.count,
+            }))
+          : [];
+
+        set({
+          investmentsByStage: formattedData,
+          loading: false,
+        });
+      } catch (e) {
+        console.error("Error fetching investments by stage:", e);
+        set({
+          investmentsByStage: [],
+          loading: false,
+        });
       }
+    },
+    fetchInvestorChartData: async (accessToken: string) => {
+      set({ loading: true });
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
-      const data = await response.json();
-      
-      // Format the data to match the expected format
-      const formattedData = Array.isArray(data) 
-        ? data.map(item => ({
-            stage: item.funding_stage
-              .split('-')
-              .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' '),
-            count: item.count
-          }))
-        : [];
+        const response = await fetch(
+          "https://buildspace.onrender.com/investor/total-spend",
+          {
+            method: "GET",
+            headers: myHeaders,
+            credentials: "omit",
+            redirect: "follow",
+          }
+        );
 
-      set({ 
-        investmentsByStage: formattedData,
-        loading: false 
-      });
-    } catch (e) {
-      console.error('Error fetching investments by stage:', e);
-      set({ 
-        investmentsByStage: [], 
-        loading: false 
-      });
-    }
-  },
-  fetchInvestorChartData: async (accessToken: string) => {
-    set({ loading: true });
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Accept", "application/json");
-      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          console.error(errorMessage);
+          throw new Error("Failed to fetch investor chart data");
+        }
 
-      const response = await fetch("https://buildspace.onrender.com/investor/total-spend", {
-        method: "GET",
-        headers: myHeaders,
-        credentials: "omit",
-        redirect: "follow",
-      });
+        const data = await response.json();
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error(errorMessage);
-        throw new Error("Failed to fetch investor chart data");
+        // Format month values to show full month names
+        const formattedSpendOverTime = Array.isArray(data.spend_over_time)
+          ? data.spend_over_time.map(
+              (item: { month: string; Spend: number }) => ({
+                ...item,
+                month: new Date(item.month + "-01").toLocaleString("default", {
+                  month: "short",
+                  year: "numeric",
+                }),
+              })
+            )
+          : [];
+
+        set({
+          spendData: {
+            total_investment: data.total_investment || 0,
+            total_crowdfunding: data.total_crowdfunding || 0,
+            spend_over_time: formattedSpendOverTime,
+          },
+          loading: false,
+        });
+      } catch (e) {
+        console.error("Error fetching investor chart data:", e);
+        set({
+          spendData: null,
+          loading: false,
+        });
       }
-
-      const data = await response.json();
-      
-      // Format month values to show full month names
-      const formattedSpendOverTime = Array.isArray(data.spend_over_time) 
-        ? data.spend_over_time.map((item: { month: string; Spend: number }) => ({
-            ...item,
-            month: new Date(item.month + '-01').toLocaleString('default', { month: 'short', year: 'numeric' })
-          }))
-        : [];
-      
-      set({ 
-        spendData: {
-          total_investment: data.total_investment || 0,
-          total_crowdfunding: data.total_crowdfunding || 0,
-          spend_over_time: formattedSpendOverTime
-        },
-        loading: false 
-      });
-    } catch (e) {
-      console.error('Error fetching investor chart data:', e);
-      set({ 
-        spendData: null, 
-        loading: false 
-      });
-    }
-  },
-}));
+    },
+  })
+);

@@ -350,7 +350,7 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
         body: JSON.stringify({
           startup_id: startupId,
           amount: amount,
-          redirect_url: redirectUrl
+          redirect_url: redirectUrl,
         }),
         credentials: "omit" as RequestCredentials,
         redirect: "follow" as RequestRedirect,
@@ -358,14 +358,17 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to process investment');
+        console.error("Investment error:", errorData);
+        throw new Error(errorData.message || "Failed to process investment");
       }
 
       const data = await res.json();
-      return { payment_url: data.payment_url };
+      console.log("Investment successful:", data);
+
+      return { payment_url: data };
     } catch (error: any) {
-      console.error('Investment error:', error);
-      return { error: error.message || 'Failed to process investment' };
+      console.error("Investment error:", error);
+      return { error: error.message || "Failed to process investment" };
     } finally {
       set({ isInvesting: false });
     }
