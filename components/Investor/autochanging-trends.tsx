@@ -78,7 +78,7 @@ const AutoScrollingTrendingProjects = () => {
 
   return (
     <Link
-      href={`/investor/startup-detail/${currentProject.id}`}
+      href={`startup-detail/${currentProject.id}`}
       className="block"
     >
       <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-xl p-12 text-gray-800 relative overflow-hidden hover:shadow-xl transition-shadow h-full md:h-[400px]">

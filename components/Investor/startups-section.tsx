@@ -154,11 +154,10 @@ const StartupsSection = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {visibleInvestments.map((investment: Investment) => (
-            <Link 
-              href={`/investor/startup/${investment.startup_id.id}`} 
-              key={investment.id} 
-              className="block"
-            >
+              <Link
+                href={`startup-detail/${investment.startup_id.id}`}
+                className="block"
+              >
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow h-full flex flex-col">
                 <div className="flex flex-col h-full">
                   <div className="flex justify-between items-center mb-2">
