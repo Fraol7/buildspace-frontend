@@ -32,10 +32,18 @@ export type Startup = {
   progress: number;
 };
 
+const ITEMS_PER_PAGE = 6;
+
 const ProjectsGrid = () => {
   const { recommendedStartups, fetchRecommendedStartups, loading } =
     useDashboardStore();
   const { data: session } = useSession();
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(recommendedStartups.length / ITEMS_PER_PAGE);
+  const paginatedStartups = recommendedStartups.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     const accessToken = session?.accessToken;
@@ -43,6 +51,11 @@ const ProjectsGrid = () => {
       fetchRecommendedStartups(accessToken);
     }
   }, [fetchRecommendedStartups]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
   return (
     <Card className="shadow-lg">
       <CardHeader>
@@ -51,8 +64,8 @@ const ProjectsGrid = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {recommendedStartups.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {paginatedStartups.map((project) => (
             <Link
               href={`/entrepreneur/startup-detail/${project.id}`}
               key={project.id}
@@ -61,13 +74,13 @@ const ProjectsGrid = () => {
               <div className="bg-gradient-to-br from-blue-200 to-gray-50 rounded-lg p-4 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-100 group">
                 {/* Project Header */}
                 <div className="flex items-center space-x-3 mb-3">
-                  {/* <Image
+                  <Image
                     src={project.logo_url}
                     alt={project.startup_name}
                     width={40}
                     height={40}
                     className="rounded-lg bg-gray-100 p-1"
-                  /> */}
+                  />
                   <div>
                     <h4 className="font-semibold text-gray-900 group-hover:text-blue-800">
                       {project.startup_name}
@@ -151,6 +164,69 @@ const ProjectsGrid = () => {
             </Link>
           ))}
         </div>
+        
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8 space-x-2">
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              «
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              ‹
+            </button>
+            
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              // Show up to 5 page numbers, centered around current page
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+              
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`px-3 py-1 rounded-md border ${
+                    currentPage === pageNum 
+                      ? 'bg-blue-500 text-white border-blue-500' 
+                      : 'border-gray-300 hover:bg-gray-100'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              ›
+            </button>
+            <button
+              onClick={() => handlePageChange(totalPages)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              »
+            </button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -10,11 +10,18 @@ import { Startup } from "./project-grid";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 
+const ITEMS_PER_PAGE = 2;
+
 const StartupsSection = () => {
   const { myStartups, fetchAll } = useDashboardStore();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 2;
+  const [currentPage, setCurrentPage] = useState(1);
   const { data: session } = useSession();
+  
+  const totalPages = Math.ceil(myStartups.length / ITEMS_PER_PAGE);
+  const paginatedStartups = myStartups.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   let role = session?.user?.role || "entrepreneur";
   if (role === "startup") {
@@ -24,63 +31,77 @@ const StartupsSection = () => {
   }
 
   useEffect(() => {
-    // Replace with your actual accessToken logic
     const accessToken = session?.accessToken;
     if (!accessToken) {
       return;
     }
     fetchAll(accessToken);
-    console.log("this my startup", myStartups);
-  }, []);
+  }, [session]);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + itemsPerPage >= myStartups.length
-        ? 0
-        : prevIndex + itemsPerPage
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0
-        ? Math.max(0, myStartups.length - itemsPerPage)
-        : Math.max(0, prevIndex - itemsPerPage)
-    );
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <CardTitle className="text-lg font-semibold text-gray-900">
             My Startups
           </CardTitle>
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={prevSlide}
-              className="h-8 w-8 p-0"
-              aria-label="Previous STARTUPS"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={nextSlide}
-              className="h-8 w-8 p-0"
-              aria-label="Next STARTUPS"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
+          {totalPages > 1 && (
+            <div className="flex items-center space-x-1">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0"
+                aria-label="First page"
+              >
+                «
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0"
+                aria-label="Previous page"
+              >
+                ‹
+              </Button>
+              <span className="px-3 text-sm text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0"
+                aria-label="Next page"
+              >
+                ›
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0"
+                aria-label="Last page"
+              >
+                »
+              </Button>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {myStartups.map((startup) => (
+          {paginatedStartups.map((startup) => (
             <Link
               href={`/${role}/startup-detail/${startup.id}`}
               key={startup.id}
@@ -128,6 +149,11 @@ const StartupsSection = () => {
             </Link>
           ))}
         </div>
+        {myStartups.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No startups found. Create your first startup to get started!
+          </div>
+        )}
       </CardContent>
     </Card>
   );
