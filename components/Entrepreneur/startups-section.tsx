@@ -89,7 +89,7 @@ const StartupsSection = () => {
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center space-x-3 mb-3">
                   <Image
-                    src={startup.logo_url}
+                    src={startup.logo_url || "/placeholder.jpg"}
                     alt={startup.startup_name}
                     width={72}
                     height={72}

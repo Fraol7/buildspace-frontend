@@ -61,13 +61,13 @@ const ProjectsGrid = () => {
               <div className="bg-gradient-to-br from-blue-200 to-gray-50 rounded-lg p-4 transition-all duration-300 hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-100 group">
                 {/* Project Header */}
                 <div className="flex items-center space-x-3 mb-3">
-                  <Image
+                  {/* <Image
                     src={project.logo_url}
                     alt={project.startup_name}
                     width={40}
                     height={40}
                     className="rounded-lg bg-gray-100 p-1"
-                  />
+                  /> */}
                   <div>
                     <h4 className="font-semibold text-gray-900 group-hover:text-blue-800">
                       {project.startup_name}
