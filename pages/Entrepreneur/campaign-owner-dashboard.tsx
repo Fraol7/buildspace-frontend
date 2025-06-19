@@ -46,7 +46,7 @@ export default function CampaignOwnerDashboard() {
   const [fundraisingHistory, setFundraisingHistory] = useState<
     FundraisingHistoryPoint[]
   >([]);
-  const [earningsLoading, setEarningsLoading] = useState(false);
+  // const [earningsLoading, setEarningsLoading] = useState(false);
 
   // For edit modal
   const [showEditModal, setShowEditModal] = useState(false);
@@ -68,22 +68,22 @@ export default function CampaignOwnerDashboard() {
       }
     };
     fetchCampaign();
-  }, [campaignId, session?.accessToken]);
+  }, [campaignId, session?.accessToken, getCampaignById]);
 
   useEffect(() => {
     const fetchEarnings = async () => {
       if (session?.accessToken) {
-        setEarningsLoading(true);
+        // setEarningsLoading(true);
         const earnings = await getStartupEarnings(
           campaignId,
           session.accessToken
         );
         setFundraisingHistory(earnings.slice(-7)); // Last 7 days
-        setEarningsLoading(false);
+        // setEarningsLoading(false);
       }
     };
     fetchEarnings();
-  }, [campaignData?.startup_id, session?.accessToken]);
+  }, [campaignData?.startup_id, session?.accessToken, getStartupEarnings, campaignId]);
 
   if (loading || !campaignData) {
     return (

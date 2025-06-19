@@ -21,7 +21,7 @@ import { useCampaignStore } from "@/store/campaignStore";
 export default function MyCampaigns() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const { myCampaigns, loading, error, fetchMyCampaigns } = useCampaignStore();
+  const { myCampaigns, fetchMyCampaigns } = useCampaignStore();
   const { data: session } = useSession();
 
   useEffect(() => {

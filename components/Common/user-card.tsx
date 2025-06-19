@@ -7,7 +7,7 @@ import { useUserStore } from "@/store/userStore";
 import { useSession } from "next-auth/react";
 import { User } from "@/store/userStore";
 
-type UserRole = "Entrepreneur" | "Investor";
+// type UserRole = "Entrepreneur" | "Investor";
 
 interface UserCardProps {
   user: User;

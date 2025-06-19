@@ -206,9 +206,8 @@ const StatsCards = ({ startup }: { startup: Startup }) => {
 
 // ProjectsGrid Component
 const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const projectsPerPage = 3;
-  const totalPages = Math.ceil(startups.length / projectsPerPage);
   const { data: session } = useSession();
   let role = session?.user?.role || "entrepreneur";
   if (role === "startup") {
@@ -594,6 +593,7 @@ export default function StartupDetailsGeneral({
         overall: data.sentiments.overall,
         score: data.sentiments.score,
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       setSentimentResult(null);
     } finally {
@@ -610,7 +610,7 @@ export default function StartupDetailsGeneral({
       fetchAll(session.accessToken);
       fetchRecommendedStartupsForInvestor(session.accessToken);
     }
-  }, [session?.accessToken]);
+  }, [session?.accessToken, fetchAll, fetchRecommendedStartupsForInvestor]);
 
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;

@@ -4,7 +4,7 @@ import type * as React from "react";
 // import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, LogOut, UserCircle } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -12,14 +12,14 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useProfile } from "@/lib/profile-context";
 import { usePathname } from "next/navigation";
-import ProfileDialog from "@/components/Profile/ProfileEdit";
+// import ProfileDialog from "@/components/Profile/ProfileEdit";
 import { EntrepreneurNavMain } from "@/constants";
 import Logo from "@/components/Common/Logo";
 import { useSession } from "next-auth/react";
@@ -70,18 +70,18 @@ export function EntrepreneurSidebar({
 
   // Retrieve the profile data, falling back to defaults
   const { profile: userProfile } = useProfile() || { profile: defaultProfile };
-  const profile: ProfileData = {
-    fullName: userProfile?.fullName || defaultProfile.fullName,
-    bio: userProfile?.bio || defaultProfile.bio,
-    skills: userProfile?.skills || defaultProfile.skills,
-    address: userProfile?.address || defaultProfile.address,
-    avatar: userProfile?.avatar || defaultProfile.avatar,
-    email: userProfile?.email || defaultProfile.email,
-  };
+  // const profile: ProfileData = {
+  //   fullName: userProfile?.fullName || defaultProfile.fullName,
+  //   bio: userProfile?.bio || defaultProfile.bio,
+  //   skills: userProfile?.skills || defaultProfile.skills,
+  //   address: userProfile?.address || defaultProfile.address,
+  //   avatar: userProfile?.avatar || defaultProfile.avatar,
+  //   email: userProfile?.email || defaultProfile.email,
+  // };
 
   const { data: session } = useSession();
 
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  // const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const pathname = usePathname();
 
   // Helper function to check if a menu item is active

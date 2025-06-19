@@ -26,7 +26,7 @@ const ITEMS_PER_PAGE = 5;
 export default function StartupDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const { investments, loading, error, getMyInvestments } =
+  const { investments, getMyInvestments } =
     useInvestmentStore();
   const { data: session } = useSession();
 

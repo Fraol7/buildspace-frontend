@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { INDUSTRIES, PROJECTS_GRID } from "@/constants";
+import { INDUSTRIES } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";

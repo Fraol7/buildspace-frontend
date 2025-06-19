@@ -9,8 +9,8 @@ import {
   CheckCircle,
   Upload,
   Globe,
-  ChevronDown,
-  X,
+  // ChevronDown,
+  // X,
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,9 +46,9 @@ import { INDUSTRIES, countries } from "@/constants";
 export default function StartupSetup() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [otherIndustry, setOtherIndustry] = useState("");
+  // const [otherIndustry, setOtherIndustry] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState<string>("");
-  const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false);
+  // const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false);
   const [locationError, setLocationError] = useState("");
   // const [projectCreated, setProjectCreated] = useState(false)
   const router = useRouter();
@@ -154,15 +154,15 @@ export default function StartupSetup() {
     }
   };
 
-  const validateLocation = () => {
-    // Check if location contains both city and country (separated by comma)
-    const locationRegex = /^[A-Za-z\s]+,\s*[A-Za-z\s]+$/;
-    if (!locationRegex.test(formData.location)) {
-      setLocationError("Please enter location in format: City, Country");
-      return false;
-    }
-    return true;
-  };
+  // const validateLocation = () => {
+  //   // Check if location contains both city and country (separated by comma)
+  //   const locationRegex = /^[A-Za-z\s]+,\s*[A-Za-z\s]+$/;
+  //   if (!locationRegex.test(formData.location)) {
+  //     setLocationError("Please enter location in format: City, Country");
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleSubmitConfirm = async () => {
     console.log("Submitting form data:", formData);

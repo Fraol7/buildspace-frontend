@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 import { useChatStore } from "@/store/chatStore";
 import { useSession } from "next-auth/react";
-import { useStartupStore } from "@/store/startupStore";
+// import { useStartupStore } from "@/store/startupStore";
 
 export interface Contact {
   user_id: string;
@@ -62,7 +62,7 @@ export function ChatInterface({
   } = useChatStore();
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [newContact, setNewContact] = useState<Contact | null>(null);
+  // const [newContact, setNewContact] = useState<Contact | null>(null);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export function ChatInterface({
       const found = contacts.find((c) => c.user_id === initialContactId);
       if (found) {
         setSelectedContact(found);
-        setNewContact(null);
+        // setNewContact(null);
       } else {
         if (!session?.accessToken) {
           console.error("No access token available to fetch contact");
@@ -99,21 +99,21 @@ export function ChatInterface({
               unread_count: 0,
             };
             setSelectedContact(contact);
-            setNewContact(contact);
+            // setNewContact(contact);
           } else {
             console.error("Contact not found:", initialContactId);
           }
         });
       }
     }
-  }, [initialContactId, contacts]);
+  }, [initialContactId, contacts, fetchUserById, session?.accessToken]);
 
   useEffect(() => {
     const accessToken = session?.accessToken;
     if (accessToken) {
       fetchConversations(accessToken);
     }
-  }, [fetchConversations]);
+  }, [fetchConversations, session?.accessToken]);
 
   useEffect(() => {
     const accessToken = session?.accessToken;
@@ -121,7 +121,7 @@ export function ChatInterface({
       markMessagesAsRead(selectedContact.user_id, accessToken);
       fetchMessages(selectedContact.user_id, accessToken);
     }
-  }, [selectedContact, fetchMessages, session?.accessToken]);
+  }, [selectedContact, fetchMessages, session?.accessToken, markMessagesAsRead]);
 
   const deleteChat = (contactId: string) => {
     if (selectedContact?.user_id === contactId) {

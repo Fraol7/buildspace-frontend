@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { useChatContext } from "./chat-context";
+// import { useChatContext } from "./chat-context";
 import { FileUpload } from "./file-upload";
 import Link from "next/link";
 import type { Contact } from "./chat-interface";
@@ -104,7 +104,7 @@ export function ChatArea({
 
   useEffect(() => {
     console.log("Session data in ChatArea:", session); // Debug log
-  }, []);
+  }, [session]);
   useEffect(() => {
     console.log("Current messages updated:", currentMessages); // Debug log
     scrollToBottom();
@@ -145,7 +145,7 @@ export function ChatArea({
     }
   };
 
-  const handleRetry = async (messageId: string) => {
+  const handleRetry = async () => {
     try {
       // await retryMessage(messageId);
       toast({

@@ -21,7 +21,7 @@ export default function RoleGuard({
     if (!session || role !== requiredRole) {
       router.replace("/");
     }
-  }, [session, status, router]);
+  }, [session, status, router, requiredRole]);
 
   if (status === "loading" || !session || role !== requiredRole) {
     return null; // Or a loading spinner

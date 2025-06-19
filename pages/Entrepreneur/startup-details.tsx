@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,8 +21,6 @@ import { useRef } from "react";
 import {
   DEFAULT_LOCATIONS,
   INITIAL_FORM_DATA,
-  FUNDING_ROUNDS,
-  PRODUCT_STAGES,
   FormData,
 } from "@/constants";
 import { useParams } from "next/navigation";
@@ -74,7 +72,7 @@ export default function StartupDetails() {
         startupDescription: startup.description || "",
       }));
     }
-  }, [startup]);
+  }, [startup, startupID, session?.accessToken]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -157,7 +155,7 @@ export default function StartupDetails() {
 
     console.log("Submitting startup data:", payload);
 
-    const success = await updateStartup(payload, session?.accessToken || "");
+    // const success = await updateStartup(payload, session?.accessToken || "");
     setIsSubmitting(false);
     // You can add success notification here
   };

@@ -57,6 +57,7 @@ import { useDashboardStore } from "@/store/dashboardStore";
 import { Startup } from "@/components/Entrepreneur/project-grid";
 
 // StatsCards Component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StatsCards = ({ startup }: { startup: any }) => {
   const { earnings } = useDashboardStore();
   const formatCurrency = (amount: number) => {
@@ -214,23 +215,23 @@ const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
     role = "investor";
   }
 
-  const getCurrentProjects = () => {
-    const startIndex = (currentPage - 1) * projectsPerPage;
-    const endIndex = startIndex + projectsPerPage;
-    return startups.slice(startIndex, endIndex);
-  };
+  // const getCurrentProjects = () => {
+  //   const startIndex = (currentPage - 1) * projectsPerPage;
+  //   const endIndex = startIndex + projectsPerPage;
+  //   return startups.slice(startIndex, endIndex);
+  // };
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const goToNextPage = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // const goToPrevPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   return (
     <Card className="shadow-lg">
@@ -563,7 +564,6 @@ export default function StartupDetailsOwner({
   };
 
   if (loading) {
-    console.log(loading, startup, startupId);
     return (
       <div className="flex justify-center items-center min-h-screen">
         Loading...

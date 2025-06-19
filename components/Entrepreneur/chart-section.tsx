@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
+// import { SPENDING_DATA, CROWDFUNDING_TOTAL, INVEST_TOTAL } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Area,
   AreaChart,
@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 const ChartsSection = () => {
-  const { earnings, loading, fetchAll } = useDashboardStore();
+  const { earnings, fetchAll } = useDashboardStore();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ChartsSection = () => {
     if (accessToken) {
       fetchAll(accessToken);
     }
-  }, [fetchAll]);
+  }, [fetchAll, session?.accessToken]);
 
   const crowdfundingTotal = earnings?.total_crowdfunding ?? 0;
   const investmentTotal = earnings?.total_investment ?? 0;

@@ -96,7 +96,7 @@ export default function ExploreCampaigns() {
 
       return matchesSearch;
     });
-  }, [allCampaigns, searchQuery, selectedCategory]);
+  }, [allCampaigns, searchQuery]);
 
   // Sort campaigns
   const sortedCampaigns = useMemo(() => {

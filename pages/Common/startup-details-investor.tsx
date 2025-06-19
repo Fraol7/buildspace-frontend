@@ -25,7 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -56,6 +56,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCampaignStore } from "@/store/campaignStore";
 
 // StatsCards Component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StatsCards = ({ startup }: { startup: any }) => {
   const { earnings } = useDashboardStore();
   const formatCurrency = (amount: number) => {
@@ -202,9 +203,9 @@ const StatsCards = ({ startup }: { startup: any }) => {
 
 // ProjectsGrid Component
 const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const projectsPerPage = 3;
-  const totalPages = Math.ceil(startups.length / projectsPerPage);
+  // const totalPages = Math.ceil(startups.length / projectsPerPage);
   const { data: session } = useSession();
   let role = session?.user?.role || "entrepreneur";
   if (role === "startup") {
@@ -581,6 +582,7 @@ export default function StartupDetailsGeneral({
         overall: data.sentiments.overall,
         score: data.sentiments.score,
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       setSentimentResult(null);
     } finally {
@@ -593,7 +595,7 @@ export default function StartupDetailsGeneral({
       fetchAll(session.accessToken);
       fetchRecommendedStartups(session.accessToken);
     }
-  }, [session?.accessToken]);
+  }, [session?.accessToken, fetchAll, fetchRecommendedStartups]);
 
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;

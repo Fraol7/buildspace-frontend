@@ -21,7 +21,7 @@ import { INDUSTRIES } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 import { useStartupStore } from "@/store/startupStore";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { useToast } from "@/hooks/use-toast";
 
 const ITEMS_PER_PAGE = 5;
@@ -31,7 +31,7 @@ export default function StartupDashboard() {
   const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
   const { data: session } = useSession();
-  const { myStartups, loading, fetchAll } = useDashboardStore();
+  const { myStartups, fetchAll } = useDashboardStore();
   const { saveStartup } = useStartupStore();
 
   // 2. Fetch startups on mount (replace with your auth logic)

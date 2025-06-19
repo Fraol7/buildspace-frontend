@@ -34,7 +34,7 @@ export default function EntrepreneurCampaigns() {
   const { data: session } = useSession();
   const { investedCampaigns, fetchMyInvestedCampaigns, loading, fundCampaign } =
     useCampaignStore();
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
 

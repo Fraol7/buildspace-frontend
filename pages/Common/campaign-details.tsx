@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import PaymentPopup from "./payment-popup";
 
-type InvestmentTier = {
-  amount: number;
-  title: string;
-  perks: string[];
-};
+// type InvestmentTier = {
+//   amount: number;
+//   title: string;
+//   perks: string[];
+// };
 
 // type CampaignData = {
 //   id: string;

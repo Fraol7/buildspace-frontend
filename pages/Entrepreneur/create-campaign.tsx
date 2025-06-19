@@ -39,7 +39,7 @@ export default function CreateCampaign() {
 
   const {
     createCampaign,
-    loading: campignLoading,
+    // loading: campignLoading,
     error: campaignError,
   } = useCampaignStore();
 
@@ -90,7 +90,7 @@ export default function CreateCampaign() {
 
     // Calculate start_date (today) and end_date (today + duration)
     const today = new Date();
-    const startDate = today.toISOString();
+    // const startDate = today.toISOString();
 
     // Calculate end date based on duration (in days)
     let endDate = today;
@@ -254,6 +254,7 @@ export default function CreateCampaign() {
                       </SelectTrigger>
                       <SelectContent>
                         {myStartups && myStartups.length > 0 ? (
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           myStartups.map((startup: any) => (
                             <SelectItem key={startup.id} value={startup.id}>
                               {startup.startup_name}

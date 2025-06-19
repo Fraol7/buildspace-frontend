@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, User, LogOut } from "lucide-react";
+import { ArrowLeft, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";

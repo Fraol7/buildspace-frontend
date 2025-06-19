@@ -79,7 +79,7 @@ const ProjectDetailPage = () => {
         getMyInvestments(session.accessToken);
       }
     }
-  }, [id, session?.accessToken, fetchStartupById]);
+  }, [id, session?.accessToken, fetchStartupById, getMyInvestments, session?.user.role]);
 
   useEffect(() => {
     if (startup && session?.accessToken) {

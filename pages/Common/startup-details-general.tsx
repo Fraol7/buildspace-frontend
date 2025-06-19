@@ -39,6 +39,7 @@ import { Startup } from "@/components/Entrepreneur/project-grid";
 import { INDUSTRIES } from "@/constants";
 
 // StatsCards Component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StatsCards = ({ startup }: { startup: any }) => {
   const { earnings } = useDashboardStore();
   const formatCurrency = (amount: number) => {
@@ -202,11 +203,11 @@ const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
     return startups.slice(startIndex, endIndex);
   };
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const goToNextPage = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
   // const goToPrevPage = () => {
   //   if (currentPage > 1) {
@@ -519,9 +520,9 @@ const SentimentDialog = ({
 };
 
 export default function StartupDetailsGeneral({
-  startupId,
+  // startupId,
 }: {
-  startupId: string;
+  // startupId: string;
 }) {
   const { data: session } = useSession();
   const { startup, loading } = useStartupStore();
@@ -531,10 +532,10 @@ export default function StartupDetailsGeneral({
     useDashboardStore();
 
   // const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [sentimentScore, setSentimentScore] = useState<{
-    score: number;
-    sentiment: "positive" | "negative" | "neutral";
-  } | null>(null);
+  // const [sentimentScore, setSentimentScore] = useState<{
+  //   score: number;
+  //   sentiment: "positive" | "negative" | "neutral";
+  // } | null>(null);
 
   const [showSentimentDialog, setShowSentimentDialog] = useState(false);
   const [sentimentLoading, setSentimentLoading] = useState(false);
@@ -563,6 +564,7 @@ export default function StartupDetailsGeneral({
         overall: data.sentiments.overall,
         score: data.sentiments.score,
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       setSentimentResult(null);
     } finally {
@@ -575,7 +577,7 @@ export default function StartupDetailsGeneral({
       fetchAll(session.accessToken);
       fetchRecommendedStartups(session.accessToken);
     }
-  }, [session?.accessToken]);
+  }, [session?.accessToken, fetchAll, fetchRecommendedStartups]);
 
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;

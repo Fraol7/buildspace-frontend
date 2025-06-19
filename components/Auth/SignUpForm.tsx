@@ -51,7 +51,7 @@ export default function SignUpForm() {
     setIsLoading(true);
 
     try {
-      const myHeaders = new Headers();
+      // const myHeaders = new Headers();
       const signupRes = await fetch(
         "https://buildspace.onrender.com/auth/email",
         {
