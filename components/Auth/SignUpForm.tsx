@@ -236,7 +236,7 @@ export default function SignUpForm() {
             >
               {isLoading ? "Signing up..." : "Sign up"}
             </button>
-            <button
+            {/* <button
               type="button"
               className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-100"
             >
@@ -248,7 +248,7 @@ export default function SignUpForm() {
                 className="mr-2"
               />
               Continue with Google
-            </button>
+            </button> */}
           </div>
         </form>
 

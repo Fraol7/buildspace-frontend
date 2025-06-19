@@ -121,7 +121,7 @@ export default function LoginForm() {
           </div>
 
           {/* Google Sign In */}
-          <div className="flex flex-col items-center">
+          {/* <div className="flex flex-col items-center">
             <button
               type="button"
               className="w-[60%] border border-gray-300 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-100"
@@ -134,7 +134,7 @@ export default function LoginForm() {
               />
               <span className="text-sm text-gray-700">Sign in with Google</span>
             </button>
-          </div>
+          </div> */}
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
