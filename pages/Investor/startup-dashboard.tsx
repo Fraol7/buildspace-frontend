@@ -3,8 +3,8 @@
 import type React from "react";
 
 import { useState, useMemo, useEffect } from "react";
-import Link from "next/link";
-import { Search, PlusCircle, Building2, DollarSign } from "lucide-react";
+// import Link from "next/link"
+import { Search, Building2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,52 +16,40 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { StartupCard } from "@/components/Entrepreneur/startup-card";
-import { INDUSTRIES } from "@/constants";
-import { useDashboardStore } from "@/store/dashboardStore";
+import { StartupCard } from "@/components/Investor/startup-card";
+import { DUMMY_STARTUPS, INDUSTRIES } from "@/constants";
+import { useInvestmentStore } from "@/store/investmentStore";
 import { useSession } from "next-auth/react";
-import { useStartupStore } from "@/store/startupStore";
-import { useToast } from "@/hooks/use-toast";
 
 const ITEMS_PER_PAGE = 5;
 
 export default function StartupDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [savedStartups, setSavedStartups] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
+  const { investments, loading, error, getMyInvestments } =
+    useInvestmentStore();
   const { data: session } = useSession();
-  const { myStartups, loading, fetchAll } = useDashboardStore();
-  const { saveStartup } = useStartupStore();
 
-  // 2. Fetch startups on mount (replace with your auth logic)
   useEffect(() => {
-    const accessToken = session?.accessToken;
-    if (accessToken) {
-      fetchAll(accessToken);
-    }
-  }, [session, fetchAll]);
-  useEffect(() => {
-    console.log("my startups:", myStartups);
-  }, [myStartups]);
+    const accessToken = session?.accessToken || "";
+    if (accessToken) getMyInvestments(accessToken);
+  }, [session, getMyInvestments]);
 
   // Filter startups based on search query
-  const filteredStartups = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return myStartups;
-    }
-
+  const filteredInvestments = useMemo(() => {
+    if (!searchQuery.trim()) return investments;
     const query = searchQuery.toLowerCase().trim();
-    return myStartups.filter((startup) => {
+    return investments.filter((inv) => {
+      const s = inv.startup_id;
       return (
-        startup.startup_name.toLowerCase().includes(query) ||
-        startup.description.toLowerCase().includes(query) ||
-        startup.location.toLowerCase().includes(query) ||
-        startup.funding_stage.toLowerCase().includes(query) ||
-        // startup.entrepreneur.name.toLowerCase().includes(query) ||
-        INDUSTRIES[startup.industry]
+        s.startup_name.toLowerCase().includes(query) ||
+        s.description.toLowerCase().includes(query) ||
+        s.location.toLowerCase().includes(query) ||
+        s.funding_stage.toLowerCase().includes(query) ||
+        INDUSTRIES[s.industry].toLowerCase().includes(query)
       );
     });
-  }, [searchQuery, myStartups]);
+  }, [searchQuery, investments]);
 
   // Reset to first page when search changes
   const resetPageOnSearch = (query: string) => {
@@ -70,16 +58,12 @@ export default function StartupDashboard() {
   };
 
   // Calculate pagination based on filtered results
-  const totalPages = Math.ceil(filteredStartups.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredInvestments.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentStartups = filteredStartups.slice(startIndex, endIndex);
+  const currentInvestments = filteredInvestments.slice(startIndex, endIndex);
 
-  // Calculate metrics based on filtered results
-  const totalRaised = filteredStartups.reduce(
-    (sum, startup) => sum + startup.amount_raised,
-    0
-  );
+  const totalInvested = investments.reduce((sum, inv) => sum + inv.amount, 0);
 
   const formatCurrency = (amount: number) => {
     if (amount >= 1000000) {
@@ -89,40 +73,6 @@ export default function StartupDashboard() {
       return `$${(amount / 1000).toFixed(0)}K`;
     }
     return `$${amount}`;
-  };
-  const { toast } = useToast();
-
-  const handleSave = async (startupId: string) => {
-    if (!session?.accessToken) return;
-    setSavedStartups((prev) => {
-      const newSaved = new Set(prev);
-      if (newSaved.has(startupId)) {
-        newSaved.delete(startupId);
-      } else {
-        newSaved.add(startupId);
-      }
-      return newSaved;
-    });
-
-    const success = await saveStartup(startupId, session.accessToken);
-    if (!success) {
-      // Revert UI if API failed
-      setSavedStartups((prev) => {
-        const newSaved = new Set(prev);
-        if (newSaved.has(startupId)) {
-          newSaved.delete(startupId);
-        } else {
-          newSaved.add(startupId);
-        }
-        return newSaved;
-      });
-      // Optionally show error toast here
-      toast({
-        title: "Failed to save startup",
-        description: "Please check your connection and try again.",
-        variant: "destructive",
-      });
-    }
   };
 
   const handlePageChange = (page: number) => {
@@ -147,11 +97,11 @@ export default function StartupDashboard() {
                   {searchQuery ? "Filtered" : "Total"} Startups
                 </p>
                 <p className="text-3xl font-bold text-gray-900">
-                  {filteredStartups.length}
+                  {filteredInvestments.length}
                 </p>
                 {searchQuery && (
                   <p className="text-xs text-sky-500 mt-1">
-                    of {myStartups.length} total
+                    of {DUMMY_STARTUPS.length} total
                   </p>
                 )}
               </div>
@@ -165,15 +115,22 @@ export default function StartupDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-emerald-600 mb-1">
-                  {searchQuery ? "Filtered" : "Total"} Raised
+                  {searchQuery ? "Filtered" : "Total"} Invested
                 </p>
                 <p className="text-3xl font-bold text-gray-900">
-                  {formatCurrency(totalRaised)}
+                  {formatCurrency(
+                    searchQuery
+                      ? filteredInvestments.reduce(
+                          (sum, inv) => sum + inv.amount,
+                          0
+                        )
+                      : totalInvested
+                  )}
                 </p>
                 {searchQuery && (
                   <p className="text-xs text-emerald-500 mt-1">
-                    from {filteredStartups.length} startup
-                    {filteredStartups.length !== 1 ? "s" : ""}
+                    from {filteredInvestments.length} startup
+                    {filteredInvestments.length !== 1 ? "s" : ""}
                   </p>
                 )}
               </div>
@@ -209,14 +166,6 @@ export default function StartupDashboard() {
                 )}
               </div>
             </form>
-
-            {/* Add Startup Button */}
-            <Link href="./add-startup">
-              <Button className="bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white shadow-md hover:shadow-lg transition-all duration-200 rounded-xl px-6 py-3">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add a Startup
-              </Button>
-            </Link>
           </div>
 
           {/* Results Info */}
@@ -226,18 +175,18 @@ export default function StartupDashboard() {
                 <>
                   Found{" "}
                   <span className="font-semibold text-sky-600">
-                    {filteredStartups.length}
+                    {filteredInvestments.length}
                   </span>{" "}
                   startup
-                  {filteredStartups.length !== 1 ? "s" : ""} matching &quot;
+                  {filteredInvestments.length !== 1 ? "s" : ""} matching &quot;
                   {searchQuery}&quot;
-                  {filteredStartups.length > 0 && (
+                  {filteredInvestments.length > 0 && (
                     <>
                       {" "}
                       • Showing{" "}
                       <span className="font-semibold text-sky-600">
                         {startIndex + 1}-
-                        {Math.min(endIndex, filteredStartups.length)}
+                        {Math.min(endIndex, filteredInvestments.length)}
                       </span>
                     </>
                   )}
@@ -247,11 +196,11 @@ export default function StartupDashboard() {
                   Showing{" "}
                   <span className="font-semibold text-sky-600">
                     {startIndex + 1}-
-                    {Math.min(endIndex, filteredStartups.length)}
+                    {Math.min(endIndex, filteredInvestments.length)}
                   </span>{" "}
                   of{" "}
                   <span className="font-semibold text-sky-600">
-                    {filteredStartups.length}
+                    {filteredInvestments.length}
                   </span>{" "}
                   startups
                 </>
@@ -263,18 +212,14 @@ export default function StartupDashboard() {
 
       {/* Startup Cards */}
       <div className="space-y-6">
-        {currentStartups.length > 0 ? (
-          currentStartups.map((startup, index) => (
+        {currentInvestments.length > 0 ? (
+          currentInvestments.map((inv, index) => (
             <div
-              key={startup.id}
+              key={inv.id}
               className="animate-in slide-in-from-bottom-4 duration-700"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <StartupCard
-                startup={startup}
-                isSaved={savedStartups.has(startup.id)}
-                onSave={handleSave}
-              />
+              <StartupCard startup={inv.startup_id} />
             </div>
           ))
         ) : (
