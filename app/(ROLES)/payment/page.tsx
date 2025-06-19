@@ -1,5 +1,5 @@
 import React from 'react'
-import PaymentPopup from '@/pages/Common/payment-popup'
+// import PaymentPopup from '@/pages/Common/payment-popup'
 
 const PaymentPage = () => {
   return (

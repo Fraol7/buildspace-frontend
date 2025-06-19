@@ -1,7 +1,6 @@
-import NextAuth, { SessionStrategy } from "next-auth";
+import { Session, SessionStrategy } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
-import { access } from "fs";
 
 export interface User {
   id: string;
@@ -22,7 +21,7 @@ declare module "next-auth" {
       role: "investor" | "startup";
       accessToken: string;
     };
-    accessToken: string;
+    accessToken?: string;
   }
 }
 
@@ -94,7 +93,7 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: any }) {
+    async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -106,17 +105,24 @@ export const authOptions = {
       return token;
     },
 
-    async session({ session, token }: { session: any; token: JWT }) {
-      session.accessToken = token.accessToken;
-      session.user = {
-        id: token.id,
-        name: token.name,
-        email: token.email,
-        role: token.role,
-        image: token.image || null,
-        accessToken: token.accessToken,
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (!token.id || !token.name || !token.email || !token.role || !token.accessToken) {
+        throw new Error('Invalid token: Missing required user data');
+      }
+      
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          name: token.name,
+          email: token.email,
+          role: token.role,
+          image: token.image || null,
+          accessToken: token.accessToken,
+        },
+        accessToken: token.accessToken
       };
-      return session;
     },
   },
 

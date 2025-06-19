@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
@@ -67,7 +67,7 @@ const ProjectDetailPage = () => {
   const id = params?.id as string; // Extract startup ID from the URL
 
   const { data: session, status } = useSession();
-  const { startup, loading, fetchStartupById, user, fetchUserById } =
+  const { startup, loading, fetchStartupById } =
     useStartupStore();
   const { investments, getMyInvestments } = useInvestmentStore();
 
@@ -79,13 +79,13 @@ const ProjectDetailPage = () => {
         getMyInvestments(session.accessToken);
       }
     }
-  }, [id, session?.accessToken]);
+  }, [id, session?.accessToken, fetchStartupById]);
 
   useEffect(() => {
     if (startup && session?.accessToken) {
       fetchUserById(startup?.user_id, session.accessToken);
     }
-  }, [startup]);
+  }, [startup, session?.accessToken]);
 
   if (loading || status === "loading" || !startup) {
     return (

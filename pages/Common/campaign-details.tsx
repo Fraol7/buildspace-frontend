@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import PaymentPopup from "./payment-popup";
 
 type InvestmentTier = {
@@ -9,35 +9,31 @@ type InvestmentTier = {
   perks: string[];
 };
 
-type CampaignData = {
-  id: string;
-  startup_id: string;
-  title: string;
-  logo: string;
-  coverImage: string;
-  description: string;
-  shortDescription: string;
-  targetAmount: number;
-  amountRaised: number;
-  minimumFunding: number;
-  endDate: string;
-  startDate: string;
-  status: string;
-  backers: number;
-  categories: string[];
-  founderName: string;
-  founderAvatar: string;
-  founderBio: string;
-  founderRating: number;
-  investmentTiers: InvestmentTier[];
-};
+// type CampaignData = {
+//   id: string;
+//   startup_id: string;
+//   title: string;
+//   logo: string;
+//   coverImage: string;
+//   description: string;
+//   shortDescription: string;
+//   targetAmount: number;
+//   amountRaised: number;
+//   minimumFunding: number;
+//   endDate: string;
+//   startDate: string;
+//   status: string;
+//   backers: number;
+//   categories: string[];
+//   founderName: string;
+//   founderAvatar: string;
+//   founderBio: string;
+//   founderRating: number;
+//   investmentTiers: InvestmentTier[];
+// };
 
 import {
-  Bookmark,
-  BookmarkCheck,
   Star,
-  ExternalLink,
-  CheckCircle,
   Calendar,
   Users,
   Target,
@@ -60,14 +56,13 @@ import {
 import { Progress } from "@/components/ui/progress";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Campaign, useCampaignStore } from "@/store/campaignStore";
 import { useSession } from "next-auth/react";
 import { useParams, usePathname } from "next/navigation";
 
 // First, define the component
 const CampaignDetailsComponent = () => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  // const [isBookmarked, setIsBookmarked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(0);
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [isClient, setIsClient] = useState(false);

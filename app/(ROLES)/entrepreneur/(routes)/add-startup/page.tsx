@@ -28,6 +28,7 @@ import { INDUSTRIES, FUNDING_STAGE_OPTIONS, countries } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useChatStore } from "@/store/chatStore";
@@ -117,6 +118,7 @@ export default function AddStartupPage() {
         toast.error("An error happened while creating your startup.");
       }
     } catch (err) {
+      console.error("Error creating startup:", err);
       toast.error("An error happened while creating your startup.");
     }
   };
@@ -153,10 +155,13 @@ export default function AddStartupPage() {
                     <span className="sr-only">Upload logo</span>
                     <div className="w-20 h-20 rounded-full border-2 border-sky-200 group-hover:border-sky-400 flex items-center justify-center overflow-hidden bg-sky-50 transition-all">
                       {formData.logo_url ? (
-                        <img
+                        <Image
                           src={formData.logo_url}
                           alt="Startup Logo"
                           className="object-cover w-full h-full"
+                          width={80}
+                          height={80}
+                          priority
                         />
                       ) : (
                         <span className="text-sky-400 text-4xl font-bold">

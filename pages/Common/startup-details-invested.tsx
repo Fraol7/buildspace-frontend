@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import {
-  Edit,
+  // Edit,
   MapPin,
   Globe,
-  Trash2,
-  Play,
+  // Trash2,
+  // Play,
   BarChart3,
   ExternalLink,
   Star,
@@ -25,7 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -34,16 +34,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+// import {
+//   AlertDialog,
+//   AlertDialogAction,
+//   AlertDialogCancel,
+//   AlertDialogContent,
+//   AlertDialogDescription,
+//   AlertDialogFooter,
+//   AlertDialogHeader,
+//   AlertDialogTitle,
+// } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -57,9 +57,9 @@ import { useCampaignStore } from "@/store/campaignStore";
 import { useInvestmentStore } from "@/store/investmentStore";
 
 // StatsCards Component
-const StatsCards = ({ startup }: { startup: any }) => {
+const StatsCards = ({ startup }: { startup: Startup }) => {
   const { investments } = useInvestmentStore();
-  const { earnings } = useDashboardStore();
+  // const { earnings } = useDashboardStore();
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -84,9 +84,9 @@ const StatsCards = ({ startup }: { startup: any }) => {
     {
       id: "rating",
       title: "Founder Rating",
-      value: startup.founder?.rating?.toString() || "0",
+      value: startup?.founder?.rating?.toString() || "0",
       icon: "star",
-      rating: startup.founder?.rating || 0,
+      rating: startup?.founder?.rating || 0,
       change: { trend: "neutral" as const, value: "", text: "" },
     },
   ];
@@ -223,17 +223,17 @@ const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
     return startups.slice(startIndex, endIndex);
   };
 
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const goToNextPage = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // const goToPrevPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   return (
     <Card className="shadow-lg">
@@ -552,23 +552,27 @@ export default function StartupDetailsGeneral({
     earnings,
     fetchAll,
     fetchRecommendedStartupsForInvestor,
-    recommendedStartups,
+    // recommendedStartups,
     recommendedStartupsForInvestor,
   } = useDashboardStore();
 
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [sentimentScore, setSentimentScore] = useState<{
-    score: number;
-    sentiment: "positive" | "negative" | "neutral";
-  } | null>(null);
-
-  const [showSentimentDialog, setShowSentimentDialog] = useState(false);
-  const [sentimentLoading, setSentimentLoading] = useState(false);
-  const [showInvestDialog, setShowInvestDialog] = useState(false);
+  // const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [sentimentResult, setSentimentResult] = useState<{
     overall: string;
     score: number;
   } | null>(null);
+  // const [sentimentScore, setSentimentScore] = useState<{
+  //   score: number;
+  //   sentiment: "positive" | "negative" | "neutral";
+  // } | null>(null);
+
+  const [showSentimentDialog, setShowSentimentDialog] = useState(false);
+  const [sentimentLoading, setSentimentLoading] = useState(false);
+  // const [showInvestDialog, setShowInvestDialog] = useState(false);
+  // const [sentimentResult, setSentimentResult] = useState<{
+  //   overall: string;
+  //   score: number;
+  // } | null>(null);
 
   const handleSentimentClick = async () => {
     setShowSentimentDialog(true);
@@ -611,18 +615,18 @@ export default function StartupDetailsGeneral({
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;
 
-  const handleSentimentAnalysis = async () => {
-    setSentimentLoading(true);
-    setShowSentimentDialog(true);
+  // const handleSentimentAnalysis = async () => {
+  //   setSentimentLoading(true);
+  //   setShowSentimentDialog(true);
 
-    setTimeout(() => {
-      setSentimentScore({
-        score: 78,
-        sentiment: "positive",
-      });
-      setSentimentLoading(false);
-    }, 2000);
-  };
+  //   setTimeout(() => {
+  //     setSentimentResult({
+  //       score: 78,
+  //       sentiment: "positive",
+  //     });
+  //     setSentimentLoading(false);
+  //   }, 2000);
+  // };
 
   const pathname = usePathname();
   const { toast } = useToast();
@@ -672,16 +676,16 @@ export default function StartupDetailsGeneral({
     }
   };
 
-  const getSentimentColor = (sentiment: string) => {
-    switch (sentiment) {
-      case "positive":
-        return "text-green-600 bg-green-100";
-      case "negative":
-        return "text-red-600 bg-red-100";
-      default:
-        return "text-yellow-600 bg-yellow-100";
-    }
-  };
+  // const getSentimentColor = (sentiment: string) => {
+  //   switch (sentiment) {
+  //     case "positive":
+  //       return "text-green-600 bg-green-100";
+  //     case "negative":
+  //       return "text-red-600 bg-red-100";
+  //     default:
+  //       return "text-yellow-600 bg-yellow-100";
+  //   }
+  // };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import EntrepreneurProfile from "@/pages/Common/entrepreneur-profile";
 import InvestorProfile from "@/pages/Common/investor-profile";
@@ -8,9 +8,9 @@ import { SessionProvider, useSession } from "next-auth/react";
 
 const Page = () => {
   const params = useParams();
-  const id = params?.id as string;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const id = params?.id as string;
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
 
   return (

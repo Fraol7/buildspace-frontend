@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import {
-  Edit,
+  // Edit,
   MapPin,
   Globe,
-  Trash2,
-  Play,
+  // Trash2,
+  // Play,
   BarChart3,
   ExternalLink,
   Star,
@@ -30,16 +30,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -218,11 +208,11 @@ const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
     }
   };
 
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // const goToPrevPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   return (
     <Card className="shadow-lg">
@@ -540,7 +530,7 @@ export default function StartupDetailsGeneral({
   const { earnings, fetchAll, fetchRecommendedStartups, recommendedStartups } =
     useDashboardStore();
 
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  // const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [sentimentScore, setSentimentScore] = useState<{
     score: number;
     sentiment: "positive" | "negative" | "neutral";
@@ -590,29 +580,29 @@ export default function StartupDetailsGeneral({
   const fundingProgress =
     ((startup?.amount_raised || 0) / (startup?.funding_goal ?? 1)) * 100;
 
-  const handleSentimentAnalysis = async () => {
-    setSentimentLoading(true);
-    setShowSentimentDialog(true);
+  // const handleSentimentAnalysis = async () => {
+  //   setSentimentLoading(true);
+  //   setShowSentimentDialog(true);
 
-    setTimeout(() => {
-      setSentimentScore({
-        score: 78,
-        sentiment: "positive",
-      });
-      setSentimentLoading(false);
-    }, 2000);
-  };
+  //   setTimeout(() => {
+  //     // setSentimentScore({
+  //     //   score: 78,
+  //     //   sentiment: "positive",
+  //     // });
+  //     setSentimentLoading(false);
+  //   }, 2000);
+  // };
 
-  const getSentimentColor = (sentiment: string) => {
-    switch (sentiment) {
-      case "positive":
-        return "text-green-600 bg-green-100";
-      case "negative":
-        return "text-red-600 bg-red-100";
-      default:
-        return "text-yellow-600 bg-yellow-100";
-    }
-  };
+  // const getSentimentColor = (sentiment: string) => {
+  //   switch (sentiment) {
+  //     case "positive":
+  //       return "text-green-600 bg-green-100";
+  //     case "negative":
+  //       return "text-red-600 bg-red-100";
+  //     default:
+  //       return "text-yellow-600 bg-yellow-100";
+  //   }
+  // };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import {
   Search,
   Filter,
@@ -14,7 +14,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,8 +49,7 @@ export default function ExploreCampaigns() {
   );
 
   const { data: session } = useSession();
-  const { allCampaigns, fetchAllCampaigns, loading, error } =
-    useCampaignStore();
+  const { allCampaigns, fetchAllCampaigns } = useCampaignStore();
 
   useEffect(() => {
     if (session?.accessToken) {
@@ -146,11 +144,11 @@ export default function ExploreCampaigns() {
     return Math.min((raised / target) * 100, 100);
   };
 
-  const getStatusColor = (status: string) => {
-    return status === "Active"
-      ? "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300"
-      : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
-  };
+  // const getStatusColor = (status: string) => {
+  //   return status === "Active"
+  //     ? "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300"
+  //     : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
+  // };
 
   const renderStarRating = (rating: number) => {
     const fullStars = Math.floor(rating);
