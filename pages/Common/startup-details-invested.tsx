@@ -83,10 +83,10 @@ const StatsCards = ({ startup }: { startup: Startup }) => {
     },
     {
       id: "rating",
-      title: "Founder Rating",
-      value: startup?.founder?.rating?.toString() || "0",
+      title: "Rating",
+      value: "N/A",
       icon: "star",
-      rating: startup?.founder?.rating || 0,
+      rating: 0,
       change: { trend: "neutral" as const, value: "", text: "" },
     },
   ];

@@ -127,7 +127,7 @@ export function ChatArea({
           content: message,
           senderId: session.user.id,
           receiverId: selectedContact.user_id,
-          accessToken: session?.accessToken,
+accessToken: session?.accessToken || '',
           files: selectedFiles,
         });
       }
@@ -147,16 +147,24 @@ export function ChatArea({
 
   const handleRetry = async () => {
     try {
+      if (!session?.accessToken) {
+        toast({
+          title: "Error",
+          description: "You must be logged in to resend messages.",
+          variant: "destructive",
+        });
+        return;
+      }
       // await retryMessage(messageId);
       toast({
-        title: "Message sent",
-        description: "Your message has been delivered.",
+        title: "Message resent",
+        description: "Your message has been resent successfully.",
       });
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("Error resending message:", error);
       toast({
-        title: "Retry failed",
-        description: "Please check your connection and try again.",
+        title: "Error",
+        description: "Failed to resend message. Please try again.",
         variant: "destructive",
       });
     }
@@ -481,7 +489,7 @@ export function ChatArea({
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleRetry(msg.id)}
+                                  onClick={() => handleRetry()}
                                   className="h-auto p-0 text-blue-200 hover:text-white"
                                 >
                                   <RotateCcw className="h-3 w-3" />

@@ -1,18 +1,9 @@
-import { Session, SessionStrategy } from "next-auth";
+import { Session, SessionStrategy, DefaultSession } from "next-auth";
+import { JWT as DefaultJWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { JWT } from "next-auth/jwt";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  image?: string | null;
-  role: "investor" | "startup";
-  accessToken: string;
-}
 
 declare module "next-auth" {
-  interface Session {
+  interface Session extends DefaultSession {
     user: {
       id: string;
       name: string;
@@ -21,7 +12,27 @@ declare module "next-auth" {
       role: "investor" | "startup";
       accessToken: string;
     };
-    accessToken?: string;
+    accessToken: string;
+  }
+
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    image?: string | null;
+    role: "investor" | "startup";
+    accessToken: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    name: string;
+    email: string;
+    image?: string | null;
+    role: "investor" | "startup";
+    accessToken: string;
   }
 }
 
@@ -93,19 +104,23 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user }: { token: DefaultJWT; user?: any }) {
       if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.role = user.role; // <-- Add this line
-        token.image = user.image || null;
-        token.accessToken = user.accessToken;
+        return {
+          ...token,
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          image: user.image || null,
+          accessToken: user.accessToken,
+        } as DefaultJWT;
       }
       return token;
     },
 
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({ session, token }: { session: Session; token: DefaultJWT }) {
       if (!token.id || !token.name || !token.email || !token.role || !token.accessToken) {
         throw new Error('Invalid token: Missing required user data');
       }
@@ -122,7 +137,7 @@ export const authOptions = {
           accessToken: token.accessToken,
         },
         accessToken: token.accessToken
-      };
+      } as Session;
     },
   },
 

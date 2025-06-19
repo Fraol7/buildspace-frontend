@@ -113,7 +113,23 @@ const ProjectDetailPage = () => {
 };
 
 export default ProjectDetailPage;
-function fetchUserById() {
-  throw new Error("Function not implemented.");
+async function fetchUserById(userId: string, accessToken: string) {
+  try {
+    const response = await fetch(`/api/users/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
 }
 
