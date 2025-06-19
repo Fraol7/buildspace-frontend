@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 interface AppHeaderProps {
   showBackButton?: boolean;
@@ -21,6 +22,7 @@ interface AppHeaderProps {
 export function AppHeader({ showBackButton = true }: AppHeaderProps) {
   const router = useRouter();
   const { profile } = useProfile();
+  const {data:session} = useSession()
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -62,7 +64,7 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
 
         <div className="hidden md:flex flex-col">
           <h1 className="text-lg font-semibold text-foreground">
-            Welcome, {profile.name?.split(" ")[0] ?? "John"}
+            Welcome, {session?.user.name?.split(" ")[0] ?? "John"}
           </h1>
           <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
         </div>

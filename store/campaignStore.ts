@@ -72,6 +72,12 @@ interface CampaignStoreState {
   error: string | null;
   isInvesting: boolean;
   allCampaigns: ExploreCampaign[];
+  investInStartup: (
+    startupId: string,
+    amount: string,
+    redirectUrl: string,
+    accessToken: string
+  ) => Promise<{ payment_url?: string; error?: string }>;
   fetchAllCampaigns: (
     accessToken: string,
     limit?: number,
@@ -325,6 +331,46 @@ export const useCampaignStore = create<CampaignStoreState>((set) => ({
       return null;
     }
   },
+  investInStartup: async (
+    startupId: string,
+    amount: string,
+    redirectUrl: string,
+    accessToken: string
+  ) => {
+    set({ isInvesting: true, error: null });
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const res = await fetch("https://buildspace.onrender.com/investment", {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          startup_id: startupId,
+          amount: amount,
+          redirect_url: redirectUrl
+        }),
+        credentials: "omit" as RequestCredentials,
+        redirect: "follow" as RequestRedirect,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to process investment');
+      }
+
+      const data = await res.json();
+      return { payment_url: data.payment_url };
+    } catch (error: any) {
+      console.error('Investment error:', error);
+      return { error: error.message || 'Failed to process investment' };
+    } finally {
+      set({ isInvesting: false });
+    }
+  },
+
   createCampaign: async (payload, accessToken) => {
     set({ loading: true, error: null });
     try {

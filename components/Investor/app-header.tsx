@@ -12,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 interface AppHeaderProps {
   showBackButton?: boolean;
@@ -20,6 +22,7 @@ interface AppHeaderProps {
 export function AppHeader({ showBackButton = true }: AppHeaderProps) {
   const router = useRouter();
   const { profile } = useProfile();
+  const {data:session} = useSession()
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -61,7 +64,7 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
 
         <div className="hidden md:flex flex-col">
           <h1 className="text-lg font-semibold text-foreground">
-            Welcome, {profile.name?.split(" ")[0] ?? "John"}
+            Welcome, {session?.user.name?.split(" ")[0] ?? "John"}
           </h1>
           <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
         </div>
@@ -92,21 +95,14 @@ export function AppHeader({ showBackButton = true }: AppHeaderProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48" align="end" forceMount>
             <DropdownMenuItem
-              onClick={() => router.push("/investor/profile")}
-              className="cursor-pointer"
-            >
-              <User className="mr-2 h-4 w-4" />
-              <span>Edit Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => router.push("/auth/signout")}
-              className="cursor-pointer text-destructive focus:text-destructive"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log Out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="cursor-pointer text-destructive focus:text-destructive"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log Out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       </div>
     </header>
   );

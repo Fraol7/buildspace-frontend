@@ -32,6 +32,7 @@ const AutoScrollingTrendingProjects = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { todaysPicks, loading, fetchTodaysPicks } = useTodaysPicksStore();
   const [currentProject, setCurrentProject] = useState<TodaysPick | null>(null);
+  
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -43,9 +44,10 @@ const AutoScrollingTrendingProjects = () => {
   }, [todaysPicks.length]);
 
   useEffect(() => {
-    const accessToken = session?.accessToken;
-    fetchTodaysPicks(accessToken);
-  }, []);
+    if (session?.accessToken) {
+      fetchTodaysPicks(session.accessToken);
+    }
+  }, [session]);
 
   useEffect(() => {
     if (todaysPicks.length > 0) {
@@ -55,8 +57,30 @@ const AutoScrollingTrendingProjects = () => {
     }
   }, [todaysPicks, currentIndex]);
 
+  if (loading) {
+    return (
+      <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-xl p-12 text-gray-800 h-[400px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading trending projects...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentProject) {
+    return (
+      <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-xl p-12 text-gray-800 h-[400px] flex items-center justify-center">
+        <p>No trending projects available</p>
+      </div>
+    );
+  }
+
   return (
-    <Link href={`/investor/startup-detail/${currentProject?.id} || "/"`} className="block">
+    <Link
+      href={`/investor/startup-detail/${currentProject.id}`}
+      className="block"
+    >
       <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-xl p-12 text-gray-800 relative overflow-hidden hover:shadow-xl transition-shadow h-full md:h-[400px]">
         {/* Background Illustrations */}
         <div className="absolute inset-0">

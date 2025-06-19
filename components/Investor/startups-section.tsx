@@ -155,7 +155,7 @@ const StartupsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {visibleInvestments.map((investment: Investment) => (
             <Link 
-              href={`/startup/${investment.startup_id.id}`} 
+              href={`/investor/startup/${investment.startup_id.id}`} 
               key={investment.id} 
               className="block"
             >

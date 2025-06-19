@@ -37,7 +37,7 @@ import { usePathname } from "next/navigation"
 import ProfileDialog from "@/components/Profile/ProfileEdit"
 import { InvestorNavMain } from "@/constants"
 import Logo from "@/components/Common/Logo"
-
+import { useSession } from "next-auth/react"
 // Define the ProfileData type
 type ProfileData = {
   fullName?: string
@@ -71,6 +71,8 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
     avatar: userProfile?.avatar || defaultProfile.avatar,
     email: userProfile?.email || defaultProfile.email,
   }
+
+  const {data:session} = useSession()
 
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
   const pathname = usePathname()
@@ -170,98 +172,34 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="bg-gray-100">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.fullName} />
-                    <AvatarFallback className="rounded-lg">
-                      {profile.fullName
-                        ?.split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{profile.fullName}</span>
-                    <span className="truncate text-xs">{profile.email}</span>
-                  </div>
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                side="bottom"
-                align="end"
-                sideOffset={4}
-              >
-                <DropdownMenuLabel className="p-0 font-normal">
-                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <div className="flex items-center gap-3 px-2 py-2">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={profile.avatar || "/placeholder.svg"} alt={profile.fullName} />
+                      <AvatarImage
+                        src={session?.user.image || "/placeholder.svg"}
+                        alt={session?.user.name}
+                      />
                       <AvatarFallback className="rounded-lg">
-                        {profile.fullName
+                        {session?.user.name
                           ?.split(" ")
                           .map((n) => n[0])
                           .join("")
                           .toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">{profile.fullName}</span>
-                      <span className="truncate text-xs">{profile.email}</span>
+                    <div className="flex flex-col">
+                      <span className="truncate font-semibold text-sm">
+                        {session?.user.name}
+                      </span>
+                      <span className="truncate text-xs text-gray-500">
+                        {session?.user.email}
+                      </span>
                     </div>
                   </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setIsProfileDialogOpen(true)}>
-                  <UserCircle className="mr-2 h-4 w-4" />
-                  Edit Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Briefcase className="mr-2 h-4 w-4" />
-                  Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings2 className="mr-2 h-4 w-4" />
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <LifeBuoy className="mr-2 h-4 w-4" />
-                  Support
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Send className="mr-2 h-4 w-4" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <ProfileDialog
-              isOpen={isProfileDialogOpen}
-              onClose={() => setIsProfileDialogOpen(false)}
-              onSave={(updatedProfile) => {
-                console.log("Updated Profile:", updatedProfile)
-                setIsProfileDialogOpen(false)
-              }}
-              profileData={{
-                fullName: profile.fullName || "",
-                bio: profile.bio || "",
-                skills: profile.skills || [],
-                address: profile.address || "",
-              }}
-              availableSkills={["React", "Node.js", "Python", "JavaScript"]}
-              availableLocations={["San Francisco", "Los Angeles", "New York"]}
-            />
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )
