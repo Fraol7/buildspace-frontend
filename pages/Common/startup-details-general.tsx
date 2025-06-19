@@ -563,7 +563,7 @@ export default function StartupDetailsGeneral({
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: "Artificial Intelligence" }),
+          body: JSON.stringify({ text: INDUSTRIES[startup?.industry || 0] }),
         }
       );
       if (!res.ok) throw new Error("Failed to fetch sentiment");
