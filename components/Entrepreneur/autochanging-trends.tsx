@@ -115,7 +115,7 @@ const AutoScrollingTrendingProjects = () => {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-full h-[200px] md:w-[300px] md:h-[300px] relative flex-shrink-0">
                   <Image
-                    src={"/images/eco.jpg"}
+                    src={currentProject?.logo_url}
                     alt={currentProject?.startup_name || "Startup Logo"}
                     fill
                     className="object-cover rounded-lg"

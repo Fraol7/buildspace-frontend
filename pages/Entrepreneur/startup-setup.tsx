@@ -41,7 +41,7 @@ import { toast } from "sonner";
 import { useChatStore } from "@/store/chatStore";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
-import { INDUSTRIES } from "@/constants";
+import { INDUSTRIES, countries } from "@/constants";
 
 export default function StartupSetup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -57,6 +57,11 @@ export default function StartupSetup() {
   const uploadFiles = useChatStore((s) => s.uploadFiles);
   const createStartup = useStartupStore((s) => s.createStartup);
   const { data: session } = useSession();
+
+  const countryOptions = Object.entries(countries).map(([code, name]) => ({
+    code,
+    name,
+  }));
 
   // Form data
   interface FormData {
@@ -104,6 +109,11 @@ export default function StartupSetup() {
   useEffect(() => {
     handleInputChange("industries", selectedIndustry);
   }, [selectedIndustry]);
+
+  const handleCountryChange = (countryCode: string) => {
+    handleInputChange("location", countryCode);
+    setLocationError("");
+  };
 
   const handleInputChange = (
     field: string,
@@ -506,24 +516,32 @@ export default function StartupSetup() {
                   {/* Location */}
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700">
-                      Location *
+                      Country *
                     </Label>
-                    <Input
+                    <Select
                       value={formData.location}
-                      onChange={(e) =>
-                        handleInputChange("location", e.target.value)
-                      }
-                      placeholder="City, Country"
-                      className={`border-gray-300 ${
-                        locationError ? "border-red-500" : ""
-                      }`}
-                      required
-                    />
+                      onValueChange={handleCountryChange}
+                    >
+                      <SelectTrigger
+                        className={`border-gray-300 ${
+                          locationError ? "border-red-500" : ""
+                        }`}
+                      >
+                        <SelectValue placeholder="Select country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countryOptions.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {locationError ? (
                       <p className="text-xs text-red-500">{locationError}</p>
                     ) : (
                       <p className="text-xs text-gray-500">
-                        Format: City, Country (e.g., New York, USA)
+                        Choose your country of operation
                       </p>
                     )}
                   </div>

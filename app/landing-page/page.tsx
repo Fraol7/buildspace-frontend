@@ -1,12 +1,16 @@
-import React from 'react'
-import LandingPage from '@/pages/LandingPage'
+"use client";
+import React from "react";
+import LandingPage from "@/pages/LandingPage";
+import { SessionProvider } from "next-auth/react";
 
 const page = () => {
   return (
-    <div>
+    <SessionProvider>
+      <div>
         <LandingPage />
-    </div>
-  )
-}
+      </div>
+    </SessionProvider>
+  );
+};
 
-export default page
+export default page;

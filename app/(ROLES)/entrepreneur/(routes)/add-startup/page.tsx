@@ -24,7 +24,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { INDUSTRIES, FUNDING_STAGE_OPTIONS } from "@/constants";
+import { INDUSTRIES, FUNDING_STAGE_OPTIONS, countries } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useStartupStore } from "@/store/startupStore";
 import { useSession } from "next-auth/react";
@@ -36,6 +36,11 @@ export default function AddStartupPage() {
   const router = useRouter();
   const { createStartup, loading } = useStartupStore();
   const { uploadFiles } = useChatStore();
+
+  const countryOptions = Object.entries(countries).map(([code, name]) => ({
+    code,
+    name,
+  }));
 
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -212,14 +217,24 @@ export default function AddStartupPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    name="location"
-                    placeholder="e.g., San Francisco, CA"
+                  <Select
                     value={formData.location}
-                    onChange={handleChange}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, location: value }))
+                    }
                     required
-                  />
+                  >
+                    <SelectTrigger id="location" name="location">
+                      <SelectValue placeholder="Select country" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {countryOptions.map((country) => (
+                        <SelectItem key={country.code} value={country.code}>
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
