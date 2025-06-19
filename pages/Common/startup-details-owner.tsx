@@ -46,7 +46,7 @@ import Link from "next/link";
 import {
   // projectData,
   // recommendedInvestors,
-  ALL_PROJECTS,
+  // ALL_PROJECTS,
   // type Project,
   // type Investor,
   INDUSTRIES,
@@ -205,7 +205,7 @@ const StatsCards = ({ startup }: { startup: any }) => {
 // ProjectsGrid Component
 const ProjectsGrid = ({ startups }: { startups: Startup[] }) => {
   // const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 3;
+  // const projectsPerPage = 3;
   // const totalPages = Math.ceil(ALL_PROJECTS.length / projectsPerPage);
   const { data: session } = useSession();
   let role = session?.user?.role || "entrepreneur";

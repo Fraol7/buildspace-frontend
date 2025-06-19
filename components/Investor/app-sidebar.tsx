@@ -2,7 +2,7 @@
 
 import type * as React from "react"
 // import Image from "next/image";
-import { useState } from "react"
+// import { useState } from "react"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 
@@ -62,7 +62,7 @@ export function InvestorSidebar({ ...props }: React.ComponentProps<typeof Sideba
   const { state } = useSidebar()
 
   // Retrieve the profile data, falling back to defaults
-  const { profile: userProfile } = useProfile() || { profile: defaultProfile }
+  // const { profile: userProfile } = useProfile() || { profile: defaultProfile }
   // const profile: ProfileData = {
   //   fullName: userProfile?.fullName || defaultProfile.fullName,
   //   bio: userProfile?.bio || defaultProfile.bio,

@@ -36,7 +36,7 @@ const StartupsSection = () => {
       return;
     }
     fetchAll(accessToken);
-  }, [session]);
+  }, [session, fetchAll]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

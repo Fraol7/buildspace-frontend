@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 // import Link from "next/link";
 import { useEffect } from "react";
-import { STAT_DATA, StatCard } from "@/constants";
+import { StatCard } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useSession } from "next-auth/react";
 

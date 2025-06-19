@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { PROJECTS_GRID, INDUSTRIES } from "@/constants";
+import { INDUSTRIES } from "@/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 
 

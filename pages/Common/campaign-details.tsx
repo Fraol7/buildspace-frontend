@@ -68,6 +68,7 @@ const CampaignDetailsComponent = () => {
   const [isClient, setIsClient] = useState(false);
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const params = useParams();
+  const pathname = usePathname();
   const id = params?.id as string;
 
   const { getCampaignById, loading, fundCampaign } = useCampaignStore();
@@ -192,8 +193,6 @@ const CampaignDetailsComponent = () => {
       </div>
     );
   };
-
-  const pathname = usePathname();
 
   const handleInvest = async (campaignId: string, amount: number) => {
     if (!session?.accessToken) {

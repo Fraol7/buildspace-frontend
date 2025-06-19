@@ -36,7 +36,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useProfile } from "@/lib/profile-context";
+// import { useProfile } from "@/lib/profile-context";
 import { usePathname } from "next/navigation";
 // import ProfileDialog from "@/components/Profile/ProfileEdit";
 import { EntrepreneurNavMain } from "@/constants";
@@ -54,14 +54,14 @@ type ProfileData = {
 };
 
 // Provide a default profile as a fallback
-const defaultProfile: ProfileData = {
-  fullName: "John Doe",
-  bio: "Default bio",
-  skills: ["React", "Node.js"],
-  address: "Default address",
-  avatar: "/images/person1.jpg",
-  email: "john.doe@example.com",
-};
+// const defaultProfile: ProfileData = {
+//   fullName: "John Doe",
+//   bio: "Default bio",
+//   skills: ["React", "Node.js"],
+//   address: "Default address",
+//   avatar: "/images/person1.jpg",
+//   email: "john.doe@example.com",
+// };
 
 export function EntrepreneurSidebar({
   ...props
