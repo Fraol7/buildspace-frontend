@@ -5,7 +5,7 @@ import { useState, useMemo } from "react"
 import { Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User } from "@/types/user"
+import { User } from "@/store/userStore"
 import UserCard from "./user-card"
 import Pagination from "../Common/pagination"
 
@@ -32,10 +32,9 @@ export default function UserCardGroup({
     const query = searchQuery.toLowerCase().trim()
     return users.filter(
       (user) =>
-        user.name.toLowerCase().includes(query) ||
-        user.bio.toLowerCase().includes(query) ||
-        user.address.toLowerCase().includes(query) ||
-        user.badges.some((badge: string) => badge.toLowerCase().includes(query)) ||
+        user.first_name.toLowerCase().includes(query) ||
+        user.last_name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
         user.role.toLowerCase().includes(query),
     )
   }, [users, searchQuery])
